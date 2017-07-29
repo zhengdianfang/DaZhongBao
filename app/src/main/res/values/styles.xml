@@ -7,6 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -24,4 +27,28 @@
         <item name="android:textSize">@dimen/buttonTextSize</item>
     </style>
 
+    <style name="AppTheme.ToolbarText">
+        <item name="android:textColor">@color/toolbar_title_color</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppTheme.EditText">
+        <item name="android:background">@drawable/activity_login_input_default_background</item>
+        <item name="android:editTextColor">@android:color/black</item>
+        <item name="android:height">48dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+    </style>
+
+    <style name="AppTheme.EditText.Highlight">
+        <item name="android:background">@drawable/activity_login_input_highlight_background</item>
+        <item name="android:editTextColor">@android:color/black</item>
+        <item name="android:height">48dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+    </style>
+
+    <color name="toolbar_title_color">#1E1E1E</color>
 </resources>

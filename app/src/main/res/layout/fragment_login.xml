@@ -27,19 +27,16 @@
 
     <EditText
         android:id="@+id/phoneEditText"
+        style="@style/AppTheme.EditText.Highlight"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_height="@dimen/edittext_height"
         android:layout_marginTop="249dp"
-        android:background="@drawable/activity_login_input_background"
         android:drawableLeft="@drawable/activity_login_phone"
         android:drawablePadding="12dp"
         android:hint="@string/please_input_phonenumber"
         android:inputType="phone"
         android:maxLines="1"
         android:padding="8dp"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,21 +46,21 @@
 
     <EditText
         android:id="@+id/passwordEditText"
+        style="@style/AppTheme.EditText.Highlight"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="0dp"
-        android:background="@drawable/activity_login_input_background"
+        android:layout_height="@dimen/edittext_height"
         android:drawableLeft="@drawable/activity_login_password"
         android:drawablePadding="8dp"
         android:hint="@string/please_input_password"
         android:inputType="textPassword"
         android:maxLines="1"
         android:padding="8dp"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/phoneEditText"
-        app:layout_constraintStart_toStartOf="@+id/phoneEditText"
         app:layout_constraintTop_toBottomOf="@+id/phoneEditText"
-        tools:ignore="LabelFor" />
+        tools:ignore="LabelFor"
+        app:layout_constraintEnd_toEndOf="@+id/phoneEditText"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintStart_toStartOf="@+id/phoneEditText"
+        android:layout_marginStart="0dp" />
 
 
     <Button
@@ -110,56 +107,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        android:layout_marginEnd="41dp"
         android:background="@android:color/transparent"
         android:drawablePadding="8dp"
         android:drawableTop="@drawable/activity_login_organization_button"
         android:text="@string/activity_organization_button_text"
         android:textColor="@color/activity_login_weixin_button_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="250dp"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        android:layout_marginEnd="41dp" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="250dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:gravity="center"
         android:layout_marginHorizontal="32dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/weixinButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/linearLayout">
+        app:layout_constraintStart_toStartOf="parent">
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="@drawable/activity_login_fast_login_dirver_line"/>
+            android:background="@drawable/activity_login_fast_login_dirver_line" />
 
         <View
             android:layout_width="4dp"
             android:layout_height="4dp"
-            android:background="@drawable/activity_login_fast_login_dirver_cricle"/>
+            android:background="@drawable/activity_login_fast_login_dirver_cricle" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:textSize="16sp"
-            android:text="@string/activit_login_fast_funcation" />
+            android:text="@string/activit_login_fast_funcation"
+            android:textSize="16sp" />
+
         <View
             android:layout_width="4dp"
             android:layout_height="4dp"
-            android:background="@drawable/activity_login_fast_login_dirver_cricle"/>
+            android:background="@drawable/activity_login_fast_login_dirver_cricle" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="@drawable/activity_login_fast_login_dirver_line"/>
+            android:background="@drawable/activity_login_fast_login_dirver_line" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

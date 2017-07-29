@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="activity_login_weixin_button_text_color">#a0a0a0</color>
+    <color name="fragment_verify_sms_code_color">#787878</color>
 </resources>
