@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zhengdianfang.dazhongbao.views.login.LoginActivityFragment"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp"
+    tools:showIn="@layout/activity_login">
+
+    <ImageView
+        android:id="@+id/loginLogoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="56dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/login_logo"
+        app:layout_constraintBottom_toTopOf="@+id/phoneEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="249dp"
+        android:background="@drawable/activity_login_input_background"
+        android:drawableLeft="@drawable/activity_login_phone"
+        android:drawablePadding="12dp"
+        android:hint="@string/please_input_phonenumber"
+        android:inputType="phone"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="249dp" />
+
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:background="@drawable/activity_login_input_background"
+        android:drawableLeft="@drawable/activity_login_password"
+        android:drawablePadding="8dp"
+        android:hint="@string/please_input_password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/phoneEditText"
+        app:layout_constraintStart_toStartOf="@+id/phoneEditText"
+        app:layout_constraintTop_toBottomOf="@+id/phoneEditText"
+        tools:ignore="LabelFor" />
+
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/activity_login_button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/activit_login_find_password"
+        app:layout_constraintEnd_toEndOf="@+id/phoneEditText"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/weixinButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="74dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/activity_login_weixin_button"
+        android:text="@string/activity_weixin_button_text"
+        android:textColor="@color/activity_login_weixin_button_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="74dp" />
+
+    <Button
+        android:id="@+id/organizationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/activity_login_organization_button"
+        android:text="@string/activity_organization_button_text"
+        android:textColor="@color/activity_login_weixin_button_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="250dp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        android:layout_marginEnd="41dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/weixinButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/linearLayout">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/activity_login_fast_login_dirver_line"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:background="@drawable/activity_login_fast_login_dirver_cricle"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:textSize="16sp"
+            android:text="@string/activit_login_fast_funcation" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:background="@drawable/activity_login_fast_login_dirver_cricle"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/activity_login_fast_login_dirver_line"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
