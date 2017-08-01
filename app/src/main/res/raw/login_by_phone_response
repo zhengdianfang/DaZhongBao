@@ -1,0 +1,19 @@
+{
+  "errorMsg": "",
+  "status": 0,
+  "data": {
+    "id": "1",
+    "token": "123XDFFW12123",
+    "realname": "zheng",
+    "avatar": "http://",
+    "companyName": "Thoughtworks",
+    "companyAddress": "北京市东城区",
+    "email": "dfgzheng@thoughtworks.com",
+    "position": "Manager",
+    "level": 0,
+    "type": 1,
+    "integrity": 0,
+    "businessCard": "http://",
+    "contactCard": "http://"
+  }
+}

@@ -1,10 +1,7 @@
 package com.zhengdianfang.dazhongbao
 
-import com.zhengdianfang.dazhongbao.presenters.StartupPresenter
-import com.zhengdianfang.dazhongbao.views.StartupView
-import org.junit.Test
-import org.mockito.Mockito
 import org.junit.ClassRule
+import org.junit.Test
 
 /**
  * Created by dfgzheng on 26/07/2017.
@@ -15,10 +12,6 @@ class StartupPresenterTest {
     }
     @Test
     fun loadData() {
-        val startupPresenter = StartupPresenter()
-        val startupView = Mockito.mock(StartupView::class.java)
-        startupPresenter.attachView(startupView)
-        startupPresenter.loadData()
     }
 
 }

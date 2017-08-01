@@ -1,15 +1,17 @@
 package com.zhengdianfang.dazhongbao.views.login
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.views.basic.PresenterActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : PresenterActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }
