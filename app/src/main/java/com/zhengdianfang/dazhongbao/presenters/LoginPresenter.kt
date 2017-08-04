@@ -86,13 +86,21 @@ class LoginPresenter: BasePresenter() {
         }
     }
 
-    fun setPassword(password: String, token: String) {
-        if (validatePassword(password)){
+    fun setPassword(password: String, confirmPassword: String, token: String) {
+        if (validatePassword(password) && isEqualConfirmPassword(password, confirmPassword)){
             mView?.showLoadingDialog()
             addSubscription(mLoginRepository.modifyPassword(password, token), Consumer<User> { user->
                 (mView as IRegisterView).receiverUser(user)
                 mView?.hideLoadingDialog()
             })
         }
+    }
+    fun isEqualConfirmPassword(password: String, confirmPassword: String): Boolean {
+        var equal = true
+        if (password != confirmPassword) {
+            equal = false
+            (mView as IRegisterView).validateErrorUI(R.string.toast_input_confirm_password_not_equal)
+        }
+        return equal
     }
 }

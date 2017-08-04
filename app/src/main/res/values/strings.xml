@@ -28,4 +28,6 @@
     <string name="toast_sms_code_send_successful">验证码已发至您的手机，请查看</string>
     <string name="toast_register_successful">注册成功</string>
     <string name="button_diable_timer_alert">%d秒</string>
+    <string name="toast_input_confirm_password_not_equal">密码不一致</string>
+    <string name="toast_set_password_successful">设置成功</string>
 </resources>

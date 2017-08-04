@@ -29,7 +29,9 @@ class PhoneRegisterFragmentTest{
 
     @Before
     fun setUp() {
-        onView(withId(R.id.organizationButton)).perform(click())
+        mLoginActivityTestRole.activity.supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, PhoneRegisterFragment())
+                .commitAllowingStateLoss()
         SystemClock.sleep(2000)
     }
 

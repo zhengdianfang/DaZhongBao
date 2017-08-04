@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
@@ -56,7 +57,11 @@ class PhoneRegisterFragment : BaseFragment<LoginActivity>(), IRegisterView {
     }
 
     override fun receiverUser(user: User) {
+        CApplication.INSTANCE.loginUser = user
         toast(R.string.toast_register_successful)
+        getParentActivity().supportFragmentManager.beginTransaction()
+                .replace(android.R.id.content, ModifyPasswordFragment())
+                .commitAllowingStateLoss()
     }
 
 }

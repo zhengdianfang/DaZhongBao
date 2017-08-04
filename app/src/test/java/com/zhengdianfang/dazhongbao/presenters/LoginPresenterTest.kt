@@ -134,14 +134,19 @@ class LoginPresenterTest {
     @Test
     fun should_validate_password_When_user_set_password() {
         mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.setPassword("126",  "AAAWWW")
+        mLoginPresenter.setPassword("",  "", "AAAWWW")
+        verify(mMockRegisterView)?.validateErrorUI(R.string.please_input_password)
+        mLoginPresenter.setPassword("11", "", "AAAWWW")
         verify(mMockRegisterView)?.validateErrorUI(R.string.please_input_legal_password)
+        mLoginPresenter.setPassword("111111", "222222", "AAAWWW")
+        verify(mMockRegisterView)?.validateErrorUI(R.string.toast_input_confirm_password_not_equal)
     }
+
 
     @Test
     fun should_call_modify_password_api_When_user_set_password() {
         mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.setPassword("123456",  "AAAWWW")
+        mLoginPresenter.setPassword("123456",  "123456", "AAAWWW")
         verify(mMockRegisterView)?.showLoadingDialog()
         verify(mMockRegisterView)?.receiverUser(mockUser)
         verify(mMockRegisterView)?.hideLoadingDialog()
