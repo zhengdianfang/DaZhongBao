@@ -8,3 +8,6 @@ import com.zhengdianfang.dazhongbao.models.login.User
 
 val mockUser = User("1", "123123", "zheng",   "http://", "thoughtworks",
         "china", "dfghzheng@thoughtworks.com", "manager", 0, 1, 1, "http://", "http://")
+
+val mockSmsCode = "122444"
+

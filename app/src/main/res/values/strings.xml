@@ -19,8 +19,13 @@
     <string name="fragment_modify_password_button_text">提交</string>
     <string name="fragment_set_password">设置密码</string>
     <string name="phone_china_code">+86</string>
-    <string name="get_verfiy_sms_code">获取验证码</string>
+    <string name="get_verify_sms_code">获取验证码</string>
     <string name="please_input_legal_phonenumber">请输入有效的手机号</string>
     <string name="please_input_legal_password">密码格式不正确</string>
-    <string name="toast_login_success"><![CDATA[  登录成功]]></string>
+    <string name="toast_login_success"><![CDATA[登录成功]]></string>
+    <string name="fragment_register_recommend">推荐人手机号(非必填)</string>
+    <string name="please_input_sms_code">请输入验证码</string>
+    <string name="toast_sms_code_send_successful">验证码已发至您的手机，请查看</string>
+    <string name="toast_register_successful">注册成功</string>
+    <string name="button_diable_timer_alert">%d秒</string>
 </resources>

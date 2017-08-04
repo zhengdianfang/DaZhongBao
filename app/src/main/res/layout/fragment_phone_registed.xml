@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.zhengdianfang.dazhongbao.views.login.ModifyPasswordFragment">
+    android:background="@color/fragment_background_color"
+    android:clickable="true"
+    tools:context="com.zhengdianfang.dazhongbao.views.login.PhoneRegisterFragment">
 
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -33,21 +35,26 @@
             android:text="@string/phone_china_code" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/registerPhoneEditText"
             style="@style/AppTheme.EditText"
             android:layout_width="0dp"
             android:layout_marginStart="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxLines="1"
-            android:inputType="phone" />
+            android:paddingLeft="16dp"
+            android:hint="@string/please_input_phonenumber"
+            android:inputType="phone"
+            tools:ignore="LabelFor" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edittext_height"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/smsCodeEditText"
             style="@style/AppTheme.EditText"
@@ -55,8 +62,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxLines="1"
+            android:hint="@string/please_input_sms_code"
             android:layout_marginEnd="0dp"
-            android:inputType="phone" />
+            android:inputType="phone"
+            tools:ignore="LabelFor" />
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -65,6 +74,7 @@
             android:background="@drawable/activity_login_input_default_background">
 
             <Button
+                android:id="@+id/getSmsCodeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -75,9 +85,20 @@
         </FrameLayout>
 
     </LinearLayout>
+    <EditText
+        android:id="@+id/recommendEditText"
+        style="@style/AppTheme.EditText"
+        android:layout_width="match_parent"
+        android:layout_marginStart="32dp"
+        android:layout_height="@dimen/edittext_height"
+        android:maxLines="1"
+        android:hint="@string/fragment_register_recommend"
+        android:layout_marginTop="24dp"
+        android:inputType="phone"
+        tools:ignore="LabelFor" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"

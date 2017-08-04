@@ -1,10 +1,13 @@
 package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.PhoneFormatCheckHelper
 import com.zhengdianfang.dazhongbao.models.login.LoginRepository
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.views.login.IBaseView
 import com.zhengdianfang.dazhongbao.views.login.ILoginView
+import com.zhengdianfang.dazhongbao.views.login.IRegisterView
 import io.reactivex.functions.Consumer
 
 /**
@@ -14,35 +17,82 @@ class LoginPresenter: BasePresenter() {
 
     private val mLoginRepository by lazy { LoginRepository() }
 
-    fun loginByPhoneNumber(phoneNumber: String, password: String){
+    fun loginByPhoneNumber(phoneNumber: String, password: String, deviceId: String){
 
-        if (validatePhoneNumberAndPassword(phoneNumber, password)){
+        if (validatePhoneNumber(phoneNumber) && validatePassword(password)){
             //request login api
             mView?.showLoadingDialog()
-            addSubscription(mLoginRepository.loginRequest(phoneNumber, password), Consumer<User> { user ->
+            addSubscription(mLoginRepository.loginRequest(phoneNumber, password,
+                    DeviceUtils.getAppVersionName(mView?.getContext()),
+                    deviceId), Consumer<User> { user ->
                 (mView as ILoginView).userResponseProcessor(user)
                 mView?.hideLoadingDialog()
             })
         }
     }
 
-    fun validatePhoneNumberAndPassword(phoneNumber: String, password: String): Boolean {
-        //validate paramters
+    fun validatePassword(password: String): Boolean {
         var legal = false
-        if (mView != null && mView is ILoginView) {
+        if (password.isNullOrEmpty()){
+            (mView as IBaseView).validateErrorUI(R.string.please_input_password)
+        }else if (password.length < 6) {
+            (mView as IBaseView).validateErrorUI(R.string.please_input_legal_password)
+        }else{
+            legal = true
+        }
+        return legal
+    }
+
+    fun validatePhoneNumber(phoneNumber: String): Boolean {
+        var legal = false
+        if (mView != null && mView is IBaseView) {
             if(phoneNumber.isNullOrEmpty()) {
-                (mView as ILoginView).validateErrorUI(R.string.please_input_phonenumber)
+                (mView as IBaseView).validateErrorUI(R.string.please_input_phonenumber)
             }else if (phoneNumber.length < 11 || !PhoneFormatCheckHelper.isPhoneLegal(phoneNumber)) {
-                (mView as ILoginView).validateErrorUI(R.string.please_input_legal_phonenumber)
-            }else if (password.isNullOrEmpty()){
-                (mView as ILoginView).validateErrorUI(R.string.please_input_password)
-            }else if (password.length < 6) {
-                (mView as ILoginView).validateErrorUI(R.string.please_input_legal_password)
+                (mView as IBaseView).validateErrorUI(R.string.please_input_legal_phonenumber)
             }else{
                 legal = true
             }
         }
-
         return legal
+    }
+
+    fun validateSmsVerifyCode(verifyCode: String): Boolean {
+        var legal = true
+        if(verifyCode.isNullOrEmpty()) {
+            legal = false
+            (mView as IRegisterView).validateErrorUI(R.string.please_input_sms_code)
+        }
+        return legal
+    }
+
+    fun requestSmsVerifyCode(phoneNumber: String) {
+        if (validatePhoneNumber(phoneNumber)){
+            mView?.showLoadingDialog()
+            addSubscription(mLoginRepository.getSmsVerifyCode(phoneNumber, 1), Consumer<String> { code ->
+                (mView as IRegisterView).receiverSmsCode(code)
+                mView?.hideLoadingDialog()
+            })
+        }
+    }
+
+    fun requestRegister(phoneNumber: String, verifyCode: String, recommendPerson: String) {
+        if (validatePhoneNumber(phoneNumber) && validateSmsVerifyCode(verifyCode)){
+            mView?.showLoadingDialog()
+            addSubscription(mLoginRepository.register(phoneNumber, verifyCode, recommendPerson), Consumer<User> { user->
+                (mView as IRegisterView).receiverUser(user)
+                mView?.hideLoadingDialog()
+            })
+        }
+    }
+
+    fun setPassword(password: String, token: String) {
+        if (validatePassword(password)){
+            mView?.showLoadingDialog()
+            addSubscription(mLoginRepository.modifyPassword(password, token), Consumer<User> { user->
+                (mView as IRegisterView).receiverUser(user)
+                mView?.hideLoadingDialog()
+            })
+        }
     }
 }

@@ -7,7 +7,8 @@
     tools:context="com.zhengdianfang.dazhongbao.views.login.LoginFragment"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp"
-    tools:showIn="@layout/activity_login">
+    tools:showIn="@layout/activity_login"
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/loginLogoImageView"

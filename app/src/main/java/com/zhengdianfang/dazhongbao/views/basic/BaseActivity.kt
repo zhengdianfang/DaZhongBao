@@ -8,7 +8,10 @@ import android.widget.Toast
  * Created by dfgzheng on 25/07/2017.
  */
 abstract class BaseActivity : AppCompatActivity() {
-    val mDialogFragment by lazy { DialogFragment() }
+    val mDialogFragment by lazy {
+        val dialogFragment = DialogFragment()
+        dialogFragment
+    }
     fun showLoadingDialog() {
         mDialogFragment.show(supportFragmentManager, "loadingDialog")
     }
