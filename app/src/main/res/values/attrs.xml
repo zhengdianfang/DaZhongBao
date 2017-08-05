@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="app_toolbar">
-        <attr name="title"></attr>
+        <attr name="title" format="string" />
+        <attr name="toolbar_theme" format="enum">
+            <enum value="0" name="light" />
+            <enum value="1" name="dark"/>
+        </attr>
+        <attr name="enable_back" format="boolean"/>
     </declare-styleable>
 </resources>

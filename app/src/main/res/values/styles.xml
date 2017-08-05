@@ -28,7 +28,7 @@
     </style>
 
     <style name="AppTheme.ToolbarText">
-        <item name="android:textColor">@color/toolbar_title_color</item>
+        <item name="android:textColor">@color/toolbar_title_light_color</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -50,5 +50,6 @@
         <item name="android:layout_marginEnd">32dp</item>
     </style>
 
-    <color name="toolbar_title_color">#1E1E1E</color>
+    <color name="toolbar_title_light_color">#1E1E1E</color>
+    <color name="toolbar_title_dark_color">#FFFFFF</color>
 </resources>
