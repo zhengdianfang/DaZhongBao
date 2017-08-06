@@ -13,6 +13,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.components.Toolbar
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +24,7 @@ class PhoneRegisterFragment : BaseFragment<LoginActivity>(), IRegisterView {
     private val smsCodeEditText by lazy { view?.findViewById<EditText>(R.id.smsCodeEditText)!! }
     private val recommendEditText by lazy { view?.findViewById<EditText>(R.id.recommendEditText)!! }
     private val smsCodeButton by lazy { view?.findViewById<Button>(R.id.getSmsCodeButton)!! }
+    private val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar)!! }
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -34,6 +36,10 @@ class PhoneRegisterFragment : BaseFragment<LoginActivity>(), IRegisterView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         PresenterFactory.mLoginPresenter.attachView(this)
+
+        toolbar.backListener  = {
+           getParentActivity().supportFragmentManager.popBackStack()
+        }
         view?.findViewById<Button>(R.id.getSmsCodeButton)?.setOnClickListener {
             PresenterFactory.mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString())
         }
@@ -59,9 +65,7 @@ class PhoneRegisterFragment : BaseFragment<LoginActivity>(), IRegisterView {
     override fun receiverUser(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.toast_register_successful)
-        getParentActivity().supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, ModifyPasswordFragment())
-                .commitAllowingStateLoss()
+        startFragment(android.R.id.content, ModifyPasswordFragment(), "login")
     }
 
 }

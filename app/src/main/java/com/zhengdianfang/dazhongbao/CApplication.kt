@@ -9,7 +9,7 @@ import kotlin.properties.Delegates
  */
 class CApplication : Application(){
     companion object {
-       var INSTANCE: CApplication by Delegates.notNull<CApplication>()
+        var INSTANCE: CApplication by Delegates.notNull<CApplication>()
     }
 
     var loginUser: User? = null
@@ -20,5 +20,9 @@ class CApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()
+    }
+
+    fun isLogin(): Boolean {
+       return loginUser != null
     }
 }

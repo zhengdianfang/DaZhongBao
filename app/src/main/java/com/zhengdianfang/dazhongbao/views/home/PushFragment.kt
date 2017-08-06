@@ -8,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class PushFragment : Fragment() {
+class PushFragment : BaseFragment<MainActivity>() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

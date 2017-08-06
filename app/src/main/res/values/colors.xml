@@ -7,6 +7,6 @@
     <color name="fragment_verify_sms_code_color">#787878</color>
     <color name="fragment_background_color">#FFFFFF</color>
     <color name="bottom_bar_background_color">#FAFAFA</color>
-    <color name="bottom_bar_divier_color">#ebebeb</color>
+    <color name="bottom_bar_divider_color">#ebebeb</color>
     <color name="bottom_bar_tab_text_color">#787878</color>
 </resources>

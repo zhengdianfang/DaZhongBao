@@ -48,6 +48,12 @@ class BottomBar(context: Context?, attrs: AttributeSet?) : LinearLayout(context,
         }
     }
 
+    fun setCurrentTab(indexTab: Int) {
+       tabs.forEachIndexed { index, button ->
+           setTabItemBackground(button, if(index == indexTab) selectedBackgroundResIds[index] else normalBackgroundResIds[index])
+       }
+    }
+
     private fun createTabItem(titleResId: Int, iconResId: Int): Button {
         val tabItem = Button(context)
         tabItem.setBackgroundResource(android.R.color.transparent)

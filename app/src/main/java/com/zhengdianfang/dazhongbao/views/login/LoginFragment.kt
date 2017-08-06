@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.login
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.home.MainActivity
 
 /**
  * A placeholder fragment containing a simple view.
@@ -42,9 +45,7 @@ class LoginFragment : BaseFragment<LoginActivity>(), ILoginView{
         }
 
         view?.findViewById<Button>(R.id.organizationButton)?.setOnClickListener {
-           getParentActivity().supportFragmentManager.beginTransaction()
-                   .add(android.R.id.content, PhoneRegisterFragment())
-                   .commitNowAllowingStateLoss()
+            startFragment(android.R.id.content, PhoneRegisterFragment(), "login")
         }
     }
 
@@ -56,6 +57,8 @@ class LoginFragment : BaseFragment<LoginActivity>(), ILoginView{
     override fun userResponseProcessor(user: User?) {
         if (null != user){
             toast(R.string.toast_login_success)
+            CApplication.INSTANCE.loginUser = user
+            startActivity(Intent(getParentActivity(), MainActivity::class.java))
         }
     }
 

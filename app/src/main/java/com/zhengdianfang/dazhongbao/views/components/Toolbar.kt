@@ -24,15 +24,21 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
     private var enableBack = true
     private val titleView by lazy { findViewById<TextView>(R.id.toolbarTitleView) }
     private val toolbarBackButton by lazy { findViewById<ImageButton>(R.id.toolbarBackButton) }
+    var backListener: (() -> Unit)? = null
 
     init {
         val typeArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.app_toolbar, 0, 0)
 
         toolbarTitleText = typeArray?.getString(R.styleable.app_toolbar_title)
         theme = typeArray?.getInteger(R.styleable.app_toolbar_toolbar_theme, LIGHT) ?: LIGHT
-        enableBack = typeArray?.getBoolean(R.styleable.app_toolbar_enable_back, false) ?: false
+        enableBack = typeArray?.getBoolean(R.styleable.app_toolbar_enable_back, true) ?: true
+    }
 
-
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        toolbarBackButton.setOnClickListener {
+            backListener?.invoke()
+        }
     }
 
     override fun onFinishInflate() {

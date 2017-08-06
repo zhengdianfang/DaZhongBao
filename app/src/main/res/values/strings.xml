@@ -34,4 +34,10 @@
     <string name="bottom_bar_auction_title">拍卖</string>
     <string name="bottom_bar_push_title"><![CDATA[ 发布]]></string>
     <string name="bottom_bar_personal_title">我的</string>
+    <string name="fragment_personal_may_product">我的大宗</string>
+    <string name="fragment_personal_my_start">感兴趣</string>
+    <string name="fragment_personal_my_aucation">我的竞拍</string>
+    <string name="fragment_personal_setting">设置</string>
+    <string name="fragment_personal_pater">合伙人</string>
+    <string name="fragment_personal_margin">保证金</string>
 </resources>

@@ -6,4 +6,6 @@
     <dimen name="bottom_bar_height">48dp</dimen>
     <dimen name="bottom_bar_padding">8dp</dimen>
     <dimen name="fragment_home_advert_header_height">192dp</dimen>
+    <dimen name="fragment_personal_user_info_header_height">250dp</dimen>
+    <dimen name="fragment_personal_item_height">48dp</dimen>
 </resources>
