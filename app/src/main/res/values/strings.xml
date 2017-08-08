@@ -40,4 +40,12 @@
     <string name="fragment_personal_setting">设置</string>
     <string name="fragment_personal_pater">合伙人</string>
     <string name="fragment_personal_margin">保证金</string>
+    <string name="fragment_phonenumber_verify">手机号验证</string>
+    <string name="fragment_set_organization_info">机构身份验证</string>
+    <string name="organization_name">机构名称</string>
+    <string name="organization_contact_name">联系人</string>
+    <string name="licence_card">营业执照</string>
+    <string name="please_input_contact_name">请输入联系人姓名</string>
+    <string name="please_select_business_card_photo">请选择营业执照图片</string>
+    <string name="please_input_company_name">请输入机构名称</string>
 </resources>

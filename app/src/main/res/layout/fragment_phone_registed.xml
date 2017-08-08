@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:title="@string/fragment_modify_password" />
+        app:title="@string/fragment_phonenumber_verify" />
 
 
     <LinearLayout

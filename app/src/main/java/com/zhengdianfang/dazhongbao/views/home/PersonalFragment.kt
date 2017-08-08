@@ -41,7 +41,7 @@ class PersonalFragment : BaseFragment<MainActivity>() {
         val loginUser = CApplication.INSTANCE.loginUser
         Glide.with(this).load(loginUser?.avatar).apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context))).into(avatarImageView)
         userRealNameTextView.text = loginUser?.realname
-        userPhoneNumberTextView.text = loginUser?.phoneNumber
+        userPhoneNumberTextView.text = loginUser?.phonenumber
     }
 
 }// Required empty public constructor

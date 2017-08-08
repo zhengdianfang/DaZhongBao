@@ -13,7 +13,7 @@ val mockUser = User(id = "1",
         companyName = "thoughtworks",
         companyAddress = "北京市东城区西直们",
         email = "dfghzheng@thoughtworks.com",
-        phoneNumber = "18511177911",
+        phonenumber = "18511177911",
         position = "manager",
         level = 0,
         type = 1,
@@ -28,5 +28,7 @@ val mockUser = User(id = "1",
 )
 
 val mockSmsCode = "122444"
+
+val mockToken = "gYftNGBLwMZfI3D4sE7_uA=="
 
 

@@ -1,8 +1,11 @@
 package com.zhengdianfang.dazhongbao.models.api
 
-import com.zhengdianfang.dazhongbao.models.login.User
+import com.fasterxml.jackson.databind.JsonNode
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 /**
@@ -10,25 +13,33 @@ import retrofit2.http.Query
  */
 interface UserApi {
 
-    @POST("/users/login")
+    @POST("users/login")
     fun loginByPhone(@Query("username") username: String,
                      @Query("password") password: String,
                      @Query("ver") ver: String,
                      @Query("deviceid") deviceId: String,
-                     @Query("platform") platform: String = "Android"): Observable<User>
+                     @Query("platform") platform: String = "Android"): Observable<JsonNode>
 
-    @POST("/users/sendvno")
+    @POST("users/sendvno")
     fun getSmsVerifyCode(@Query("phonenumber") phoneNumber: String,
-                     @Query("ac") type: Int): Observable<String>
+                     @Query("ac") type: Int): Observable<JsonNode>
 
-    @POST("/users/registered")
+    @POST("users/registered")
     fun register(@Query("phonenumber") phoneNumber: String,
                  @Query("verifyCode") verifyCode: String,
-                 @Query("recommendPerson") recommendPerson: String): Observable<User>
+                 @Query("recommendPerson") recommendPerson: String): Observable<JsonNode>
 
-    @POST("/users/resetpwd")
+    @POST("users/resetpwd")
     fun modifyPassword(@Query("password") password: String,
                        @Query("phonenumber") phoneNumber: String,
                        @Query("verifyCode") verifyCode: String,
-                       @Query("token") token: String): Observable<User>
+                       @Query("token") token: String): Observable<JsonNode>
+
+
+    @Multipart
+    @POST("users/businessLicense")
+    fun uploadBusinessLicenceCard(@Part("token") token: String,
+                                  @Part("contactName") contactName: String,
+                                  @Part("companyName") companyName: String,
+                                  @Part file: MultipartBody.Part): Observable<JsonNode>
 }

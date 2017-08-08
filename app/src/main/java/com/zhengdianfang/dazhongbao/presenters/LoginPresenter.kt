@@ -1,7 +1,6 @@
 package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.PhoneFormatCheckHelper
 import com.zhengdianfang.dazhongbao.models.login.LoginRepository
 import com.zhengdianfang.dazhongbao.models.login.User
@@ -17,14 +16,12 @@ class LoginPresenter: BasePresenter() {
 
     private val mLoginRepository by lazy { LoginRepository() }
 
-    fun loginByPhoneNumber(phoneNumber: String, password: String, deviceId: String){
+    fun loginByPhoneNumber(phoneNumber: String, password: String, deviceId: String, versionName: String){
 
         if (validatePhoneNumber(phoneNumber) && validatePassword(password)){
             //request login api
             mView?.showLoadingDialog()
-            addSubscription(mLoginRepository.loginRequest(phoneNumber, password,
-                    DeviceUtils.getAppVersionName(mView?.getContext()),
-                    deviceId), Consumer<User> { user ->
+            addSubscription(mLoginRepository.loginRequest(phoneNumber, password, versionName, deviceId), Consumer<User> { user ->
                 (mView as ILoginView).userResponseProcessor(user)
                 mView?.hideLoadingDialog()
             })
@@ -102,5 +99,33 @@ class LoginPresenter: BasePresenter() {
             (mView as IRegisterView).validateErrorUI(R.string.toast_input_confirm_password_not_equal)
         }
         return equal
+    }
+
+
+    fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, filePath: String) {
+        if (validateBusinessCardUploadParams(contactName, companyName, filePath)) {
+            mView?.showLoadingDialog()
+            addSubscription(mLoginRepository.uploadBusinessLicenceCard(token, contactName, companyName, filePath), Consumer<User> { user->
+                (mView as IRegisterView).receiverUser(user)
+                mView?.hideLoadingDialog()
+            })
+        }
+    }
+
+    private fun validateBusinessCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
+        var ok = true
+        if(contactName.isNullOrEmpty()){
+            (mView as IBaseView).validateErrorUI(R.string.please_input_contact_name)
+            ok = false
+        }
+        if(companyName.isNullOrEmpty()){
+            (mView as IBaseView).validateErrorUI(R.string.please_input_company_name)
+            ok = false
+        }
+        if(filePath.isNullOrEmpty()){
+            (mView as IBaseView).validateErrorUI(R.string.please_select_business_card_photo)
+            ok = false
+        }
+        return ok
     }
 }

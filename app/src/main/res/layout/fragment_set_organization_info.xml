@@ -14,15 +14,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:title="@string/fragment_set_password" />
+        app:title="@string/fragment_set_organization_info" />
 
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/organizationNameEditText"
         style="@style/AppTheme.EditText"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edittext_height"
-        android:hint="@string/please_input_password"
-        android:inputType="textPassword" />
+        android:hint="@string/organization_name" />
+
+    <EditText
+        android:id="@+id/organizationContactEditText"
+        style="@style/AppTheme.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height"
+        android:hint="@string/organization_contact_name" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/lisence_card_background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="@string/licence_card"/>
+
+        <ImageView
+            android:id="@+id/licenceCardImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"/>
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/submitButton"

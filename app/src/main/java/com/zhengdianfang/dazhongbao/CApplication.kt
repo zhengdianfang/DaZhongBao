@@ -1,7 +1,10 @@
 package com.zhengdianfang.dazhongbao
 
 import android.app.Application
+import android.os.Environment
+import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
+import java.io.File
 import kotlin.properties.Delegates
 
 /**
@@ -20,6 +23,10 @@ class CApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()
+        val appDir = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + FileUtils.APP_DIR)
+        if (appDir.exists().not()) {
+            appDir.mkdirs()
+        }
     }
 
     fun isLogin(): Boolean {

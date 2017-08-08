@@ -37,4 +37,9 @@ abstract class BaseFragment<out A: BaseActivity>: Fragment(), IView {
                 .addToBackStack(backStack)
                 .commitAllowingStateLoss()
     }
+
+    override fun networkError(msg: String) {
+        toast(msg)
+        hideLoadingDialog()
+    }
 }

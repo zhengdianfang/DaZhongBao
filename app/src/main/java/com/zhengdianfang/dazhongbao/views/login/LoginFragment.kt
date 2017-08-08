@@ -37,9 +37,10 @@ class LoginFragment : BaseFragment<LoginActivity>(), ILoginView{
 
             RxPermissions(getParentActivity()).request(Manifest.permission.READ_PHONE_STATE)?.subscribe { granted ->
                 if (granted){
-                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, DeviceUtils.getDeviceId(activity.applicationContext))
+                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, DeviceUtils.getDeviceId(activity.applicationContext)
+                            , DeviceUtils.getAppVersionName(this.context.applicationContext))
                 }else {
-                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, "")
+                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, "", DeviceUtils.getAppVersionName(this.context.applicationContext))
                 }
             }
         }

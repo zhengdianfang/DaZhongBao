@@ -83,7 +83,7 @@ class LoginPresenterTest {
     @Test
     fun should_legal_user_object_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
-        mLoginPresenter.loginByPhoneNumber("18511177916", "123456", "")
+        mLoginPresenter.loginByPhoneNumber("18511177916", "123456", "", "")
         verify(mMockLoginView, times(1))?.showLoadingDialog()
         verify(mMockLoginView, times(1))?.userResponseProcessor(mockUser)
         verify(mMockLoginView, times(1))?.hideLoadingDialog()

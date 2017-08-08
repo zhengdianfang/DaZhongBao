@@ -20,6 +20,7 @@ open class BasePresenter: IPresenter {
     }
 
     override fun detachView() {
+        mCompositeDisposable.clear()
         this.mView = null
     }
 
@@ -27,9 +28,9 @@ open class BasePresenter: IPresenter {
         mCompositeDisposable.add(observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(consumer))
-
-
+                .subscribe(consumer, Consumer{ error ->
+                         mView?.networkError(error.message ?: "")
+            }))
     }
 
     fun unsubcribe() {

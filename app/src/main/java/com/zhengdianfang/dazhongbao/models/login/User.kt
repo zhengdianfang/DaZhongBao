@@ -2,17 +2,19 @@ package com.zhengdianfang.dazhongbao.models.login
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 /**
  * Created by dfgzheng on 30/07/2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class User(var id: String, var token: String, var realname: String, var avatar: String,
                 var companyName: String, var companyAddress: String, var email: String ,
-                var phoneNumber: String, var position: String,
+                var phonenumber: String, var position: String,
                 var level: Int, var type: Int, var integrity: Int, var businessCard: String, var contactCard: String,
                 var contactCard2: String, var contactCardStatus: String,
                 var businessCardStatus: String, var businessLicence: String,
-                var businessLicenceStatus: String ) : Parcelable {
+                var businessLicenceStatus: String) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -33,8 +35,7 @@ data class User(var id: String, var token: String, var realname: String, var ava
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString()) {
-    }
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -44,7 +45,7 @@ data class User(var id: String, var token: String, var realname: String, var ava
         parcel.writeString(companyName)
         parcel.writeString(companyAddress)
         parcel.writeString(email)
-        parcel.writeString(phoneNumber)
+        parcel.writeString(phonenumber)
         parcel.writeString(position)
         parcel.writeInt(level)
         parcel.writeInt(type)
