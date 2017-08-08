@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.login
 
+
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -8,10 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import com.zhengdianfang.dazhongbao.BuildConfig
-import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -20,14 +18,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
+
 /**
  * A simple [Fragment] subclass.
  */
-class PhoneRegisterFragment : BaseFragment(), IRegisterView {
+class PhoneNumberVerifyFragment: BaseFragment(), IVerifySmsCode{
 
     private val phoneEditText by lazy { view?.findViewById<EditText>(R.id.registerPhoneEditText)!! }
     private val smsCodeEditText by lazy { view?.findViewById<EditText>(R.id.smsCodeEditText)!! }
-    private val recommendEditText by lazy { view?.findViewById<EditText>(R.id.recommendEditText)!! }
     private val smsCodeButton by lazy { view?.findViewById<Button>(R.id.getSmsCodeButton)!! }
     private val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar)!! }
     private val timerObservable by lazy {
@@ -45,6 +43,7 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         PresenterFactory.mLoginPresenter.attachView(this)
+        PresenterFactory.mUserPresenter.attachView(this)
 
         toolbar.backListener  = {
            getParentActivity().supportFragmentManager.popBackStack()
@@ -53,13 +52,14 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView {
             PresenterFactory.mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString())
         }
         view?.findViewById<Button>(R.id.submitButton)?.setOnClickListener {
-            PresenterFactory.mLoginPresenter.requestRegister(phoneEditText.text.toString(), smsCodeEditText.text.toString(), recommendEditText.text.toString())
+            PresenterFactory.mUserPresenter.verifySmsCode(phoneEditText.text.toString(), smsCodeEditText.text.toString())
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         PresenterFactory.mLoginPresenter.detachView()
+        PresenterFactory.mUserPresenter.detachView()
         timerSub?.dispose()
     }
 
@@ -82,14 +82,13 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView {
         toast(R.string.toast_sms_code_send_successful)
     }
 
-    override fun receiverUser(user: User) {
-        CApplication.INSTANCE.loginUser = user
-        toast(R.string.toast_register_successful)
-        timerSub?.dispose()
-        val bundle = Bundle()
-        bundle.putInt("ac", 1)
-        val fragment = SetPasswordFragment()
-        fragment.arguments = bundle
-        startFragment(android.R.id.content, fragment, "login")
+    override fun verifySmsCodeResult(success: Boolean) {
+        if (success){
+            val bundle = Bundle()
+            bundle.putInt("ac", 2)
+            val fragment = SetPasswordFragment()
+            fragment.arguments = bundle
+            replaceFragment(android.R.id.content, fragment, "login")
+        }
     }
 }

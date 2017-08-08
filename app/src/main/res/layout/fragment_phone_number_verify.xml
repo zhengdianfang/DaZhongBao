@@ -85,17 +85,6 @@
         </FrameLayout>
 
     </LinearLayout>
-    <EditText
-        android:id="@+id/recommendEditText"
-        style="@style/AppTheme.EditText"
-        android:layout_width="match_parent"
-        android:layout_marginStart="32dp"
-        android:layout_height="@dimen/edittext_height"
-        android:maxLines="1"
-        android:hint="@string/fragment_register_recommend"
-        android:layout_marginTop="24dp"
-        android:inputType="phone"
-        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/submitButton"

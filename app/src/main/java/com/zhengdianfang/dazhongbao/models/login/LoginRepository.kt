@@ -8,10 +8,6 @@ import com.zhengdianfang.dazhongbao.models.mock.mockUser
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
@@ -50,22 +46,4 @@ class LoginRepository {
                      .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }
 
-    fun modifyPassword(password: String, token: String): Observable<User> {
-        if (MOCK){
-            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
-        }
-        return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
-                .map {response -> API.parseResponse(response) }
-                .map {data -> API.objectMapper.readValue(data, User::class.java) }
-
-    }
-
-    fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, filePath: String): Observable<User> {
-        val requestBoby = RequestBody.create(MediaType.parse("image/jpeg"), filePath)
-        val body =  MultipartBody.Part.createFormData("fileName", File(filePath).name, requestBoby)
-        return API.appClient.create(UserApi::class.java)
-                .uploadBusinessLicenceCard(token, contactName, companyName, body)
-                .map {response -> API.parseResponse(response) }
-                .map {data -> API.objectMapper.readValue(data, User::class.java) }
-    }
 }

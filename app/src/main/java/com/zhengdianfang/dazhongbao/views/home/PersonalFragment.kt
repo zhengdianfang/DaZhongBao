@@ -20,7 +20,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
 /**
  * A simple [Fragment] subclass.
  */
-class PersonalFragment : BaseFragment<MainActivity>() {
+class PersonalFragment : BaseFragment(){
     private val avatarImageView by lazy { view?.findViewById<ImageView>(R.id.userHeaderView)!! }
     private val userRealNameTextView by lazy { view?.findViewById<TextView>(R.id.userNameTextview)!! }
     private val userPhoneNumberTextView by lazy { view?.findViewById<TextView>(R.id.phoneNumberTextView)!! }

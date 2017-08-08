@@ -54,7 +54,7 @@ class LoginPresenter: BasePresenter() {
         return legal
     }
 
-    fun validateSmsVerifyCode(verifyCode: String): Boolean {
+    private fun validateSmsVerifyCode(verifyCode: String): Boolean {
         var legal = true
         if(verifyCode.isNullOrEmpty()) {
             legal = false
@@ -83,49 +83,4 @@ class LoginPresenter: BasePresenter() {
         }
     }
 
-    fun setPassword(password: String, confirmPassword: String, token: String) {
-        if (validatePassword(password) && isEqualConfirmPassword(password, confirmPassword)){
-            mView?.showLoadingDialog()
-            addSubscription(mLoginRepository.modifyPassword(password, token), Consumer<User> { user->
-                (mView as IRegisterView).receiverUser(user)
-                mView?.hideLoadingDialog()
-            })
-        }
-    }
-    fun isEqualConfirmPassword(password: String, confirmPassword: String): Boolean {
-        var equal = true
-        if (password != confirmPassword) {
-            equal = false
-            (mView as IRegisterView).validateErrorUI(R.string.toast_input_confirm_password_not_equal)
-        }
-        return equal
-    }
-
-
-    fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, filePath: String) {
-        if (validateBusinessCardUploadParams(contactName, companyName, filePath)) {
-            mView?.showLoadingDialog()
-            addSubscription(mLoginRepository.uploadBusinessLicenceCard(token, contactName, companyName, filePath), Consumer<User> { user->
-                (mView as IRegisterView).receiverUser(user)
-                mView?.hideLoadingDialog()
-            })
-        }
-    }
-
-    private fun validateBusinessCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
-        var ok = true
-        if(contactName.isNullOrEmpty()){
-            (mView as IBaseView).validateErrorUI(R.string.please_input_contact_name)
-            ok = false
-        }
-        if(companyName.isNullOrEmpty()){
-            (mView as IBaseView).validateErrorUI(R.string.please_input_company_name)
-            ok = false
-        }
-        if(filePath.isNullOrEmpty()){
-            (mView as IBaseView).validateErrorUI(R.string.please_select_business_card_photo)
-            ok = false
-        }
-        return ok
-    }
 }

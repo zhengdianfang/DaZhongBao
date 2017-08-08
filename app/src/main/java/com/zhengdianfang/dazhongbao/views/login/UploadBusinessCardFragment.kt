@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
@@ -17,44 +16,27 @@ import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.mock.mockToken
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
-import com.zhengdianfang.dazhongbao.views.components.Toolbar
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
+class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
-    private val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar)!! }
-    private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
-    private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
-    private val licenceCardImageView by lazy { view?.findViewById<ImageView>(R.id.licenceCardImageView)!! }
+    val businessCardImageView by lazy { view?.findViewById<ImageView>(R.id.businessCardImageView)!! }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_set_organization_info, container, false)
+        // Inflate the layout for this fragment
+        return inflater!!.inflate(R.layout.fragment_upload_business_card, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         PresenterFactory.mUserPresenter.attachView(this)
-        toolbar.backListener = {
-            getParentActivity().supportFragmentManager.popBackStack()
+        businessCardImageView.setOnClickListener {
+           mediaDialog.show()
         }
-
-        toolbar.confirmListener = {
-            PresenterFactory.mUserPresenter.uploadBusinessLicenceCard(
-                    mockToken,
-                    organizationContactEditText.text.toString(),
-                    organizationNameEditText.text.toString(),
-                    takePhotoImagePath
-            )
-        }
-
-        licenceCardImageView.setOnClickListener {
-            mediaDialog.show()
-        }
-
     }
 
     override fun onDestroyView() {
@@ -62,8 +44,14 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
         PresenterFactory.mUserPresenter.detachView()
     }
 
+    override fun toolbarConfirmButtonClick() {
+        val token = mockToken
+        if (token != null){
+            PresenterFactory.mUserPresenter.uploadBusinessCard(token, "", takePhotoImagePath)
+        }
+    }
+
     override fun validateErrorUI(errorMsgResId: Int) {
-        toast(errorMsgResId)
     }
 
     override fun uploadSuccess(user: User) {
@@ -72,18 +60,18 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     }
 
     override fun getPhotoWidth(): Int {
-        return licenceCardImageView.width
+        return businessCardImageView.width
     }
 
     override fun getPhotoHeight(): Int {
-        return licenceCardImageView.height
+        return businessCardImageView.height
     }
 
     override fun takePhotoCallback(bitmap: Bitmap) {
-        Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(licenceCardImageView)
+        Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(businessCardImageView)
     }
 
     override fun pickPhotoCallback(imagePath: String) {
-        Glide.with(this).asBitmap().load(imagePath).into(licenceCardImageView)
+        Glide.with(this).asBitmap().load(imagePath).into(businessCardImageView)
     }
-}
+}// Required empty public constructor

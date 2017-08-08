@@ -20,8 +20,8 @@ open class BasePresenter: IPresenter {
     }
 
     override fun detachView() {
-        mCompositeDisposable.clear()
         this.mView = null
+        unsubcribe()
     }
 
     fun <T : Any?> addSubscription(observable: Observable<T>, consumer: Consumer<T>){
@@ -36,4 +36,5 @@ open class BasePresenter: IPresenter {
     fun unsubcribe() {
         mCompositeDisposable.clear()
     }
+
 }

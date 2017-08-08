@@ -35,7 +35,7 @@ class LoginFragmentTest {
     }
 
     @Test
-    fun should_lllegal_phoneNumber_toast_error_When_user_click_login_button() {
+    fun should_legal_phoneNumber_toast_error_When_user_click_login_button() {
         onView(withId(R.id.loginButton)).perform(click())
         onView(withText(R.string.please_input_phonenumber))
                 .inRoot(withDecorView(not(mLoginActivityTestRole.activity.window.decorView))).check(matches(isDisplayed()))

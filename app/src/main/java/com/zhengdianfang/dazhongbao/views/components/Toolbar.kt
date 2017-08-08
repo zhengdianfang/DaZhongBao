@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
@@ -22,9 +23,13 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
     private val LIGHT = 0
     private val DARK = 1
     private var enableBack = true
+    private var enableConfirm = true
+    private var confirmLabel = ""
     private val titleView by lazy { findViewById<TextView>(R.id.toolbarTitleView) }
     private val toolbarBackButton by lazy { findViewById<ImageButton>(R.id.toolbarBackButton) }
+    private val confirmButton by lazy { findViewById<Button>(R.id.confirmButton) }
     var backListener: (() -> Unit)? = null
+    var confirmListener: (() -> Unit)? = null
 
     init {
         val typeArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.app_toolbar, 0, 0)
@@ -32,6 +37,8 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
         toolbarTitleText = typeArray?.getString(R.styleable.app_toolbar_title)
         theme = typeArray?.getInteger(R.styleable.app_toolbar_toolbar_theme, LIGHT) ?: LIGHT
         enableBack = typeArray?.getBoolean(R.styleable.app_toolbar_enable_back, true) ?: true
+        enableConfirm = typeArray?.getBoolean(R.styleable.app_toolbar_enable_confirm, false) ?: false
+        confirmLabel = typeArray?.getString(R.styleable.app_toolbar_confirm_label) ?: ""
     }
 
     override fun onAttachedToWindow() {
@@ -39,6 +46,12 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
         toolbarBackButton.setOnClickListener {
             backListener?.invoke()
         }
+
+        confirmButton.setOnClickListener {
+           confirmListener?.invoke()
+        }
+        confirmButton.isEnabled = enableConfirm
+        confirmButton.text = confirmLabel
     }
 
     override fun onFinishInflate() {

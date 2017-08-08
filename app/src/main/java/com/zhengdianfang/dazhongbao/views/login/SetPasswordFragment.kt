@@ -4,6 +4,7 @@ package com.zhengdianfang.dazhongbao.views.login
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,15 +18,14 @@ import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
 import com.zhengdianfang.dazhongbao.views.home.MainActivity
-import kotlinx.android.synthetic.main.fragment_set_password.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class SetPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
+class SetPasswordFragment : BaseFragment() , IRegisterView{
 
-    private val modifyPasswordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
+    private val passwordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
     private val submitButton by lazy { view?.findViewById<Button>(R.id.submitButton)!! }
     private val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar)!! }
 
@@ -38,20 +38,18 @@ class SetPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        PresenterFactory.mLoginPresenter.attachView(this)
+        PresenterFactory.mUserPresenter.attachView(this)
         toolbar.backListener = {
             getParentActivity().supportFragmentManager.popBackStack()
         }
         submitButton.setOnClickListener {
-            PresenterFactory.mLoginPresenter.setPassword(modifyPasswordEditText.text.toString(),
-                    passwordEditText.text.toString(),
-                    CApplication.INSTANCE.loginUser?.token ?: "")
+            PresenterFactory.mUserPresenter.setPassword(passwordEditText.text.toString(), CApplication.INSTANCE.loginUser?.token ?: "")
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
+        PresenterFactory.mUserPresenter.detachView()
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {
@@ -62,7 +60,11 @@ class SetPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
 
     override fun receiverUser(user: User) {
         toast(R.string.toast_set_password_successful)
-        CApplication.INSTANCE.loginUser = user
-        startActivity(Intent(getParentActivity(), MainActivity::class.java))
+        if (arguments.getInt("ac", 1) == 1) {
+            CApplication.INSTANCE.loginUser = user
+            startActivity(Intent(getParentActivity(), MainActivity::class.java))
+        }else if (arguments.getInt("ac", 1) == 2) {
+            getParentActivity().supportFragmentManager.popBackStack(android.R.id.content, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
     }
 }// Required empty public constructor

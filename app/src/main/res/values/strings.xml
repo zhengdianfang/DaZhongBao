@@ -16,7 +16,7 @@
     <string name="fragment_modify_password">修改密码</string>
     <string name="please_input_new_password">请输入新密码</string>
     <string name="please_input_confirm_password">再次输入密码</string>
-    <string name="fragment_modify_password_button_text">提交</string>
+    <string name="submit_button_text">提交</string>
     <string name="fragment_set_password">设置密码</string>
     <string name="phone_china_code">+86</string>
     <string name="get_verify_sms_code">获取验证码</string>
@@ -48,4 +48,10 @@
     <string name="please_input_contact_name">请输入联系人姓名</string>
     <string name="please_select_business_card_photo">请选择营业执照图片</string>
     <string name="please_input_company_name">请输入机构名称</string>
+    <string name="contact_info_title">使用人信息</string>
+    <string name="upload_business_card">上传名片</string>
+    <string name="contact_verify_info">个人实名认证</string>
+    <string name="id_card_front">身份证正面</string>
+    <string name="id_card_backend">身份证反面</string>
+    <string name="upload_business_card_success">上传成功</string>
 </resources>

@@ -14,7 +14,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 /**
  * A simple [Fragment] subclass.
  */
-class PushFragment : BaseFragment<MainActivity>() {
+class PushFragment : BaseFragment(){
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

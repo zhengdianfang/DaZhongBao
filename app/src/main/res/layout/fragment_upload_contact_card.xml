@@ -14,23 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:title="@string/fragment_set_organization_info"
+        app:title="@string/contact_verify_info"
         app:enable_confirm="true"
         app:confirm_label="@string/submit_button_text"/>
-
-    <EditText
-        android:id="@+id/organizationNameEditText"
-        style="@style/AppTheme.EditText"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_height"
-        android:hint="@string/organization_name" />
-
-    <EditText
-        android:id="@+id/organizationContactEditText"
-        style="@style/AppTheme.EditText"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_height"
-        android:hint="@string/organization_contact_name" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -43,10 +29,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
-            android:text="@string/licence_card"/>
+            android:text="@string/id_card_front"/>
 
         <ImageView
-            android:id="@+id/licenceCardImageView"
+            android:id="@+id/idCardFrontEndImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"/>
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/lisence_card_background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="@string/id_card_backend"/>
+
+        <ImageView
+            android:id="@+id/idCardBackEndImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"/>

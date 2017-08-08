@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.presenters
 
+import android.os.Parcelable
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.RxImmediateSchedulerRule
 import com.zhengdianfang.dazhongbao.models.mock.mockSmsCode
@@ -35,6 +36,9 @@ class LoginPresenterTest {
     private val mMockLoginView:  ILoginView? = null
 
     @Mock
+    private val p: Parcelable? = null
+
+    @Mock
     private val mMockRegisterView:  IRegisterView? = null
 
     @Before
@@ -43,7 +47,7 @@ class LoginPresenterTest {
     }
 
     @Test
-    fun validate_illegal_phonenumber_When_user_login() {
+    fun validate_illegal_phoneNumber_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
         //phonenumber is empty
         mLoginPresenter.validatePhoneNumber("")
@@ -131,24 +135,4 @@ class LoginPresenterTest {
         verify(mMockRegisterView)?.hideLoadingDialog()
     }
 
-    @Test
-    fun should_validate_password_When_user_set_password() {
-        mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.setPassword("",  "", "AAAWWW")
-        verify(mMockRegisterView)?.validateErrorUI(R.string.please_input_password)
-        mLoginPresenter.setPassword("11", "", "AAAWWW")
-        verify(mMockRegisterView)?.validateErrorUI(R.string.please_input_legal_password)
-        mLoginPresenter.setPassword("111111", "222222", "AAAWWW")
-        verify(mMockRegisterView)?.validateErrorUI(R.string.toast_input_confirm_password_not_equal)
-    }
-
-
-    @Test
-    fun should_call_modify_password_api_When_user_set_password() {
-        mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.setPassword("123456",  "123456", "AAAWWW")
-        verify(mMockRegisterView)?.showLoadingDialog()
-        verify(mMockRegisterView)?.receiverUser(mockUser)
-        verify(mMockRegisterView)?.hideLoadingDialog()
-    }
 }

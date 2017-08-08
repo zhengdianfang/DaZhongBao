@@ -22,7 +22,7 @@ import com.zhengdianfang.dazhongbao.views.home.MainActivity
 /**
  * A simple [Fragment] subclass.
  */
-class ModifyPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
+class ModifyPasswordFragment : BaseFragment() , IRegisterView{
 
     private val modifyPasswordEditText by lazy { view?.findViewById<EditText>(R.id.modifyPasswordEditText)!! }
     private val modifyPasswordConfirmEditText by lazy { view?.findViewById<EditText>(R.id.modifyPasswordConfirmEditText)!! }
@@ -37,12 +37,12 @@ class ModifyPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mLoginPresenter.attachView(this)
+        PresenterFactory.mUserPresenter.attachView(this)
         toolbar.backListener = {
             getParentActivity().supportFragmentManager.popBackStack()
         }
         modifyPasswordSubmitButton.setOnClickListener {
-           PresenterFactory.mLoginPresenter.setPassword(modifyPasswordEditText.text.toString(),
+           PresenterFactory.mUserPresenter.modifyPassword(modifyPasswordEditText.text.toString(),
                     modifyPasswordConfirmEditText.text.toString(),
                     CApplication.INSTANCE.loginUser?.token ?: "")
         }
@@ -50,7 +50,7 @@ class ModifyPasswordFragment : BaseFragment<LoginActivity>() , IRegisterView{
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
+        PresenterFactory.mUserPresenter.detachView()
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {

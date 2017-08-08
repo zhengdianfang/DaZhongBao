@@ -35,6 +35,11 @@ interface UserApi {
                        @Query("verifyCode") verifyCode: String,
                        @Query("token") token: String): Observable<JsonNode>
 
+    @POST("users/checkvno")
+    fun verifySmsCode(@Query("phonenumber") phoneNumber: String,
+                      @Query("ac") type: Int,
+                      @Query("verifyCode") verifyCode: String
+    ): Observable<JsonNode>
 
     @Multipart
     @POST("users/businessLicense")
@@ -42,4 +47,16 @@ interface UserApi {
                                   @Part("contactName") contactName: String,
                                   @Part("companyName") companyName: String,
                                   @Part file: MultipartBody.Part): Observable<JsonNode>
+
+    @Multipart
+    @POST("users/businessCard")
+    fun uploadBusinessCard(@Part("token") token: String,
+                                  @Part("content") content: String,
+                                  @Part file: MultipartBody.Part): Observable<JsonNode>
+
+    @Multipart
+    @POST("users/constactCard")
+    fun uploadContactCard(@Part("token") token: String,
+                           @Part file1: MultipartBody.Part,
+                          @Part file2: MultipartBody.Part): Observable<JsonNode>
 }

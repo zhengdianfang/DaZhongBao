@@ -17,7 +17,7 @@ import com.zhengdianfang.dazhongbao.views.home.adapter.HomeRecyclerViewAdapter
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : BaseFragment<MainActivity>() {
+class HomeFragment : BaseFragment(){
 
     private val products = mutableListOf<Product>()
     private val adverts = mutableListOf<Advert>()

@@ -1,16 +1,31 @@
 package com.zhengdianfang.dazhongbao.views.basic
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.widget.Toast
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.views.components.Toolbar
 
 /**
  * Created by dfgzheng on 31/07/2017.
  */
-abstract class BaseFragment<out A: BaseActivity>: Fragment(), IView {
+abstract class BaseFragment: Fragment(), IView {
 
-    fun getParentActivity(): A {
-        return activity as A
+    protected val toolBar by lazy { view?.findViewById<Toolbar>(R.id.toolbar) }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        toolBar?.backListener = {
+            this.toolbarBackButtonClick()
+        }
+
+        toolBar?.confirmListener = {
+           this.toolbarConfirmButtonClick()
+        }
+    }
+
+    fun getParentActivity(): BaseActivity {
+        return activity as BaseActivity
     }
 
     override fun showLoadingDialog() {
@@ -38,8 +53,24 @@ abstract class BaseFragment<out A: BaseActivity>: Fragment(), IView {
                 .commitAllowingStateLoss()
     }
 
+    fun replaceFragment(id: Int, nextFragment: Fragment, backStack: String? = null) {
+        getParentActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
+                .replace(id, nextFragment)
+                .addToBackStack(backStack)
+                .commitAllowingStateLoss()
+    }
+
     override fun networkError(msg: String) {
         toast(msg)
         hideLoadingDialog()
+    }
+
+    open fun toolbarBackButtonClick() {
+        getParentActivity().supportFragmentManager.popBackStack()
+    }
+
+    open fun toolbarConfirmButtonClick() {
+
     }
 }

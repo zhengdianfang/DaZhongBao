@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
@@ -20,7 +21,7 @@ import com.zhengdianfang.dazhongbao.views.home.MainActivity
 /**
  * A placeholder fragment containing a simple view.
  */
-class LoginFragment : BaseFragment<LoginActivity>(), ILoginView{
+class LoginFragment : BaseFragment(),ILoginView{
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +48,10 @@ class LoginFragment : BaseFragment<LoginActivity>(), ILoginView{
 
         view?.findViewById<Button>(R.id.organizationButton)?.setOnClickListener {
             startFragment(android.R.id.content, PhoneRegisterFragment(), "login")
+        }
+
+        view?.findViewById<TextView>(R.id.findPasswordTextView)!!.setOnClickListener {
+            startFragment(android.R.id.content, PhoneNumberVerifyFragment(), "login")
         }
     }
 
