@@ -4,9 +4,10 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.PhoneFormatCheckHelper
 import com.zhengdianfang.dazhongbao.models.login.LoginRepository
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.views.login.IBaseView
+import com.zhengdianfang.dazhongbao.views.basic.IView
 import com.zhengdianfang.dazhongbao.views.login.ILoginView
 import com.zhengdianfang.dazhongbao.views.login.IRegisterView
+import com.zhengdianfang.dazhongbao.views.login.ISendSmsCode
 import io.reactivex.functions.Consumer
 
 /**
@@ -31,9 +32,9 @@ class LoginPresenter: BasePresenter() {
     fun validatePassword(password: String): Boolean {
         var legal = false
         if (password.isNullOrEmpty()){
-            (mView as IBaseView).validateErrorUI(R.string.please_input_password)
+            (mView as IView).validateErrorUI(R.string.please_input_password)
         }else if (password.length < 6) {
-            (mView as IBaseView).validateErrorUI(R.string.please_input_legal_password)
+            (mView as IView).validateErrorUI(R.string.please_input_legal_password)
         }else{
             legal = true
         }
@@ -42,11 +43,11 @@ class LoginPresenter: BasePresenter() {
 
     fun validatePhoneNumber(phoneNumber: String): Boolean {
         var legal = false
-        if (mView != null && mView is IBaseView) {
+        if (mView != null && mView is IView) {
             if(phoneNumber.isNullOrEmpty()) {
-                (mView as IBaseView).validateErrorUI(R.string.please_input_phonenumber)
+                (mView as IView).validateErrorUI(R.string.please_input_phonenumber)
             }else if (phoneNumber.length < 11 || !PhoneFormatCheckHelper.isPhoneLegal(phoneNumber)) {
-                (mView as IBaseView).validateErrorUI(R.string.please_input_legal_phonenumber)
+                (mView as IView).validateErrorUI(R.string.please_input_legal_phonenumber)
             }else{
                 legal = true
             }
@@ -63,11 +64,11 @@ class LoginPresenter: BasePresenter() {
         return legal
     }
 
-    fun requestSmsVerifyCode(phoneNumber: String) {
+    fun requestSmsVerifyCode(phoneNumber: String, type: Int) {
         if (validatePhoneNumber(phoneNumber)){
             mView?.showLoadingDialog()
-            addSubscription(mLoginRepository.getSmsVerifyCode(phoneNumber, 1), Consumer<String> { code ->
-                (mView as IRegisterView).receiverSmsCode(code)
+            addSubscription(mLoginRepository.getSmsVerifyCode(phoneNumber, type), Consumer<String> { code ->
+                (mView as ISendSmsCode).receiverSmsCode(code)
                 mView?.hideLoadingDialog()
             })
         }

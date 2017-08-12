@@ -17,12 +17,12 @@ import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.home.MainActivity
+import com.zhengdianfang.dazhongbao.views.user.PhoneNumberVerifyFragment
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class LoginFragment : BaseFragment(),ILoginView{
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -70,5 +70,10 @@ class LoginFragment : BaseFragment(),ILoginView{
 
     override fun validateErrorUI(errorMsgResId: Int) {
         toast(errorMsgResId)
+    }
+
+    override fun onBackPressed(): Boolean {
+        getParentActivity().finish()
+        return true
     }
 }

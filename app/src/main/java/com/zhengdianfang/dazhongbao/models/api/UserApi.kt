@@ -59,4 +59,8 @@ interface UserApi {
     fun uploadContactCard(@Part("token") token: String,
                            @Part file1: MultipartBody.Part,
                           @Part file2: MultipartBody.Part): Observable<JsonNode>
+
+    @POST("users/resetPhonenumber")
+    fun modifyPhoneNumber(@Query("token") token: String , @Query("phonenumber") phoneNumber: String,
+                 @Query("verifyCode") verifyCode: String): Observable<JsonNode>
 }

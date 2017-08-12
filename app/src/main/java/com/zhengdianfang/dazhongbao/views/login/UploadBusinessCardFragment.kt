@@ -13,7 +13,6 @@ import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.models.mock.mockToken
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
@@ -44,19 +43,26 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
         PresenterFactory.mUserPresenter.detachView()
     }
 
+    override fun onBackPressed(): Boolean {
+        toolbarBackButtonClick()
+        return true
+    }
+
     override fun toolbarConfirmButtonClick() {
-        val token = mockToken
+        val token = CApplication.INSTANCE.loginUser?.token
         if (token != null){
             PresenterFactory.mUserPresenter.uploadBusinessCard(token, "", takePhotoImagePath)
         }
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {
+        toast(errorMsgResId)
     }
 
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
+        replaceFragment(android.R.id.content, UploadContactCardFragment(), "login")
     }
 
     override fun getPhotoWidth(): Int {

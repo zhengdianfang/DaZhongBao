@@ -17,7 +17,6 @@ import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.mock.mockToken
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
-import com.zhengdianfang.dazhongbao.views.components.Toolbar
 
 
 /**
@@ -25,7 +24,6 @@ import com.zhengdianfang.dazhongbao.views.components.Toolbar
  */
 class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
-    private val toolbar by lazy { view?.findViewById<Toolbar>(R.id.toolbar)!! }
     private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
     private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
     private val licenceCardImageView by lazy { view?.findViewById<ImageView>(R.id.licenceCardImageView)!! }
@@ -38,19 +36,6 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         PresenterFactory.mUserPresenter.attachView(this)
-        toolbar.backListener = {
-            getParentActivity().supportFragmentManager.popBackStack()
-        }
-
-        toolbar.confirmListener = {
-            PresenterFactory.mUserPresenter.uploadBusinessLicenceCard(
-                    mockToken,
-                    organizationContactEditText.text.toString(),
-                    organizationNameEditText.text.toString(),
-                    takePhotoImagePath
-            )
-        }
-
         licenceCardImageView.setOnClickListener {
             mediaDialog.show()
         }
@@ -62,12 +47,30 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
         PresenterFactory.mUserPresenter.detachView()
     }
 
+    override fun onBackPressed(): Boolean {
+        toolbarBackButtonClick()
+        return true
+    }
+
+    override fun toolbarBackButtonClick() {
+       getParentActivity().finish()
+    }
+
+    override fun toolbarConfirmButtonClick() {
+        PresenterFactory.mUserPresenter.uploadBusinessLicenceCard(
+                mockToken,
+                organizationContactEditText.text.toString(),
+                organizationNameEditText.text.toString(),
+                takePhotoImagePath)
+    }
+
     override fun validateErrorUI(errorMsgResId: Int) {
         toast(errorMsgResId)
     }
 
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
+        replaceFragment(android.R.id.content, UploadBusinessCardFragment(), "login")
         toast(R.string.upload_business_card_success)
     }
 

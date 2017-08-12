@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fragment_background_color"
+    android:clickable="true"
+    tools:context="com.zhengdianfang.dazhongbao.views.login.PhoneRegisterFragment">
+
+
+    <com.zhengdianfang.dazhongbao.views.components.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="@string/fragment_modify_phonenumber" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:id="@+id/linearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/activity_login_input_default_background"
+            android:text="@string/phone_china_code" />
+
+        <EditText
+            android:id="@+id/registerPhoneEditText"
+            style="@style/AppTheme.EditText"
+            android:layout_width="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:hint="@string/please_input_phonenumber"
+            android:inputType="phone"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edittext_height"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/smsCodeEditText"
+            style="@style/AppTheme.EditText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:hint="@string/please_input_sms_code"
+            android:layout_marginEnd="0dp"
+            android:inputType="phone"
+            tools:ignore="LabelFor" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/activity_login_input_default_background">
+
+            <Button
+                android:id="@+id/getSmsCodeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/get_verify_sms_code"
+                android:textColor="@color/fragment_verify_sms_code_color"
+                android:background="@drawable/fragment_verify_sms_code_button_background"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/submit_button_text" />
+</LinearLayout>

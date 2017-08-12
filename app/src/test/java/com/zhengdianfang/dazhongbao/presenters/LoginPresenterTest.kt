@@ -97,7 +97,7 @@ class LoginPresenterTest {
     @Test
     fun should_sms_code_When_user_register() {
         mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.requestSmsVerifyCode("18511177916")
+        mLoginPresenter.requestSmsVerifyCode("18511177916", 1)
         verify(mMockRegisterView)?.showLoadingDialog()
         verify(mMockRegisterView)?.receiverSmsCode(mockSmsCode)
         verify(mMockRegisterView)?.hideLoadingDialog()
@@ -106,7 +106,7 @@ class LoginPresenterTest {
     @Test
     fun should_error_msg_phone_illegal_When_user_register() {
         mLoginPresenter.attachView(mMockRegisterView)
-        mLoginPresenter.requestSmsVerifyCode("18511177")
+        mLoginPresenter.requestSmsVerifyCode("18511177", 1)
         verify(mMockRegisterView, atLeastOnce())?.validateErrorUI(R.string.please_input_legal_phonenumber)
     }
 

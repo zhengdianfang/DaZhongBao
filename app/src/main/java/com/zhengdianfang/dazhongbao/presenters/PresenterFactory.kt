@@ -16,6 +16,11 @@ object PresenterFactory {
         presenterList.put(UserPresenter::class.java.simpleName, presenter)
         presenter
     }
+    val mProductPresenter by lazy {
+        val presenter = ProductPresenter()
+        presenterList.put(ProductPresenter::class.java.simpleName, presenter)
+        presenter
+    }
     fun destory() {
         presenterList.forEach {
             it.value.detachView()

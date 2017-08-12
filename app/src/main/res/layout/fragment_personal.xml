@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/fragment_background_color"
     tools:context="com.zhengdianfang.dazhongbao.views.home.PersonalFragment">
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -14,14 +15,14 @@
         app:toolbar_theme="light" />
 
     <include layout="@layout/fragment_personal_user_info" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_personal_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/fragment_setting_item_background">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -50,21 +51,14 @@
 
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/bottom_bar_divider_color" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_personal_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/fragment_setting_item_background">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -73,11 +67,25 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_weight="1"
             android:text="@string/fragment_personal_pater" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:progress="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            style="@style/AppTheme.RatingBarSmall"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -87,21 +95,15 @@
 
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/bottom_bar_divider_color" />
-
     <LinearLayout
+        android:id="@+id/settingViewGroup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_personal_item_height"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/fragment_setting_item_background">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -124,11 +126,4 @@
 
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/bottom_bar_divider_color" />
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.zhengdianfang.dazhongbao.views.basic
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.widget.Toast
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -46,24 +47,25 @@ abstract class BaseFragment: Fragment(), IView {
     }
 
     fun startFragment(id: Int, nextFragment: Fragment, backStack: String? = null) {
-        getParentActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
-                .add(id, nextFragment)
-                .addToBackStack(backStack)
-                .commitAllowingStateLoss()
+        getParentActivity().startFragment(id, nextFragment, backStack)
     }
 
     fun replaceFragment(id: Int, nextFragment: Fragment, backStack: String? = null) {
-        getParentActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
-                .replace(id, nextFragment)
-                .addToBackStack(backStack)
-                .commitAllowingStateLoss()
+        getParentActivity().replaceFragment(id, nextFragment, backStack)
+    }
+
+    open fun onBackPressed(): Boolean {
+        return false
     }
 
     override fun networkError(msg: String) {
-        toast(msg)
         hideLoadingDialog()
+        Log.e("network error", msg)
+        toast(msg)
+    }
+
+    override fun validateErrorUI(errorMsgResId: Int) {
+        toast(errorMsgResId)
     }
 
     open fun toolbarBackButtonClick() {

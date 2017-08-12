@@ -16,13 +16,35 @@ import java.util.concurrent.TimeUnit
  */
 class UserRepository {
     private val MOCK = false
-    fun modifyPassword(password: String, token: String): Observable<User> {
+    fun modifyPassword(password: String, token: String): Observable<String> {
+        return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        return@map json.get("msg").asText()
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
+
+    }
+
+    fun setPassword(password: String, token: String): Observable<User> {
         if (MOCK){
             return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
         }
         return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
+
+    }
+
+    fun findPassword(password: String, verifyCode: String,  phoneNumber: String): Observable<String> {
+        return API.appClient.create(UserApi::class.java).modifyPassword(password , phoneNumber, verifyCode, "")
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        return@map json.get("msg").asText()
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
 
     }
 
@@ -61,6 +83,12 @@ class UserRepository {
         val body2 =  MultipartBody.Part.createFormData("fileName2", File(cardBackEndFilePath).name, requestBody2)
         return API.appClient.create(UserApi::class.java)
                 .uploadContactCard(token, body1, body2)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue(data, User::class.java) }
+    }
+
+    fun modifyPhoneNumber(token: String, phoneNumber: String, verifyCode: String): Observable<User> {
+        return API.appClient.create(UserApi::class.java).modifyPhoneNumber(token, phoneNumber, verifyCode)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }

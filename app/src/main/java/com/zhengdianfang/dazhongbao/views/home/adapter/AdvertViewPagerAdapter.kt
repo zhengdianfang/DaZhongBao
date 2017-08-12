@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Advert
 
 /**
@@ -16,12 +17,14 @@ class AdvertViewPagerAdapter(val adverts: MutableList<Advert>?) : PagerAdapter()
     }
 
     override fun getCount(): Int {
-        return adverts?.size ?: 0
+//        return adverts?.size ?: 0
+        return 3
     }
 
     override fun instantiateItem(container: ViewGroup?, position: Int): Any {
         val imageView = ImageView(container?.context)
-        Glide.with(imageView.context).load(adverts?.get(position)?.image). into(imageView)
+//        Glide.with(imageView.context).load(adverts?.get(position)?.image). into(imageView)
+        Glide.with(imageView.context).load(R.mipmap.banner_test).into(imageView)
         container?.addView(imageView)
         return imageView
     }

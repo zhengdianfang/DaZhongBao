@@ -1,13 +1,13 @@
 package com.zhengdianfang.dazhongbao.models.product
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.zhengdianfang.dazhongbao.models.login.User
 
 /**
  * Created by dfgzheng on 05/08/2017.
  */
-data class Product(var id: String, var companyCode: String, var productName: String,
-                   var lastUnitPrice: Double, var nowUnitPrice: Double, var basicUnitPrice: Double,
-                   var soldCount: Int, var limitTime: Long, var description: String,
-                   var bidCount: Int, var status: Int, var startDateTime: Long, var contact: User,
-                   var industry: String
-)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Product(var id: String?, var sharesCode: String?, var sharesName: String?, var yestodayClosePrice: String?,
+                   var companyName: String?, var lastUnitPrice: Double?, var nowUnitPrice: Double?, var basicUnitPrice: String?,
+                   var soldCount: String?, var limitTime: String?, var description: String?, var bidCount: Int, var check_status: Int,
+                   var contact: User?, var industry: String?, var attention: Int)

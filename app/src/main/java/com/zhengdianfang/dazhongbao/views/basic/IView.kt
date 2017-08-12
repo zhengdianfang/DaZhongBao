@@ -6,5 +6,6 @@ package com.zhengdianfang.dazhongbao.views.basic
 interface IView {
     fun showLoadingDialog()
     fun hideLoadingDialog()
-    fun networkError(msg: String)
+    fun validateErrorUI(errorMsgResId: Int)
+    fun networkError(errorMsg: String)
 }

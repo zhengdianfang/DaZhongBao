@@ -17,7 +17,6 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.models.mock.mockToken
 import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
@@ -105,8 +104,13 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
         }
     }
 
+    override fun onBackPressed(): Boolean {
+        toolbarBackButtonClick()
+        return true
+    }
+
     override fun toolbarConfirmButtonClick() {
-        val token = mockToken
+        val token = CApplication.INSTANCE.loginUser?.token
         if (token != null) {
             PresenterFactory.mUserPresenter.uploadContactCard(token, idCardFrontEndImagePath, idCardBackEndImagePath)
         }

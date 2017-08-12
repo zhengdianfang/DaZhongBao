@@ -52,4 +52,11 @@
 
     <color name="toolbar_title_light_color">#1E1E1E</color>
     <color name="toolbar_title_dark_color">#FFFFFF</color>
+
+    <style name="AppTheme.RatingBarSmall" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/fragment_personal_partner_star_ratingbar</item>
+        <item name="android:indeterminateDrawable">@drawable/fragment_personal_partner_star_ratingbar</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="android:maxHeight">24dp</item>
+    </style>
 </resources>
