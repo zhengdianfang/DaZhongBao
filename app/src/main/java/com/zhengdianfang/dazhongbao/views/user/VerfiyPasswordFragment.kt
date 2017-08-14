@@ -13,7 +13,7 @@ import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.login.ILoginView
 
@@ -24,6 +24,7 @@ import com.zhengdianfang.dazhongbao.views.login.ILoginView
 class VerfiyPasswordFragment : BaseFragment(), ILoginView {
 
     private val passwordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
+    private val mLoginPresenter by lazy { LoginPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,12 +34,12 @@ class VerfiyPasswordFragment : BaseFragment(), ILoginView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mLoginPresenter.attachView(this)
+        mLoginPresenter.attachView(this)
         val loginUser = CApplication.INSTANCE.loginUser
         view?.findViewById<Button>(R.id.nextStepButton)!!.setOnClickListener {
            if(loginUser != null){
 
-               PresenterFactory.mLoginPresenter.loginByPhoneNumber(loginUser.phonenumber ?: "", passwordEditText.text.toString(), DeviceUtils.getDeviceId(activity.applicationContext)
+               mLoginPresenter.loginByPhoneNumber(loginUser.phonenumber ?: "", passwordEditText.text.toString(), DeviceUtils.getDeviceId(activity.applicationContext)
                        , DeviceUtils.getAppVersionName(this.context.applicationContext))
            }
         }
@@ -46,7 +47,7 @@ class VerfiyPasswordFragment : BaseFragment(), ILoginView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
+        mLoginPresenter.detachView()
     }
 
     override fun userResponseProcessor(user: User?) {

@@ -22,7 +22,7 @@ object DeviceUtils {
     val TAKE_PHOTO = 0x000001
     val PICK_PHOTO = 0x000002
 
-    @SuppressLint("MissingPermission", "HardwareIds")
+    @SuppressLint("MissingPermission")
     fun getDeviceId(context: Context?): String {
         val telephonyManager = context?.applicationContext?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return telephonyManager.deviceId ?: ""

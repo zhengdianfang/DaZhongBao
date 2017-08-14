@@ -14,7 +14,7 @@ import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.home.MainActivity
 import com.zhengdianfang.dazhongbao.views.user.PhoneNumberVerifyFragment
@@ -24,6 +24,8 @@ import com.zhengdianfang.dazhongbao.views.user.PhoneNumberVerifyFragment
  */
 class LoginFragment : BaseFragment(),ILoginView{
 
+    private val mLoginPresenter by lazy { LoginPresenter() }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -31,17 +33,17 @@ class LoginFragment : BaseFragment(),ILoginView{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mLoginPresenter.attachView(this)
+        mLoginPresenter.attachView(this)
         view?.findViewById<Button>(R.id.loginButton)?.setOnClickListener {
             val phoneNumber = view?.findViewById<EditText>(R.id.phoneEditText)!!.text.toString()
             val password = view?.findViewById<EditText>(R.id.passwordEditText)!!.text.toString()
 
             RxPermissions(getParentActivity()).request(Manifest.permission.READ_PHONE_STATE)?.subscribe { granted ->
                 if (granted){
-                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, DeviceUtils.getDeviceId(activity.applicationContext)
+                    mLoginPresenter.loginByPhoneNumber(phoneNumber, password, DeviceUtils.getDeviceId(activity.applicationContext)
                             , DeviceUtils.getAppVersionName(this.context.applicationContext))
                 }else {
-                    PresenterFactory.mLoginPresenter.loginByPhoneNumber(phoneNumber, password, "", DeviceUtils.getAppVersionName(this.context.applicationContext))
+                    mLoginPresenter.loginByPhoneNumber(phoneNumber, password, "", DeviceUtils.getAppVersionName(this.context.applicationContext))
                 }
             }
         }
@@ -57,7 +59,7 @@ class LoginFragment : BaseFragment(),ILoginView{
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
+        mLoginPresenter.detachView()
     }
 
     override fun userResponseProcessor(user: User?) {

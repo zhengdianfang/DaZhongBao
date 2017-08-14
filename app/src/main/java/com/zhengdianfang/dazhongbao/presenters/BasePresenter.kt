@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers
 open class BasePresenter: IPresenter {
     protected var mView: IView? = null
     private val mCompositeDisposable : CompositeDisposable by lazy { CompositeDisposable() }
+    var MOCK = false
 
 
     override fun attachView(v: IView?) {

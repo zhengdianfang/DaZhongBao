@@ -12,7 +12,7 @@ import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,6 +33,7 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView , ISendSmsCode{
                   .map { i -> 60 - i }.observeOn(AndroidSchedulers.mainThread())
     }
     private var timerSub: Disposable? = null
+    private val mLoginPresenter by lazy { LoginPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,18 +43,18 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView , ISendSmsCode{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mLoginPresenter.attachView(this)
+        mLoginPresenter.attachView(this)
         view?.findViewById<Button>(R.id.getSmsCodeButton)?.setOnClickListener {
-            PresenterFactory.mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString(), 1)
+            mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString(), 1)
         }
         view?.findViewById<Button>(R.id.submitButton)?.setOnClickListener {
-            PresenterFactory.mLoginPresenter.requestRegister(phoneEditText.text.toString(), smsCodeEditText.text.toString(), recommendEditText.text.toString())
+            mLoginPresenter.requestRegister(phoneEditText.text.toString(), smsCodeEditText.text.toString(), recommendEditText.text.toString())
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
+        mLoginPresenter.detachView()
         timerSub?.dispose()
     }
 

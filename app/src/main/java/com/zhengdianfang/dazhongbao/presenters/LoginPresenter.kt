@@ -1,10 +1,10 @@
 package com.zhengdianfang.dazhongbao.presenters
 
-import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.PhoneFormatCheckHelper
 import com.zhengdianfang.dazhongbao.models.login.LoginRepository
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.views.basic.IView
+import com.zhengdianfang.dazhongbao.presenters.validates.PasswordValidate
+import com.zhengdianfang.dazhongbao.presenters.validates.PhoneNumberValidate
+import com.zhengdianfang.dazhongbao.presenters.validates.VerifySmsCodeValidate
 import com.zhengdianfang.dazhongbao.views.login.ILoginView
 import com.zhengdianfang.dazhongbao.views.login.IRegisterView
 import com.zhengdianfang.dazhongbao.views.login.ISendSmsCode
@@ -15,11 +15,15 @@ import io.reactivex.functions.Consumer
  */
 class LoginPresenter: BasePresenter() {
 
-    private val mLoginRepository by lazy { LoginRepository() }
+    private val mLoginRepository by lazy { LoginRepository(MOCK) }
+    private val passwordValidate by lazy { PasswordValidate(mView) }
+    private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
+    private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
 
     fun loginByPhoneNumber(phoneNumber: String, password: String, deviceId: String, versionName: String){
 
-        if (validatePhoneNumber(phoneNumber) && validatePassword(password)){
+        if (phoneNumberValidate.validate(phoneNumber)
+                && passwordValidate.validate(password)){
             //request login api
             mView?.showLoadingDialog()
             addSubscription(mLoginRepository.loginRequest(phoneNumber, password, versionName, deviceId), Consumer<User> { user ->
@@ -29,43 +33,8 @@ class LoginPresenter: BasePresenter() {
         }
     }
 
-    fun validatePassword(password: String): Boolean {
-        var legal = false
-        if (password.isNullOrEmpty()){
-            (mView as IView).validateErrorUI(R.string.please_input_password)
-        }else if (password.length < 6) {
-            (mView as IView).validateErrorUI(R.string.please_input_legal_password)
-        }else{
-            legal = true
-        }
-        return legal
-    }
-
-    fun validatePhoneNumber(phoneNumber: String): Boolean {
-        var legal = false
-        if (mView != null && mView is IView) {
-            if(phoneNumber.isNullOrEmpty()) {
-                (mView as IView).validateErrorUI(R.string.please_input_phonenumber)
-            }else if (phoneNumber.length < 11 || !PhoneFormatCheckHelper.isPhoneLegal(phoneNumber)) {
-                (mView as IView).validateErrorUI(R.string.please_input_legal_phonenumber)
-            }else{
-                legal = true
-            }
-        }
-        return legal
-    }
-
-    private fun validateSmsVerifyCode(verifyCode: String): Boolean {
-        var legal = true
-        if(verifyCode.isNullOrEmpty()) {
-            legal = false
-            (mView as IRegisterView).validateErrorUI(R.string.please_input_sms_code)
-        }
-        return legal
-    }
-
     fun requestSmsVerifyCode(phoneNumber: String, type: Int) {
-        if (validatePhoneNumber(phoneNumber)){
+        if (phoneNumberValidate.validate(phoneNumber)){
             mView?.showLoadingDialog()
             addSubscription(mLoginRepository.getSmsVerifyCode(phoneNumber, type), Consumer<String> { code ->
                 (mView as ISendSmsCode).receiverSmsCode(code)
@@ -75,7 +44,8 @@ class LoginPresenter: BasePresenter() {
     }
 
     fun requestRegister(phoneNumber: String, verifyCode: String, recommendPerson: String) {
-        if (validatePhoneNumber(phoneNumber) && validateSmsVerifyCode(verifyCode)){
+        if (phoneNumberValidate.validate(phoneNumber)
+                && verifySmsCodeValidate.validate(verifyCode)){
             mView?.showLoadingDialog()
             addSubscription(mLoginRepository.register(phoneNumber, verifyCode, recommendPerson), Consumer<User> { user->
                 (mView as IRegisterView).receiverUser(user)

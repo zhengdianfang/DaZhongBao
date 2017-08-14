@@ -1,13 +1,173 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:background="@color/fragment_background_color"
     tools:context="com.zhengdianfang.dazhongbao.views.home.PushFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.zhengdianfang.dazhongbao.views.components.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:title="@string/activity_push_title"
+        app:enable_back="false"
+        app:toolbar_theme="light" />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                style="@style/AppTheme.PushFragment.Item"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:text="@string/fragment_push_company_code"/>
+                <EditText
+                    android:id="@+id/companyCodeEditView"
+                    style="@style/AppTheme.PushFragment.EditText"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/please_input_company_code"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                style="@style/AppTheme.PushFragment.Item"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_reverse_price"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.SecondEditLabel"
+                    android:text="@string/the_smallest_unit_is_divided"/>
+                <EditText
+                    android:id="@+id/companyUnitPriceEditView"
+                    style="@style/AppTheme.PushFragment.EditText"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_price_unit"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                style="@style/AppTheme.PushFragment.Item"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_sale_count"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.SecondEditLabel"
+                    android:text="@string/the_smallest_unit_is_one_share"/>
+                <EditText
+                    android:id="@+id/saleCountEditView"
+                    style="@style/AppTheme.PushFragment.EditText"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_share_unit"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                style="@style/AppTheme.PushFragment.Item"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_limit_label"/>
+                <RadioGroup
+                    android:id="@+id/limitRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/radioYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/yes_label"/>
+                    <RadioButton
+                        android:id="@+id/radioNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/no_label"/>
+                </RadioGroup>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                style="@style/AppTheme.PushFragment.Item"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.PushFragment.EditLabel"
+                    android:text="@string/fragment_push_company_owner"/>
+                <EditText
+                    android:id="@+id/shareOwnerNameEidtView"
+                    style="@style/AppTheme.PushFragment.EditText"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/please_input_company_owner_name"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.PushFragment.EditLabel"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/fragment_push_detail"/>
+            <EditText
+                android:id="@+id/detailEditView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/fragment_setting_item_background"
+                android:lines="3"
+                android:gravity="top" />
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <Button
+                android:id="@+id/pushButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"
+                android:text="@string/push_label"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

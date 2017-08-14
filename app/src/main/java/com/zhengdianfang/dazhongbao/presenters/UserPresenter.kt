@@ -1,10 +1,11 @@
 package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.PhoneFormatCheckHelper
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
-import com.zhengdianfang.dazhongbao.views.basic.IView
+import com.zhengdianfang.dazhongbao.presenters.validates.PasswordValidate
+import com.zhengdianfang.dazhongbao.presenters.validates.PhoneNumberValidate
+import com.zhengdianfang.dazhongbao.presenters.validates.VerifySmsCodeValidate
 import com.zhengdianfang.dazhongbao.views.login.IFindPasswordView
 import com.zhengdianfang.dazhongbao.views.login.ISetPasswordView
 import com.zhengdianfang.dazhongbao.views.login.IUploadCard
@@ -18,9 +19,12 @@ import io.reactivex.functions.Consumer
 class UserPresenter: BasePresenter() {
 
     private val mUserRepository by lazy { UserRepository() }
+    private val passwordValidate by lazy { PasswordValidate(mView) }
+    private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
+    private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
 
     fun setPassword(password: String, token: String) {
-        if (validatePassword(password)){
+        if (passwordValidate.validate(password)){
             mView?.showLoadingDialog()
             addSubscription(mUserRepository.setPassword(password, token), Consumer<User> { user->
                 (mView as ISetPasswordView).setPasswordSuccess(user)
@@ -30,7 +34,7 @@ class UserPresenter: BasePresenter() {
     }
 
     fun findPassword(password: String,  verifyCode: String,  phoneNumber: String) {
-        if (validatePassword(password)){
+        if (passwordValidate.validate(password)){
             mView?.showLoadingDialog()
             addSubscription(mUserRepository.findPassword(password, verifyCode, phoneNumber), Consumer<String> { msg ->
                 (mView as IFindPasswordView).findPasswordSuccess(msg)
@@ -40,7 +44,8 @@ class UserPresenter: BasePresenter() {
     }
 
     fun modifyPassword(password: String, confirmPassword: String, token: String) {
-        if (validatePassword(password) && isEqualConfirmPassword(password, confirmPassword)){
+        if (passwordValidate.validate(password)
+                && isEqualConfirmPassword(password, confirmPassword)){
             mView?.showLoadingDialog()
             addSubscription(mUserRepository.modifyPassword(password,  token), Consumer<String> { msg->
                 (mView as IFindPasswordView).findPasswordSuccess(msg)
@@ -70,16 +75,12 @@ class UserPresenter: BasePresenter() {
     }
 
     fun verifySmsCode(phoneNumber: String, verifyCode: String) {
-        if(validatePhoneNumber(phoneNumber)) {
-            if (verifyCode.isNullOrEmpty()) {
-                (mView as IVerifySmsCode).validateErrorUI(R.string.please_input_sms_code)
-            }else {
-                mView?.showLoadingDialog()
-                addSubscription(mUserRepository.verifySmsCode(phoneNumber,2, verifyCode), Consumer<Boolean> { success ->
-                    (mView as IVerifySmsCode).verifySmsCodeResult(success)
-                    mView?.hideLoadingDialog()
-                })
-            }
+        if(phoneNumberValidate.validate(phoneNumber) && verifySmsCodeValidate.validate(verifyCode)) {
+            mView?.showLoadingDialog()
+            addSubscription(mUserRepository.verifySmsCode(phoneNumber,2, verifyCode), Consumer<Boolean> { success ->
+                (mView as IVerifySmsCode).verifySmsCodeResult(success)
+                mView?.hideLoadingDialog()
+            })
         }
     }
 
@@ -105,7 +106,7 @@ class UserPresenter: BasePresenter() {
     }
 
     fun modifyPhoneNumber(token: String, phoneNumber: String, verifyCode: String){
-        if(validatePhoneNumber(phoneNumber)) {
+        if(phoneNumberValidate.validate(phoneNumber)) {
             if (verifyCode.isNullOrEmpty()) {
                 (mView as IModifyPhoneNumberView).validateErrorUI(R.string.please_input_sms_code)
             }else {
@@ -119,19 +120,6 @@ class UserPresenter: BasePresenter() {
 
     }
 
-    private fun validatePhoneNumber(phoneNumber: String): Boolean {
-        var legal = false
-        if (mView != null && mView is IView) {
-            if(phoneNumber.isNullOrEmpty()) {
-                mView?.validateErrorUI(R.string.please_input_phonenumber)
-            }else if (phoneNumber.length < 11 || !PhoneFormatCheckHelper.isPhoneLegal(phoneNumber)) {
-                mView?.validateErrorUI(R.string.please_input_legal_phonenumber)
-            }else{
-                legal = true
-            }
-        }
-        return legal
-    }
 
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
         var ok = true
@@ -173,15 +161,4 @@ class UserPresenter: BasePresenter() {
         return ok
     }
 
-    private fun validatePassword(password: String): Boolean {
-        var legal = false
-        if (password.isNullOrEmpty()){
-            mView?.validateErrorUI(R.string.please_input_password)
-        }else if (password.length < 6) {
-            mView?.validateErrorUI(R.string.please_input_legal_password)
-        }else{
-            legal = true
-        }
-        return legal
-    }
 }

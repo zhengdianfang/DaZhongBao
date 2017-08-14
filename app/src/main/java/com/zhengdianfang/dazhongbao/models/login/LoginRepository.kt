@@ -13,11 +13,10 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by dfgzheng on 31/07/2017.
  */
-class LoginRepository {
-    private val MOCK = false
+class LoginRepository(val mock: Boolean) {
 
     fun loginRequest(phoneNumber: String, password: String, version: String, deviceId: String): Observable<User> {
-        if (MOCK){
+        if (mock){
             return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
         }
         return API.appClient.create(UserApi::class.java).loginByPhone(phoneNumber, password, version, deviceId)
@@ -26,7 +25,7 @@ class LoginRepository {
     }
 
     fun getSmsVerifyCode(phoneNumber: String, type: Int): Observable<String> {
-        if (MOCK){
+        if (mock){
             return Observable.just(mockSmsCode).delay(2, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -41,6 +40,9 @@ class LoginRepository {
     }
 
     fun register(phoneNumber: String, verifyCode: String, recommendPerson: String): Observable<User> {
+        if (mock) {
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(UserApi::class.java).register(phoneNumber, verifyCode, recommendPerson)
                      .map {response -> API.parseResponse(response) }
                      .map {data -> API.objectMapper.readValue(data, User::class.java) }

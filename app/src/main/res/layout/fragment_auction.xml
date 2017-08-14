@@ -2,12 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.zhengdianfang.dazhongbao.views.home.AuctionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+    <com.zhengdianfang.dazhongbao.views.components.ColorArcProgressBar
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        app:max_value="100"
+        app:back_width="10dp"
+        app:front_width="10dp"
+        app:total_engle="270"
+        app:front_color1="@color/colorPrimary"
+        app:back_color="@android:color/holo_red_light"/>
 </FrameLayout>

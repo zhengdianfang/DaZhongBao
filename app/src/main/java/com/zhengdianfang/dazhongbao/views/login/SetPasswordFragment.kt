@@ -12,7 +12,7 @@ import android.widget.EditText
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.home.MainActivity
 
@@ -24,6 +24,7 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
 
     private val passwordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
     private val submitButton by lazy { view?.findViewById<Button>(R.id.submitButton)!! }
+    private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,21 +35,21 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        PresenterFactory.mUserPresenter.attachView(this)
+        mUserPresenter.attachView(this)
         submitButton.setOnClickListener {
             val phoneNumber = arguments?.getString("phoneNumber") ?: ""
             val verifyCode = arguments?.getString("verifyCode") ?: ""
             if (!phoneNumber.isNullOrEmpty() && !verifyCode.isNullOrEmpty()) {
-                PresenterFactory.mUserPresenter.findPassword(passwordEditText.text.toString(), verifyCode, phoneNumber)
+                mUserPresenter.findPassword(passwordEditText.text.toString(), verifyCode, phoneNumber)
             }else{
-                PresenterFactory.mUserPresenter.setPassword(passwordEditText.text.toString(), CApplication.INSTANCE.loginUser?.token ?: "")
+                mUserPresenter.setPassword(passwordEditText.text.toString(), CApplication.INSTANCE.loginUser?.token ?: "")
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mUserPresenter.detachView()
+        mUserPresenter.detachView()
     }
 
     override fun onBackPressed(): Boolean {

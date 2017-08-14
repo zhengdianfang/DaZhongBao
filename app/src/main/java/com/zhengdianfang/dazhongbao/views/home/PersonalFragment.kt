@@ -52,13 +52,15 @@ class PersonalFragment : BaseFragment(){
     override fun onResume() {
         super.onResume()
         val loginUser = CApplication.INSTANCE.loginUser
-        Glide.with(this).load(loginUser?.avatar).
-                apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
-                .into(avatarImageView)
-        userRealNameTextView.text = if(TextUtils.isEmpty(loginUser?.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser?.realname
-        userPhoneNumberTextView.text = loginUser?.phonenumber
-        levelTextView.text = if (loginUser?.integrity!! == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
-        upgradeVIPView.visibility = if (loginUser?.integrity!! == 0) View.GONE else View.VISIBLE
+        if(null != loginUser){
+            Glide.with(this).load(loginUser.avatar).
+                    apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
+                    .into(avatarImageView)
+            userRealNameTextView.text = if(TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
+            userPhoneNumberTextView.text = loginUser.phonenumber
+            levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
+            upgradeVIPView.visibility = if (loginUser.integrity!! == 0) View.GONE else View.VISIBLE
+        }
 
         myStartProductCountTextView.text = "0"
         myProductCountTextView.text = "0"

@@ -17,7 +17,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
 
@@ -25,6 +25,8 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
  * A simple [Fragment] subclass.
  */
 class UploadContactCardFragment : BaseFragment() , IUploadCard{
+
+    private val mUserPresenter by lazy { UserPresenter() }
     private val idCardFrontEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardFrontEndImageView)!! }
     private val idCardBackEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardBackEndImageView)!! }
     private var type = 0
@@ -53,7 +55,7 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mUserPresenter.attachView(this)
+        mUserPresenter.attachView(this)
         idCardFrontEndImageView.setOnClickListener {
             type = 0
             mediaDialog1.show()
@@ -67,7 +69,7 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mUserPresenter.detachView()
+        mUserPresenter.detachView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,7 +114,7 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
     override fun toolbarConfirmButtonClick() {
         val token = CApplication.INSTANCE.loginUser?.token
         if (token != null) {
-            PresenterFactory.mUserPresenter.uploadContactCard(token, idCardFrontEndImagePath, idCardBackEndImagePath)
+            mUserPresenter.uploadContactCard(token, idCardFrontEndImagePath, idCardBackEndImagePath)
         }
     }
 

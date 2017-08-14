@@ -10,7 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.login.ISendSmsCode
 import com.zhengdianfang.dazhongbao.views.login.IVerifySmsCode
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit
  */
 class PhoneNumberVerifyFragment: BaseFragment(), IVerifySmsCode , ISendSmsCode{
 
+    private val mUserPresenter by lazy { UserPresenter() }
+    private val mLoginPresenter by lazy { LoginPresenter() }
     private val phoneEditText by lazy { view?.findViewById<EditText>(R.id.registerPhoneEditText)!! }
     private val smsCodeEditText by lazy { view?.findViewById<EditText>(R.id.smsCodeEditText)!! }
     private val smsCodeButton by lazy { view?.findViewById<Button>(R.id.getSmsCodeButton)!! }
@@ -44,20 +47,20 @@ class PhoneNumberVerifyFragment: BaseFragment(), IVerifySmsCode , ISendSmsCode{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mLoginPresenter.attachView(this)
-        PresenterFactory.mUserPresenter.attachView(this)
+        mLoginPresenter.attachView(this)
+        mUserPresenter.attachView(this)
 
         view?.findViewById<Button>(R.id.getSmsCodeButton)?.setOnClickListener {
-            PresenterFactory.mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString(), 2)
+            mLoginPresenter.requestSmsVerifyCode(phoneEditText.text.toString(), 2)
         }
         view?.findViewById<Button>(R.id.submitButton)?.setOnClickListener {
-            PresenterFactory.mUserPresenter.verifySmsCode(phoneEditText.text.toString(), smsCodeEditText.text.toString())
+            mUserPresenter.verifySmsCode(phoneEditText.text.toString(), smsCodeEditText.text.toString())
         }
     }
 
     override fun onDestroyView() { super.onDestroyView()
-        PresenterFactory.mLoginPresenter.detachView()
-        PresenterFactory.mUserPresenter.detachView()
+        mLoginPresenter.detachView()
+        mUserPresenter.detachView()
         timerSub?.dispose()
     }
 

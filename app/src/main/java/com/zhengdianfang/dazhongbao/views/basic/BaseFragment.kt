@@ -1,11 +1,13 @@
 package com.zhengdianfang.dazhongbao.views.basic
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.widget.Toast
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
+import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
 /**
  * Created by dfgzheng on 31/07/2017.
@@ -66,6 +68,10 @@ abstract class BaseFragment: Fragment(), IView {
 
     override fun validateErrorUI(errorMsgResId: Int) {
         toast(errorMsgResId)
+    }
+
+    override fun noLogin() {
+        startActivity(Intent(getParentActivity(), LoginActivity::class.java))
     }
 
     open fun toolbarBackButtonClick() {

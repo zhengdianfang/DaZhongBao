@@ -50,13 +50,54 @@
         <item name="android:layout_marginEnd">32dp</item>
     </style>
 
-    <color name="toolbar_title_light_color">#1E1E1E</color>
-    <color name="toolbar_title_dark_color">#FFFFFF</color>
 
     <style name="AppTheme.RatingBarSmall" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/fragment_personal_partner_star_ratingbar</item>
         <item name="android:indeterminateDrawable">@drawable/fragment_personal_partner_star_ratingbar</item>
         <item name="android:minHeight">24dp</item>
         <item name="android:maxHeight">24dp</item>
+    </style>
+
+    <style name="AppTheme.PushFragment" />
+    <style name="AppTheme.PushFragment.Item">
+        <item name="android:layout_height">@dimen/fragment_personal_item_height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@drawable/fragment_setting_item_background</item>
+    </style>
+    <style name="AppTheme.PushFragment.EditLabel">
+       <item name="android:textSize">14sp</item>
+       <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="AppTheme.PushFragment.SecondEditLabel">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/bottom_bar_tab_text_color</item>
+        <item name="android:layout_marginLeft">8dp</item>
+    </style>
+
+    <style name="AppTheme.PushFragment.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+    <style name="AppTheme.ProductDetail" />
+    <style name="AppTheme.ProductDetail.TextLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#c6cdfc</item>
+    </style>
+    <style name="AppTheme.ProductDetail.TextValue">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="AppTheme.ProductDetail.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">#8c6465</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:background">@drawable/activity_product_detail_button_background</item>
     </style>
 </resources>

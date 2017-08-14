@@ -13,7 +13,7 @@ import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
 
@@ -23,6 +23,7 @@ import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
     val businessCardImageView by lazy { view?.findViewById<ImageView>(R.id.businessCardImageView)!! }
+    private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,7 +33,7 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mUserPresenter.attachView(this)
+        mUserPresenter.attachView(this)
         businessCardImageView.setOnClickListener {
            mediaDialog.show()
         }
@@ -40,7 +41,7 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mUserPresenter.detachView()
+        mUserPresenter.detachView()
     }
 
     override fun onBackPressed(): Boolean {
@@ -51,7 +52,7 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
     override fun toolbarConfirmButtonClick() {
         val token = CApplication.INSTANCE.loginUser?.token
         if (token != null){
-            PresenterFactory.mUserPresenter.uploadBusinessCard(token, "", takePhotoImagePath)
+            mUserPresenter.uploadBusinessCard(token, "", takePhotoImagePath)
         }
     }
 

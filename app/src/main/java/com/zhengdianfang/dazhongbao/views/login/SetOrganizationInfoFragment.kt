@@ -15,7 +15,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.mock.mockToken
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
 
@@ -27,6 +27,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
     private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
     private val licenceCardImageView by lazy { view?.findViewById<ImageView>(R.id.licenceCardImageView)!! }
+    private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,7 +36,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mUserPresenter.attachView(this)
+        mUserPresenter.attachView(this)
         licenceCardImageView.setOnClickListener {
             mediaDialog.show()
         }
@@ -44,7 +45,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mUserPresenter.detachView()
+        mUserPresenter.detachView()
     }
 
     override fun onBackPressed(): Boolean {
@@ -57,7 +58,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     }
 
     override fun toolbarConfirmButtonClick() {
-        PresenterFactory.mUserPresenter.uploadBusinessLicenceCard(
+        mUserPresenter.uploadBusinessLicenceCard(
                 mockToken,
                 organizationContactEditText.text.toString(),
                 organizationNameEditText.text.toString(),

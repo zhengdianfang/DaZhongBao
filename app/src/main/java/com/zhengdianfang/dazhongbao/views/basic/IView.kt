@@ -8,4 +8,5 @@ interface IView {
     fun hideLoadingDialog()
     fun validateErrorUI(errorMsgResId: Int)
     fun networkError(errorMsg: String)
+    fun noLogin()
 }

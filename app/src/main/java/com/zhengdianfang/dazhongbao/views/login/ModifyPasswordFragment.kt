@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.presenters.PresenterFactory
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
 
@@ -23,6 +23,7 @@ class ModifyPasswordFragment : BaseFragment() , IFindPasswordView{
     private val modifyPasswordEditText by lazy { view?.findViewById<EditText>(R.id.modifyPasswordEditText)!! }
     private val modifyPasswordConfirmEditText by lazy { view?.findViewById<EditText>(R.id.modifyPasswordConfirmEditText)!! }
     private val modifyPasswordSubmitButton by lazy { view?.findViewById<Button>(R.id.modifyPasswordSubmitButton)!! }
+    private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,18 +33,18 @@ class ModifyPasswordFragment : BaseFragment() , IFindPasswordView{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        PresenterFactory.mUserPresenter.attachView(this)
+        mUserPresenter.attachView(this)
         modifyPasswordSubmitButton.setOnClickListener {
             val token = CApplication.INSTANCE.loginUser?.token
             if (null != token) {
-                PresenterFactory.mUserPresenter.modifyPassword(modifyPasswordEditText.text.toString(), modifyPasswordConfirmEditText.text.toString(), token)
+                mUserPresenter.modifyPassword(modifyPasswordEditText.text.toString(), modifyPasswordConfirmEditText.text.toString(), token)
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        PresenterFactory.mUserPresenter.detachView()
+        mUserPresenter.detachView()
     }
 
     override fun onBackPressed(): Boolean {
@@ -56,7 +57,7 @@ class ModifyPasswordFragment : BaseFragment() , IFindPasswordView{
     }
 
     override fun toolbarConfirmButtonClick() {
-        PresenterFactory.mUserPresenter.modifyPassword(modifyPasswordEditText.text.toString(),
+        mUserPresenter.modifyPassword(modifyPasswordEditText.text.toString(),
                 modifyPasswordConfirmEditText.text.toString(),
                 CApplication.INSTANCE.loginUser?.token ?: "")
     }

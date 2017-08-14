@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity">
+
+    <com.zhengdianfang.dazhongbao.views.components.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:enable_back="true"
+        app:toolbar_theme="dark" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/productRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layoutManager="LinearLayoutManager"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/product_detail_info_background"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fragment_personal_item_height"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/online_icon"
+                android:drawablePadding="8dp"
+                android:text="@string/online_label"/>
+        </FrameLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/bottom_bar_divider_color"
+            android:layout_height="match_parent" />
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/on_call_icon"
+                android:drawablePadding="8dp"
+                android:text="@string/call_lable"/>
+        </FrameLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:text="@string/waiting_auction"/>
+    </LinearLayout>
+</LinearLayout>

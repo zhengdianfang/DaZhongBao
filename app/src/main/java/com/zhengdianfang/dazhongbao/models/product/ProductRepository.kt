@@ -15,4 +15,12 @@ class ProductRepository {
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){}) }
     }
+
+    fun pushProduct(token: String, sharesCodes: String, companyName: String,  basicUnitPrice: Double,
+                    soldCount: Int, limitTime: Long, notes: String): Observable<Product>{
+
+        return API.appClient.create(ProductApi::class.java).pushProduct(token, sharesCodes, companyName, basicUnitPrice, soldCount, limitTime, notes)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<Product>(data, Product::class.java) }
+    }
 }

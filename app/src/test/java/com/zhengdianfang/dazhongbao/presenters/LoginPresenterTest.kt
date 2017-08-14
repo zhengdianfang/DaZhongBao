@@ -1,12 +1,12 @@
 package com.zhengdianfang.dazhongbao.presenters
 
-import android.os.Parcelable
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.RxImmediateSchedulerRule
 import com.zhengdianfang.dazhongbao.models.mock.mockSmsCode
 import com.zhengdianfang.dazhongbao.models.mock.mockUser
 import com.zhengdianfang.dazhongbao.views.login.ILoginView
 import com.zhengdianfang.dazhongbao.views.login.IRegisterView
+import com.zhengdianfang.dazhongbao.views.login.ISendSmsCode
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
@@ -29,14 +29,16 @@ class LoginPresenterTest {
 
     private val mLoginPresenter by lazy {
         val presenter = LoginPresenter()
+        presenter.MOCK = true
         presenter
     }
+
 
     @Mock
     private val mMockLoginView:  ILoginView? = null
 
     @Mock
-    private val p: Parcelable? = null
+    private val mSendSmsCode:  ISendSmsCode? = null
 
     @Mock
     private val mMockRegisterView:  IRegisterView? = null
@@ -50,36 +52,36 @@ class LoginPresenterTest {
     fun validate_illegal_phoneNumber_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
         //phonenumber is empty
-        mLoginPresenter.validatePhoneNumber("")
+        mLoginPresenter.loginByPhoneNumber("", "", "", "")
         verify(mMockLoginView, atLeastOnce())?.validateErrorUI(R.string.please_input_phonenumber)
         //phoneNumber format illegal
-        mLoginPresenter.validatePhoneNumber("123")
+        mLoginPresenter.loginByPhoneNumber("123", "", "", "")
         verify(mMockLoginView,  atLeastOnce())?.validateErrorUI(R.string.please_input_legal_phonenumber)
 
-        mLoginPresenter.validatePhoneNumber("14587689876")
+        mLoginPresenter.loginByPhoneNumber("14587689876", "", "", "")
         verify(mMockLoginView,   atLeastOnce())?.validateErrorUI(R.string.please_input_legal_phonenumber)
     }
 
     @Test
     fun should_legal_phoneNumber_errormsg_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
-        mLoginPresenter.validatePhoneNumber("18511177917")
+        mLoginPresenter.loginByPhoneNumber("18511177917", "", "", "")
         verify(mMockLoginView, never())?.validateErrorUI(R.string.please_input_legal_phonenumber)
     }
 
     @Test
     fun should_validate_illegal_password_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
-        mLoginPresenter.validatePassword("" )
+        mLoginPresenter.loginByPhoneNumber("18511177917", "", "", "")
         verify(mMockLoginView, atLeastOnce())?.validateErrorUI(R.string.please_input_password)
-        mLoginPresenter.validatePassword("1" )
+        mLoginPresenter.loginByPhoneNumber("18511177917", "1", "", "")
         verify(mMockLoginView, atLeastOnce())?.validateErrorUI(R.string.please_input_legal_password)
     }
 
     @Test
     fun should_legal_password_erromsg_When_user_login() {
         mLoginPresenter.attachView(mMockLoginView)
-        mLoginPresenter.validatePassword("123456")
+        mLoginPresenter.loginByPhoneNumber("18511177917", "123456", "", "")
         verify(mMockLoginView,   never())?.validateErrorUI(R.string.please_input_legal_password)
 
     }
@@ -96,11 +98,11 @@ class LoginPresenterTest {
 
     @Test
     fun should_sms_code_When_user_register() {
-        mLoginPresenter.attachView(mMockRegisterView)
+        mLoginPresenter.attachView(mSendSmsCode)
         mLoginPresenter.requestSmsVerifyCode("18511177916", 1)
-        verify(mMockRegisterView)?.showLoadingDialog()
-        verify(mMockRegisterView)?.receiverSmsCode(mockSmsCode)
-        verify(mMockRegisterView)?.hideLoadingDialog()
+        verify(mSendSmsCode)?.showLoadingDialog()
+        verify(mSendSmsCode)?.receiverSmsCode(mockSmsCode)
+        verify(mSendSmsCode)?.hideLoadingDialog()
     }
 
     @Test
