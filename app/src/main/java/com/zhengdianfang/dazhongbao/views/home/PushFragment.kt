@@ -11,12 +11,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.ProductPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
@@ -31,11 +30,18 @@ class PushFragment : BaseFragment(), IPushProduct{
     private val companyCodeEditView by lazy { view?.findViewById<EditText>(R.id.companyCodeEditView)!! }
     private val companyUnitPriceEditView by lazy { view?.findViewById<EditText>(R.id.companyUnitPriceEditView)!! }
     private val saleCountEditView by lazy { view?.findViewById<EditText>(R.id.saleCountEditView)!! }
-    private val limitRadioGroup by lazy { view?.findViewById<RadioGroup>(R.id.limitRadioGroup)!! }
+    private val yesRadio by lazy { view?.findViewById<RadioButton>(R.id.radioYes)!! }
+    private val noRadio by lazy { view?.findViewById<RadioButton>(R.id.radioNo)!! }
     private val shareOwnerNameEidtView by lazy { view?.findViewById<EditText>(R.id.shareOwnerNameEidtView)!! }
     private val detailEditView by lazy { view?.findViewById<EditText>(R.id.detailEditView)!! }
     private val pushButton by lazy { view?.findViewById<Button>(R.id.pushButton)!! }
     private val mProductPresenter by lazy { ProductPresenter() }
+    private val pushSuccessDialog by lazy {
+        MaterialDialog.Builder(context)
+                .content(R.string.push_success_content)
+                .cancelable(false)
+                .build()
+    }
 
 
 
@@ -49,10 +55,15 @@ class PushFragment : BaseFragment(), IPushProduct{
         super.onActivityCreated(savedInstanceState)
         mProductPresenter.attachView(this)
 
-        limitRadioGroup.setOnCheckedChangeListener { radioGroup, id ->
-            radioGroup.clearCheck()
-            view?.findViewById<RadioButton>(id)?.isChecked = true
-
+        yesRadio.setOnCheckedChangeListener { compoundButton, b ->
+            if (b){
+                noRadio.isChecked = false
+            }
+        }
+        noRadio.setOnCheckedChangeListener { compoundButton, b ->
+            if(b) {
+                yesRadio.isChecked = false
+            }
         }
 
         pushButton.setOnClickListener {
@@ -61,9 +72,9 @@ class PushFragment : BaseFragment(), IPushProduct{
             val soldCount = if(TextUtils.isEmpty(saleCountEditView.text.toString())) 0 else saleCountEditView.text.toString().toInt()
             val notes = detailEditView.text.toString()
             val sharesOwnerName = shareOwnerNameEidtView.text.toString()
-            val limitTime = if(view?.findViewById<RadioButton>(R.id.radioYes)?.isChecked ?: false) 6L else 0
+            val limitTime = if(yesRadio.isChecked ?: false) 6L else 0
             val token = CApplication.INSTANCE.loginUser?.token ?: ""
-            if (mProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount)){
+            if (mProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount * Constants.SOLD_COUNT_BASE_UNIT)){
                MaterialDialog.Builder(context)
                        .content(getString(R.string.push_confirm_dialog_content, sharesOwnerName, limitTime))
                        .title(R.string.authorization_agreement)
@@ -85,7 +96,11 @@ class PushFragment : BaseFragment(), IPushProduct{
     }
 
     override fun receiverProduct(product: Product) {
-        toast(R.string.push_success)
+        pushSuccessDialog.show()
+        view?.postDelayed({
+            pushSuccessDialog.dismiss()
+            (getParentActivity() as MainActivity).resetCurrentTab()
+        }, 3000)
     }
 
 }// Required empty public constructor

@@ -1,376 +1,310 @@
 package com.zhengdianfang.dazhongbao.views.components
 
-import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.*
+import android.content.res.TypedArray
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.os.Bundle
+import android.os.Parcelable
+import android.text.TextPaint
+import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.WindowManager
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 
 /**
- * colorful arc progress bar
- * Created by shinelw on 12/4/15.
+ * Created by bruce on 11/6/14.
  */
-class ColorArcProgressBar : View {
+class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+    private var paint: Paint? = null
+    protected lateinit var suffixTextPaint: Paint
+    protected lateinit var bottomTextPaint: Paint
 
-    private val mWidth: Int = 0
-    private val mHeight: Int = 0
-    private var diameter = 150  //直径
-    private var centerX: Float = 0.toFloat()  //圆心X坐标
-    private var centerY: Float = 0.toFloat()  //圆心Y坐标
+    private val rectF = RectF()
 
-    private var allArcPaint: Paint? = null
-    private var progressPaint: Paint? = null
-    private var vTextPaint: Paint? = null
-    private var hintPaint: Paint? = null
-    private var degreePaint: Paint? = null
-    private var curSpeedPaint: Paint? = null
+    private var strokeWidth: Float = 0.toFloat()
+    private var suffixTextSize: Float = 0.toFloat()
+    private var bottomTextSize: Float = 0.toFloat()
+    private var bottomText: String? = null
+    private var suffixTextColor: Int = 0
+    private var bottomTextColor: Int = 0
 
-    private var bgRect: RectF? = null
+    var progress = 0
+        set(progress) {
+            field = progress
+            if (this.progress > max) {
+                field %= max
+            }
+            invalidate()
+        }
+    var max: Int = 0
+        set(max) {
+            if (max > 0) {
+                field = max
+                invalidate()
+            }
+        }
+    private var finishedStrokeColor: Int = 0
+    private var unfinishedStrokeColor: Int = 0
+    private var arcAngle: Float = 0.toFloat()
+    private var suffixText = ""
+    private var suffixTextPadding: Float = 0.toFloat()
 
-    private var progressAnimator: ValueAnimator? = null
-    private var mDrawFilter: PaintFlagsDrawFilter? = null
-    private var sweepGradient: SweepGradient? = null
-    private var rotateMatrix: Matrix? = null
+    private var arcBottomHeight: Float = 0.toFloat()
 
-    private val startAngle = 135f
-    private var sweepAngle = 270f
-    private var currentAngle = 0f
-    private var lastAngle: Float = 0.toFloat()
-    private var colors = intArrayOf(Color.GREEN, Color.YELLOW, Color.RED, Color.RED)
-    private var maxValues = 60f
-    private var curValues = 0f
-    private var bgArcWidth = dipToPx(2f).toFloat()
-    private var progressWidth = dipToPx(10f).toFloat()
-    private var textSize = dipToPx(60f).toFloat()
-    private var hintSize = dipToPx(15f).toFloat()
-    private val curSpeedSize = dipToPx(13f).toFloat()
-    private val aniSpeed = 1000
-    private val longdegree = dipToPx(13f).toFloat()
-    private val shortdegree = dipToPx(5f).toFloat()
-    private val DEGREE_PROGRESS_DISTANCE = dipToPx(8f)
+    private val default_finished_color = Color.WHITE
+    private val default_unfinished_color = Color.rgb(72, 106, 176)
+    private val default_text_color = Color.rgb(66, 145, 241)
+    private val default_suffix_text_size: Float
+    private val default_suffix_padding: Float
+    private val default_bottom_text_size: Float
+    private val default_stroke_width: Float
+    private val default_suffix_text: String
+    private val default_max = 100
+    private val default_arc_angle = 360 * 0.7f
+    private var default_text_size: Float = 0.toFloat()
+    private val min_size: Int
 
-    private val hintColor = "#676767"
-    private val longDegreeColor = "#111111"
-    private val shortDegreeColor = "#111111"
-    private val bgArcColor = "#111111"
-    private var titleString: String? = null
-    private var hintString: String? = null
+    init {
 
-    private val isShowCurrentSpeed = true
-    private var isNeedTitle: Boolean = false
-    private var isNeedUnit: Boolean = false
-    private var isNeedDial: Boolean = false
-    private var isNeedContent: Boolean = false
+        default_text_size = PixelUtils.sp2px(context, 18f)
+        min_size = PixelUtils.dp2px(context, 100f).toInt()
+        default_text_size = PixelUtils.sp2px(context, 40f)
+        default_suffix_text_size = PixelUtils.sp2px(context, 15f)
+        default_suffix_padding = PixelUtils.dp2px(context, 4f)
+        default_suffix_text = ""
+        default_bottom_text_size = PixelUtils.sp2px(context, 10f)
+        default_stroke_width = PixelUtils.dp2px(context, 8f)
 
-    // sweepAngle / maxValues 的值
-    private var k: Float = 0.toFloat()
+        val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.ArcProgress, defStyleAttr, 0)
+        initByAttributes(attributes)
+        attributes.recycle()
 
-    constructor(context: Context) : super(context, null) {
-        initView()
+        initPainters()
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs, 0) {
-        initCofig(context, attrs)
-        initView()
+
+    protected fun initByAttributes(attributes: TypedArray) {
+        finishedStrokeColor = attributes.getColor(R.styleable.ArcProgress_arc_finished_color, default_finished_color)
+        unfinishedStrokeColor = attributes.getColor(R.styleable.ArcProgress_arc_unfinished_color, default_unfinished_color)
+        arcAngle = attributes.getFloat(R.styleable.ArcProgress_arc_angle, default_arc_angle)
+        max = attributes.getInt(R.styleable.ArcProgress_arc_max, default_max)
+        progress = attributes.getInt(R.styleable.ArcProgress_arc_progress, 0)
+        strokeWidth = attributes.getDimension(R.styleable.ArcProgress_arc_stroke_width, default_stroke_width)
+        suffixTextColor = attributes.getColor(R.styleable.ArcProgress_arc_suffix_text_color, default_text_color)
+        suffixTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_suffix_text_size, default_suffix_text_size)
+        suffixText = if (TextUtils.isEmpty(attributes.getString(R.styleable.ArcProgress_arc_suffix_text))) default_suffix_text else attributes.getString(R.styleable.ArcProgress_arc_suffix_text)
+        suffixTextPadding = attributes.getDimension(R.styleable.ArcProgress_arc_suffix_text_padding, default_suffix_padding)
+        bottomTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_bottom_text_size, default_bottom_text_size)
+        bottomText = attributes.getString(R.styleable.ArcProgress_arc_bottom_text)
+        bottomTextColor = attributes.getInt(R.styleable.ArcProgress_arc_bottom_text_color, default_text_color)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initCofig(context, attrs)
-        initView()
+    protected fun initPainters() {
+        suffixTextPaint = TextPaint()
+        suffixTextPaint.color = suffixTextColor
+        suffixTextPaint.textSize = suffixTextSize
+        suffixTextPaint.isAntiAlias = true
+
+        bottomTextPaint = TextPaint()
+        bottomTextPaint.color = bottomTextColor
+        bottomTextPaint.textSize = bottomTextSize
+        bottomTextPaint.isAntiAlias = true
+
+        paint = Paint()
+        paint!!.color = default_unfinished_color
+        paint!!.isAntiAlias = true
+        paint!!.strokeWidth = strokeWidth
+        paint!!.style = Paint.Style.STROKE
+        paint!!.strokeCap = Paint.Cap.ROUND
     }
 
-    /**
-     * 初始化布局配置
-     * @param context
-     * *
-     * @param attrs
-     */
-    private fun initCofig(context: Context, attrs: AttributeSet) {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.ColorArcProgressBar)
-        val color1 = a.getColor(R.styleable.ColorArcProgressBar_front_color1, Color.GREEN)
-        val color2 = a.getColor(R.styleable.ColorArcProgressBar_front_color2, color1)
-        val color3 = a.getColor(R.styleable.ColorArcProgressBar_front_color3, color1)
-        colors = intArrayOf(color1, color2, color3, color3)
+    override fun invalidate() {
+        initPainters()
+        super.invalidate()
+    }
 
-        sweepAngle = a.getInteger(R.styleable.ColorArcProgressBar_total_engle, 270).toFloat()
-        bgArcWidth = a.getDimension(R.styleable.ColorArcProgressBar_back_width, dipToPx(2f).toFloat())
-        progressWidth = a.getDimension(R.styleable.ColorArcProgressBar_front_width, dipToPx(10f).toFloat())
-        isNeedTitle = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_title, false)
-        isNeedContent = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_content, false)
-        isNeedUnit = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_unit, false)
-        isNeedDial = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_dial, false)
-        hintString = a.getString(R.styleable.ColorArcProgressBar_string_unit)
-        titleString = a.getString(R.styleable.ColorArcProgressBar_string_title)
-        curValues = a.getFloat(R.styleable.ColorArcProgressBar_current_value, 0f)
-        maxValues = a.getFloat(R.styleable.ColorArcProgressBar_max_value, 60f)
-        setCurrentValues(curValues)
-        setMaxValues(maxValues)
-        a.recycle()
+    fun getStrokeWidth(): Float {
+        return strokeWidth
+    }
 
+    fun setStrokeWidth(strokeWidth: Float) {
+        this.strokeWidth = strokeWidth
+        this.invalidate()
+    }
+
+    fun getSuffixTextSize(): Float {
+        return suffixTextSize
+    }
+
+    fun setSuffixTextSize(suffixTextSize: Float) {
+        this.suffixTextSize = suffixTextSize
+        this.invalidate()
+    }
+
+    fun getBottomText(): String? {
+        return bottomText
+    }
+
+    fun setBottomText(bottomText: String) {
+        this.bottomText = bottomText
+        this.invalidate()
+    }
+
+    fun getBottomTextSize(): Float {
+        return bottomTextSize
+    }
+
+    fun setBottomTextSize(bottomTextSize: Float) {
+        this.bottomTextSize = bottomTextSize
+        this.invalidate()
+    }
+
+    fun getFinishedStrokeColor(): Int {
+        return finishedStrokeColor
+    }
+
+    fun setFinishedStrokeColor(finishedStrokeColor: Int) {
+        this.finishedStrokeColor = finishedStrokeColor
+        this.invalidate()
+    }
+
+    fun getUnfinishedStrokeColor(): Int {
+        return unfinishedStrokeColor
+    }
+
+    fun setUnfinishedStrokeColor(unfinishedStrokeColor: Int) {
+        this.unfinishedStrokeColor = unfinishedStrokeColor
+        this.invalidate()
+    }
+
+    fun getArcAngle(): Float {
+        return arcAngle
+    }
+
+    fun setArcAngle(arcAngle: Float) {
+        this.arcAngle = arcAngle
+        this.invalidate()
+    }
+
+    fun getSuffixText(): String {
+        return suffixText
+    }
+
+    fun setSuffixText(suffixText: String) {
+        this.suffixText = suffixText
+        this.invalidate()
+    }
+
+    fun getSuffixTextPadding(): Float {
+        return suffixTextPadding
+    }
+
+    fun setSuffixTextPadding(suffixTextPadding: Float) {
+        this.suffixTextPadding = suffixTextPadding
+        this.invalidate()
+    }
+
+    override fun getSuggestedMinimumHeight(): Int {
+        return min_size
+    }
+
+    override fun getSuggestedMinimumWidth(): Int {
+        return min_size
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = (2 * longdegree + progressWidth + diameter.toFloat() + (2 * DEGREE_PROGRESS_DISTANCE).toFloat()).toInt()
-        val height = (2 * longdegree + progressWidth + diameter.toFloat() + (2 * DEGREE_PROGRESS_DISTANCE).toFloat()).toInt()
-        setMeasuredDimension(width, height)
-    }
-
-    private fun initView() {
-
-        //弧形的矩阵区域
-        bgRect = RectF()
-        bgRect!!.top = longdegree + progressWidth / 2 + DEGREE_PROGRESS_DISTANCE.toFloat()
-        bgRect!!.left = longdegree + progressWidth / 2 + DEGREE_PROGRESS_DISTANCE.toFloat()
-        bgRect!!.right = diameter + (longdegree + progressWidth / 2 + DEGREE_PROGRESS_DISTANCE.toFloat())
-        bgRect!!.bottom = diameter + (longdegree + progressWidth / 2 + DEGREE_PROGRESS_DISTANCE.toFloat())
-
-        //圆心
-        centerX = (2 * longdegree + progressWidth + diameter.toFloat() + (2 * DEGREE_PROGRESS_DISTANCE).toFloat()) / 2
-        centerY = (2 * longdegree + progressWidth + diameter.toFloat() + (2 * DEGREE_PROGRESS_DISTANCE).toFloat()) / 2
-
-        //外部刻度线
-        degreePaint = Paint()
-        degreePaint!!.color = Color.parseColor(longDegreeColor)
-
-        //整个弧形
-        allArcPaint = Paint()
-        allArcPaint!!.isAntiAlias = true
-        allArcPaint!!.style = Paint.Style.STROKE
-        allArcPaint!!.strokeWidth = bgArcWidth
-        allArcPaint!!.color = Color.parseColor(bgArcColor)
-        allArcPaint!!.strokeCap = Paint.Cap.ROUND
-
-        //当前进度的弧形
-        progressPaint = Paint()
-        progressPaint!!.isAntiAlias = true
-        progressPaint!!.style = Paint.Style.STROKE
-        progressPaint!!.strokeCap = Paint.Cap.ROUND
-        progressPaint!!.strokeWidth = progressWidth
-        progressPaint!!.color = Color.GREEN
-
-        //内容显示文字
-        vTextPaint = Paint()
-        vTextPaint!!.textSize = textSize
-        vTextPaint!!.color = Color.BLACK
-        vTextPaint!!.textAlign = Paint.Align.CENTER
-
-        //显示单位文字
-        hintPaint = Paint()
-        hintPaint!!.textSize = hintSize
-        hintPaint!!.color = Color.parseColor(hintColor)
-        hintPaint!!.textAlign = Paint.Align.CENTER
-
-        //显示标题文字
-        curSpeedPaint = Paint()
-        curSpeedPaint!!.textSize = curSpeedSize
-        curSpeedPaint!!.color = Color.parseColor(hintColor)
-        curSpeedPaint!!.textAlign = Paint.Align.CENTER
-
-        mDrawFilter = PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
-        sweepGradient = SweepGradient(centerX, centerY, colors, null)
-        rotateMatrix = Matrix()
-
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
+        val width = View.MeasureSpec.getSize(widthMeasureSpec)
+        rectF.set(strokeWidth / 2f, strokeWidth / 2f, width - strokeWidth / 2f, View.MeasureSpec.getSize(heightMeasureSpec) - strokeWidth / 2f)
+        val radius = width / 2f
+        val angle = (360 - arcAngle) / 2f
+        arcBottomHeight = radius * (1 - Math.cos(angle / 180 * Math.PI)).toFloat()
     }
 
     override fun onDraw(canvas: Canvas) {
-        //抗锯齿
-        canvas.drawFilter = mDrawFilter
+        super.onDraw(canvas)
+        val startAngle = 270 - arcAngle / 2f
+        val finishedSweepAngle = this.progress / max.toFloat() * arcAngle
+        var finishedStartAngle = startAngle
+        if (this.progress == 0) finishedStartAngle = 0.01f
+        paint!!.color = unfinishedStrokeColor
+        canvas.drawArc(rectF, startAngle, arcAngle, false, paint!!)
+        paint!!.color = finishedStrokeColor
+        canvas.drawArc(rectF, finishedStartAngle, finishedSweepAngle, false, paint!!)
 
-        if (isNeedDial) {
-            //画刻度线
-            for (i in 0..39) {
-                if (i > 15 && i < 25) {
-                    canvas.rotate(9f, centerX, centerY)
-                    continue
-                }
-                if (i % 5 == 0) {
-                    degreePaint!!.strokeWidth = dipToPx(2f).toFloat()
-                    degreePaint!!.color = Color.parseColor(longDegreeColor)
-                    canvas.drawLine(centerX, centerY - (diameter / 2).toFloat() - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE.toFloat(),
-                            centerX, centerY - (diameter / 2).toFloat() - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE.toFloat() - longdegree, degreePaint!!)
-                } else {
-                    degreePaint!!.strokeWidth = dipToPx(1.4f).toFloat()
-                    degreePaint!!.color = Color.parseColor(shortDegreeColor)
-                    canvas.drawLine(centerX, centerY - (diameter / 2).toFloat() - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE.toFloat() - (longdegree - shortdegree) / 2,
-                            centerX, centerY - (diameter / 2).toFloat() - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE.toFloat() - (longdegree - shortdegree) / 2 - shortdegree, degreePaint!!)
-                }
+        val text = progress.toString()
+        val textHeight = suffixTextPaint.descent() + suffixTextPaint.ascent()
+        val textBaseline = (height - textHeight) / 2.0f
+        canvas.drawText(suffixText, (width - suffixTextPaint.measureText(text)) / 4.0f, textBaseline , suffixTextPaint)
 
-                canvas.rotate(9f, centerX, centerY)
-            }
+        if (arcBottomHeight == 0f) {
+            val radius = width / 2f
+            val angle = (360 - arcAngle) / 2f
+            arcBottomHeight = radius * (1 - Math.cos(angle / 180 * Math.PI)).toFloat()
         }
 
-        //整个弧
-        canvas.drawArc(bgRect!!, startAngle, sweepAngle, false, allArcPaint!!)
-
-        //设置渐变色
-        rotateMatrix!!.setRotate(130f, centerX, centerY)
-        sweepGradient!!.setLocalMatrix(rotateMatrix)
-        progressPaint!!.shader = sweepGradient
-
-        //当前进度
-        canvas.drawArc(bgRect!!, startAngle, currentAngle, false, progressPaint!!)
-
-        if (isNeedContent) {
-            canvas.drawText(String.format("%.0f", curValues), centerX, centerY + textSize / 3, vTextPaint!!)
+        if (!TextUtils.isEmpty(getBottomText())) {
+            val bottomTextBaseline = height.toFloat() - arcBottomHeight - (bottomTextPaint.descent() + bottomTextPaint.ascent()) / 2
+            canvas.drawText(getBottomText(), (width - bottomTextPaint.measureText(getBottomText())) / 2.0f, bottomTextBaseline, bottomTextPaint)
         }
-        if (isNeedUnit) {
-            canvas.drawText(hintString!!, centerX, centerY + 2 * textSize / 3, hintPaint!!)
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val bundle = Bundle()
+        bundle.putParcelable(INSTANCE_STATE, super.onSaveInstanceState())
+        bundle.putFloat(INSTANCE_STROKE_WIDTH, getStrokeWidth())
+        bundle.putFloat(INSTANCE_SUFFIX_TEXT_SIZE, getSuffixTextSize())
+        bundle.putFloat(INSTANCE_SUFFIX_TEXT_PADDING, getSuffixTextPadding())
+        bundle.putFloat(INSTANCE_BOTTOM_TEXT_SIZE, getBottomTextSize())
+        bundle.putString(INSTANCE_BOTTOM_TEXT, getBottomText())
+        bundle.putInt(INSTANCE_PROGRESS, progress)
+        bundle.putInt(INSTANCE_MAX, max)
+        bundle.putInt(INSTANCE_FINISHED_STROKE_COLOR, getFinishedStrokeColor())
+        bundle.putInt(INSTANCE_UNFINISHED_STROKE_COLOR, getUnfinishedStrokeColor())
+        bundle.putFloat(INSTANCE_ARC_ANGLE, getArcAngle())
+        bundle.putString(INSTANCE_SUFFIX, getSuffixText())
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        if (state is Bundle) {
+            val bundle = state
+            strokeWidth = bundle.getFloat(INSTANCE_STROKE_WIDTH)
+            suffixTextSize = bundle.getFloat(INSTANCE_SUFFIX_TEXT_SIZE)
+            suffixTextPadding = bundle.getFloat(INSTANCE_SUFFIX_TEXT_PADDING)
+            bottomTextSize = bundle.getFloat(INSTANCE_BOTTOM_TEXT_SIZE)
+            bottomText = bundle.getString(INSTANCE_BOTTOM_TEXT)
+            max = bundle.getInt(INSTANCE_MAX)
+            progress = bundle.getInt(INSTANCE_PROGRESS)
+            finishedStrokeColor = bundle.getInt(INSTANCE_FINISHED_STROKE_COLOR)
+            unfinishedStrokeColor = bundle.getInt(INSTANCE_UNFINISHED_STROKE_COLOR)
+            suffixText = bundle.getString(INSTANCE_SUFFIX)
+            initPainters()
+            super.onRestoreInstanceState(bundle.getParcelable<Parcelable>(INSTANCE_STATE))
+            return
         }
-        if (isNeedTitle) {
-            canvas.drawText(titleString!!, centerX, centerY - 2 * textSize / 3, curSpeedPaint!!)
-        }
-
-        invalidate()
-
+        super.onRestoreInstanceState(state)
     }
 
-    /**
-     * 设置最大值
-     * @param maxValues
-     */
-    fun setMaxValues(maxValues: Float) {
-        this.maxValues = maxValues
-        k = sweepAngle / maxValues
-    }
+    companion object {
 
-    /**
-     * 设置当前值
-     * @param currentValues
-     */
-    fun setCurrentValues(currentValues: Float) {
-        var currentValues = currentValues
-        if (currentValues > maxValues) {
-            currentValues = maxValues
-        }
-        if (currentValues < 0) {
-            currentValues = 0f
-        }
-        this.curValues = currentValues
-        lastAngle = currentAngle
-        setAnimation(lastAngle, currentValues * k, aniSpeed)
+        private val INSTANCE_STATE = "saved_instance"
+        private val INSTANCE_STROKE_WIDTH = "stroke_width"
+        private val INSTANCE_SUFFIX_TEXT_SIZE = "suffix_text_size"
+        private val INSTANCE_SUFFIX_TEXT_PADDING = "suffix_text_padding"
+        private val INSTANCE_BOTTOM_TEXT_SIZE = "bottom_text_size"
+        private val INSTANCE_BOTTOM_TEXT = "bottom_text"
+        private val INSTANCE_TEXT_SIZE = "text_size"
+        private val INSTANCE_TEXT_COLOR = "text_color"
+        private val INSTANCE_PROGRESS = "progress"
+        private val INSTANCE_MAX = "max"
+        private val INSTANCE_FINISHED_STROKE_COLOR = "finished_stroke_color"
+        private val INSTANCE_UNFINISHED_STROKE_COLOR = "unfinished_stroke_color"
+        private val INSTANCE_ARC_ANGLE = "arc_angle"
+        private val INSTANCE_SUFFIX = "suffix"
     }
-
-    /**
-     * 设置整个圆弧宽度
-     * @param bgArcWidth
-     */
-    fun setBgArcWidth(bgArcWidth: Int) {
-        this.bgArcWidth = bgArcWidth.toFloat()
-    }
-
-    /**
-     * 设置进度宽度
-     * @param progressWidth
-     */
-    fun setProgressWidth(progressWidth: Int) {
-        this.progressWidth = progressWidth.toFloat()
-    }
-
-    /**
-     * 设置速度文字大小
-     * @param textSize
-     */
-    fun setTextSize(textSize: Int) {
-        this.textSize = textSize.toFloat()
-    }
-
-    /**
-     * 设置单位文字大小
-     * @param hintSize
-     */
-    fun setHintSize(hintSize: Int) {
-        this.hintSize = hintSize.toFloat()
-    }
-
-    /**
-     * 设置单位文字
-     * @param hintString
-     */
-    fun setUnit(hintString: String) {
-        this.hintString = hintString
-        invalidate()
-    }
-
-    /**
-     * 设置直径大小
-     * @param diameter
-     */
-    fun setDiameter(diameter: Int) {
-        this.diameter = dipToPx(diameter.toFloat())
-    }
-
-    /**
-     * 设置标题
-     * @param title
-     */
-    private fun setTitle(title: String) {
-        this.titleString = title
-    }
-
-    /**
-     * 设置是否显示标题
-     * @param isNeedTitle
-     */
-    private fun setIsNeedTitle(isNeedTitle: Boolean) {
-        this.isNeedTitle = isNeedTitle
-    }
-
-    /**
-     * 设置是否显示单位文字
-     * @param isNeedUnit
-     */
-    private fun setIsNeedUnit(isNeedUnit: Boolean) {
-        this.isNeedUnit = isNeedUnit
-    }
-
-    /**
-     * 设置是否显示外部刻度盘
-     * @param isNeedDial
-     */
-    private fun setIsNeedDial(isNeedDial: Boolean) {
-        this.isNeedDial = isNeedDial
-    }
-
-    /**
-     * 为进度设置动画
-     * @param last
-     * *
-     * @param current
-     */
-    private fun setAnimation(last: Float, current: Float, length: Int) {
-        progressAnimator = ValueAnimator.ofFloat(last, current)
-        progressAnimator!!.duration = length.toLong()
-        progressAnimator!!.setTarget(currentAngle)
-        progressAnimator!!.addUpdateListener { animation ->
-            currentAngle = animation.animatedValue as Float
-            curValues = currentAngle / k
-        }
-        progressAnimator!!.start()
-    }
-
-    /**
-     * dip 转换成px
-     * @param dip
-     * *
-     * @return
-     */
-    private fun dipToPx(dip: Float): Int {
-        val density = context.resources.displayMetrics.density
-        return (dip * density + 0.5f * if (dip >= 0) 1 else -1).toInt()
-    }
-
-    /**
-     * 得到屏幕宽度
-     * @return
-     */
-    private val screenWidth: Int
-        get() {
-            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val displayMetrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-            return displayMetrics.widthPixels
-        }
 }

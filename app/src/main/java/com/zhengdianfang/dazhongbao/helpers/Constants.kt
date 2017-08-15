@@ -5,4 +5,6 @@ package com.zhengdianfang.dazhongbao.helpers
  */
 object Constants {
     val PREFERENCE_USER_KEY = "preference_user_key"
+
+    val SOLD_COUNT_BASE_UNIT = 10000
 }

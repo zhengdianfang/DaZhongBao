@@ -23,4 +23,10 @@ class ProductRepository {
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<Product>(data, Product::class.java) }
     }
+
+    fun getProductInfo(token: String, productId: Long): Observable<Product> {
+        return API.appClient.create(ProductApi::class.java).getProductInfo(token, productId)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<Product>(data, Product::class.java) }
+    }
 }

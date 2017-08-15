@@ -54,7 +54,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener  {
         }
     }
 
-    private fun resetCurrentTab() {
+    fun resetCurrentTab() {
         viewPage.currentItem = 0
         bottomBar.setCurrentTab(0)
     }

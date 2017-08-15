@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -31,6 +30,9 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
+    }
+    dexOptions {
+        javaMaxHeapSize "8g"
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/raw'] } }
 }

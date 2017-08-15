@@ -1,18 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fragment_background_color"
+    android:clickable="true"
+    android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.zhengdianfang.dazhongbao.views.home.AuctionFragment">
 
-    <com.zhengdianfang.dazhongbao.views.components.ColorArcProgressBar
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        app:max_value="100"
-        app:back_width="10dp"
-        app:front_width="10dp"
-        app:total_engle="270"
-        app:front_color1="@color/colorPrimary"
-        app:back_color="@android:color/holo_red_light"/>
-</FrameLayout>
+
+    <com.zhengdianfang.dazhongbao.views.components.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/app_name"
+        app:enable_back="false"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/auctionReyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layoutManager="LinearLayoutManager"/>
+
+</LinearLayout>

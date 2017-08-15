@@ -36,12 +36,12 @@
                     style="@style/AppTheme.PushFragment.EditLabel"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    android:text="@string/fragment_push_company_code"/>
+                    android:text="@string/fragment_push_shares_code"/>
                 <EditText
                     android:id="@+id/companyCodeEditView"
                     style="@style/AppTheme.PushFragment.EditText"
                     android:layout_height="wrap_content"
-                    android:hint="@string/please_input_company_code"/>
+                    android:hint="@string/please_input_shares_code"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:id="@+id/companyUnitPriceEditView"
                     style="@style/AppTheme.PushFragment.EditText"
                     android:layout_height="wrap_content"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,25 +104,19 @@
                     android:layout_weight="1"
                     style="@style/AppTheme.PushFragment.EditLabel"
                     android:text="@string/fragment_push_limit_label"/>
-                <RadioGroup
-                    android:id="@+id/limitRadioGroup"
+
+                <RadioButton
+                    android:id="@+id/radioYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <RadioButton
-                        android:id="@+id/radioYes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/yes_label"/>
-                    <RadioButton
-                        android:id="@+id/radioNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:text="@string/no_label"/>
-                </RadioGroup>
-
+                    android:checked="true"
+                    android:text="@string/yes_label"/>
+                <RadioButton
+                    android:id="@+id/radioNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/no_label"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context="com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity">
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -22,6 +23,8 @@
         app:layoutManager="LinearLayoutManager"/>
 
     <TextView
+        android:id="@+id/statusInfoView"
+        android:textColor="#ffb414"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:background="@color/product_detail_info_background"/>
@@ -65,10 +68,12 @@
                 android:text="@string/call_lable"/>
         </FrameLayout>
         <TextView
+            android:id="@+id/statusView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
             android:text="@string/waiting_auction"/>
     </LinearLayout>

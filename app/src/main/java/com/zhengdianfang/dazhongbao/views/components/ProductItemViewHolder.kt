@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.components
 
+import android.content.Intent
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -7,7 +8,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 /**
  * Created by dfgzheng on 05/08/2017.
@@ -23,7 +26,7 @@ class ProductItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
     fun setData(product: Product){
         stockCodeView?.text = "[${product.sharesCode}]"
         stockNameView?.text = product.sharesName
-        soldCountView?.text =  itemView?.context?.getString(R.string.sold_count_value, product.soldCount)
+        soldCountView?.text =  itemView?.context?.getString(R.string.sold_count_value, product.soldCount / Constants.SOLD_COUNT_BASE_UNIT)
         industryNameView?.text = product.industry
         nowUnitPriceView?.text = itemView?.context?.getString(R.string.price_unit_value, product.nowUnitPrice.toString())
         if (product.attention == 0){
@@ -34,6 +37,11 @@ class ProductItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
             attentionButton?.setText(R.string.attentioned)
             attentionButton?.setTextColor(ContextCompat.getColor(itemView?.context, R.color.activity_login_weixin_button_text_color))
             attentionButton?.setBackgroundResource(R.drawable.product_item_un_attention_button_background)
+        }
+
+        itemView.setOnClickListener {
+            itemView?.context?.
+                    startActivity(Intent(itemView?.context, ProductDetailActivity::class.java).putExtra("productId", product.id))
         }
     }
 }

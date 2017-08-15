@@ -1,10 +1,12 @@
 package com.zhengdianfang.dazhongbao.views.basic
 
+import android.content.Intent
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
 /**
  * Created by dfgzheng on 25/07/2017.
@@ -42,6 +44,18 @@ abstract class BaseActivity : AppCompatActivity() {
         }else {
             finish()
         }
+    }
+
+    open fun validateErrorUI(errorMsgResId: Int) {
+        toast(errorMsgResId)
+    }
+
+    open fun networkError(errorMsg: String) {
+        toast(errorMsg)
+    }
+
+    open fun noLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
     fun startFragment(id: Int, nextFragment: Fragment, backStack: String? = null) {

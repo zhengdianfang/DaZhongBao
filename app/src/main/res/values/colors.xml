@@ -12,4 +12,7 @@
     <color name="toolbar_title_light_color">#1E1E1E</color>
     <color name="toolbar_title_dark_color">#FFFFFF</color>
     <color name="product_detail_info_background">#fff0c8</color>
+    <color name="c_3cc751">#3cc751</color>
+    <color name="c_f43d3d">#f43d3d</color>
+    <color name="c_f9b416">#f9b416</color>
 </resources>

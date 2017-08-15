@@ -14,7 +14,7 @@ class PushProductValidate(mIView: IView?) : BaseValidate(mIView) {
        var res = true
         if (sharesCodes.isNullOrEmpty()){
             res = false
-            mIView?.validateErrorUI(R.string.please_input_company_code)
+            mIView?.validateErrorUI(R.string.please_input_shares_code)
         }else if (companyName.isNullOrEmpty()){
             res = false
             mIView?.validateErrorUI(R.string.please_input_company_owner_name)

@@ -17,6 +17,15 @@ class ProductRecyclerViewAdapter(val product: Product?, val bidPriceList: Mutabl
     private val PRODUCT_NOTES_ITEM = 2
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        when(getItemViewType(position)) {
+            PRODUCT_INFO_ITEM -> {
+                (holder as ProductDetailHeaderViewHolder).setData(product)
+            }
+            PRODUCT_BID_ITEM -> {
+            }
+            PRODUCT_NOTES_ITEM -> {
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {

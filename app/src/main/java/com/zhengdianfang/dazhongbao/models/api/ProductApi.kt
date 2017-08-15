@@ -19,8 +19,12 @@ interface ProductApi {
 
     @FormUrlEncoded
     @POST("products/push")
-    fun pushProduct(@Field("token") token: String,@Field("sharesCode") sharesCodes: String,
+    fun pushProduct(@Field("token") token: String, @Field("sharesCode") sharesCodes: String,
                     @Field("companyName") companyName: String, @Field("basicUnitPrice") basicUnitPrice: Double,
                     @Field("soldCount") soldCount: Int,@Field("limitTime") limitTime: Long,
                     @Field("notes") notes: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/getProductInfo")
+    fun getProductInfo(@Field("token") token: String, @Field("productId") productId: Long): Observable<JsonNode>
 }

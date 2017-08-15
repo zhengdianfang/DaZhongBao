@@ -75,4 +75,8 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
         }
 
     }
+
+    fun setTitle(title: String){
+        titleView.text = title
+    }
 }
