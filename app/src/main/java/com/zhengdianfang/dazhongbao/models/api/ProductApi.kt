@@ -14,7 +14,7 @@ interface ProductApi {
     @FormUrlEncoded
     @POST("products/plist")
     fun getProductList(@Field("token") token: String?, @Field("pageNumber") pageNumber: Int,
-                       @Field("check_status") checkStatus: Int): Observable<JsonNode>
+                       @Field("check_status") checkStatus: String , @Field("order") order: String): Observable<JsonNode>
 
 
     @FormUrlEncoded
@@ -27,4 +27,12 @@ interface ProductApi {
     @FormUrlEncoded
     @POST("products/getProductInfo")
     fun getProductInfo(@Field("token") token: String, @Field("productId") productId: Long): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/checkSharesCode")
+    fun getSharesInfo(@Field("token") token: String, @Field("sharesCode") sharesCode: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/attention")
+    fun followProduct(@Field("token") token: String, @Field("productId")productId: Long): Observable<JsonNode>
 }

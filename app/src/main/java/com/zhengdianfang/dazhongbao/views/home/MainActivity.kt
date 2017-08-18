@@ -12,7 +12,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.BottomBar
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
-class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener  {
+class MainActivity : BaseActivity() {
 
     private val bottomBar by lazy { findViewById<BottomBar>(R.id.bottomBar) }
     private val viewPage by lazy { findViewById<ViewPager>(R.id.homeViewPager) }
@@ -33,26 +33,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener  {
 
         viewPage.offscreenPageLimit = fragments.size
         viewPage.adapter = MainFragmentAdapter(supportFragmentManager)
-        viewPage.addOnPageChangeListener(this)
-    }
-    override fun onPageScrollStateChanged(state: Int) {
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
     }
 
     private  fun isLogin(index: Int): Boolean {
        return index <= 1 || CApplication.INSTANCE.isLogin()
     }
 
-    override fun onPageSelected(position: Int) {
-        if (isLogin(position)) {
-            bottomBar.setCurrentTab(position)
-        }else {
-            startActivity(Intent(MainActivity@this, LoginActivity::class.java))
-            resetCurrentTab()
-        }
-    }
 
     fun resetCurrentTab() {
         viewPage.currentItem = 0

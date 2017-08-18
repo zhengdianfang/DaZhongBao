@@ -4,30 +4,30 @@ package com.zhengdianfang.dazhongbao.views.home
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
+import android.widget.*
 import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.ProductPresenter
+import com.zhengdianfang.dazhongbao.models.product.SharesInfo
+import com.zhengdianfang.dazhongbao.presenters.PushProductPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
-import com.zhengdianfang.dazhongbao.views.product.IPushProduct
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class PushFragment : BaseFragment(), IPushProduct{
+class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct{
 
-    private val companyCodeEditView by lazy { view?.findViewById<EditText>(R.id.companyCodeEditView)!! }
+    private val sharesCodeEditView by lazy { view?.findViewById<AutoCompleteTextView>(R.id.sharesCodeEditView)!! }
     private val companyUnitPriceEditView by lazy { view?.findViewById<EditText>(R.id.companyUnitPriceEditView)!! }
     private val saleCountEditView by lazy { view?.findViewById<EditText>(R.id.saleCountEditView)!! }
     private val yesRadio by lazy { view?.findViewById<RadioButton>(R.id.radioYes)!! }
@@ -35,13 +35,14 @@ class PushFragment : BaseFragment(), IPushProduct{
     private val shareOwnerNameEidtView by lazy { view?.findViewById<EditText>(R.id.shareOwnerNameEidtView)!! }
     private val detailEditView by lazy { view?.findViewById<EditText>(R.id.detailEditView)!! }
     private val pushButton by lazy { view?.findViewById<Button>(R.id.pushButton)!! }
-    private val mProductPresenter by lazy { ProductPresenter() }
+    private val mPushProductPresenter by lazy { PushProductPresenter() }
     private val pushSuccessDialog by lazy {
         MaterialDialog.Builder(context)
                 .content(R.string.push_success_content)
                 .cancelable(false)
                 .build()
     }
+    private var selectedShareCode = ""
 
 
 
@@ -53,7 +54,7 @@ class PushFragment : BaseFragment(), IPushProduct{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mProductPresenter.attachView(this)
+        mPushProductPresenter.attachView(this)
 
         yesRadio.setOnCheckedChangeListener { compoundButton, b ->
             if (b){
@@ -67,14 +68,14 @@ class PushFragment : BaseFragment(), IPushProduct{
         }
 
         pushButton.setOnClickListener {
-            val companyCode = companyCodeEditView.text.toString()
+            val companyCode = if(this.selectedShareCode.isEmpty())  sharesCodeEditView.text.toString() else this.selectedShareCode
             val companyUnitPrice = if(TextUtils.isEmpty(companyUnitPriceEditView.text.toString())) 0.0 else companyUnitPriceEditView.text.toString().toDouble()
             val soldCount = if(TextUtils.isEmpty(saleCountEditView.text.toString())) 0 else saleCountEditView.text.toString().toInt()
             val notes = detailEditView.text.toString()
             val sharesOwnerName = shareOwnerNameEidtView.text.toString()
-            val limitTime = if(yesRadio.isChecked ?: false) 6L else 0
+            val limitTime = if(yesRadio.isChecked) 6L else 0
             val token = CApplication.INSTANCE.loginUser?.token ?: ""
-            if (mProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount * Constants.SOLD_COUNT_BASE_UNIT)){
+            if (mPushProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount * Constants.SOLD_COUNT_BASE_UNIT)){
                MaterialDialog.Builder(context)
                        .content(getString(R.string.push_confirm_dialog_content, sharesOwnerName, limitTime))
                        .title(R.string.authorization_agreement)
@@ -83,16 +84,43 @@ class PushFragment : BaseFragment(), IPushProduct{
                        .positiveText(R.string.agreeAndSubmit)
                        .onPositive { dialog, _ ->
                            dialog.dismiss()
-                           mProductPresenter.pushProduct(token, companyCode, sharesOwnerName, companyUnitPrice, soldCount, limitTime, notes)
+                           mPushProductPresenter.pushProduct(token, companyCode, sharesOwnerName, companyUnitPrice, soldCount, limitTime, notes)
                        }
                        .show()
             }
         }
+        sharesCodeEditView.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(editable: Editable?) {
+                val code = editable.toString()
+                if(code.length >= 6){
+                    val results = CApplication.INSTANCE.shareInfosCache.filter { it.code == code }
+                    if (results.isNotEmpty()){
+                        showDropDown(results.first())
+                    }else{
+                        mPushProductPresenter.getSharesInfo(CApplication.INSTANCE.loginUser?.token ?: "", code)
+                    }
+                }
+
+            }
+
+            override fun beforeTextChanged(editable: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(editable: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        })
+        sharesCodeEditView.setOnItemClickListener { adapterView, view, i, l ->
+           this.selectedShareCode = (adapterView.getItemAtPosition(i) as SharesInfo).code
+        }
+    }
+
+    private fun showDropDown(sharesInfo: SharesInfo) {
+        val adapter =  ArrayAdapter<SharesInfo>(context, android.R.layout.simple_list_item_1, CApplication.INSTANCE.shareInfosCache.filter { it == sharesInfo })
+        sharesCodeEditView.setAdapter(adapter)
+        sharesCodeEditView.showDropDown()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mProductPresenter.detachView()
+        mPushProductPresenter.detachView()
     }
 
     override fun receiverProduct(product: Product) {
@@ -101,6 +129,11 @@ class PushFragment : BaseFragment(), IPushProduct{
             pushSuccessDialog.dismiss()
             (getParentActivity() as MainActivity).resetCurrentTab()
         }, 3000)
+    }
+
+    override fun receiverSharesInfo(sharesInfo: SharesInfo) {
+        CApplication.INSTANCE.shareInfosCache.add(sharesInfo)
+        showDropDown(sharesInfo)
     }
 
 }// Required empty public constructor

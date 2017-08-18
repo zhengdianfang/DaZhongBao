@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 
 /**
  * Created by dfgzheng on 05/08/2017.
  */
-class RecyclerViewAdapter(val products: MutableList<Product>) : RecyclerView.Adapter<ProductItemViewHolder>() {
+class RecyclerViewAdapter(val products: MutableList<Product>, val followProductPresenter: FollowProductPresenter) : RecyclerView.Adapter<ProductItemViewHolder>() {
 
     override fun onBindViewHolder(holder: ProductItemViewHolder?, position: Int) {
         holder?.setData(products[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ProductItemViewHolder {
-        val viewHolder = ProductItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.fragment_home_product_item_layout, parent, false))
+        val viewHolder = ProductItemViewHolder(
+                LayoutInflater.from(parent?.context).inflate(R.layout.fragment_home_product_item_layout, parent, false),
+                        followProductPresenter)
         return viewHolder
     }
 

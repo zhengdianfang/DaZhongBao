@@ -24,7 +24,7 @@ import com.zhengdianfang.dazhongbao.views.home.adapter.TabViewPagerAdapter
  */
 class HomeFragment : BaseFragment(){
 
-    private val tabs = intArrayOf(-1, -1)
+    private val tabs = arrayOf("3,4,5", "0")
 
     private val adverts = mutableListOf<Advert>()
     private val advertViewPagerAdapter by lazy { AdvertViewPagerAdapter(adverts) }

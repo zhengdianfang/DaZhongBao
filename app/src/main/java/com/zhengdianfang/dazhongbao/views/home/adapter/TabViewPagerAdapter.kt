@@ -8,7 +8,7 @@ import com.zhengdianfang.dazhongbao.views.components.ProductRecyclerView
 /**
  * Created by dfgzheng on 05/08/2017.
  */
-class TabViewPagerAdapter(val tabs: IntArray) : PagerAdapter() {
+class TabViewPagerAdapter(val tabs: Array<String>) : PagerAdapter() {
     override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
         return view == `object`
     }

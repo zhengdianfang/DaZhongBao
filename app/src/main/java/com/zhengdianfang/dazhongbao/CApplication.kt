@@ -7,6 +7,7 @@ import android.text.TextUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.product.SharesInfo
 import java.io.File
 import kotlin.properties.Delegates
 
@@ -34,6 +35,7 @@ class CApplication : Application(){
             return field
         }
 
+    val shareInfosCache = mutableListOf<SharesInfo>()
 
     init {
         INSTANCE = this

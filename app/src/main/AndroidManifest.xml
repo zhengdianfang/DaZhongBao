@@ -16,23 +16,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.StartupActivity" />
-        <activity
-            android:name=".views.home.MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".views.StartupActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".views.home.MainActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".views.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.setting.SettingActivity" />
         <activity android:name=".views.user.PersonalInfoActivity" />
-        <activity android:name=".views.product.ProductDetailActivity">
-        </activity>
+        <activity android:name=".views.product.ProductDetailActivity" />
+
+        <!-- alipay -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".views.user.MyProductListActivity" />
+        <activity android:name=".views.user.MyFollowProductListActivity"></activity>
     </application>
 
 </manifest>

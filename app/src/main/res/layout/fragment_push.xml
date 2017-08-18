@@ -37,8 +37,8 @@
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:text="@string/fragment_push_shares_code"/>
-                <EditText
-                    android:id="@+id/companyCodeEditView"
+                <AutoCompleteTextView
+                    android:id="@+id/sharesCodeEditView"
                     style="@style/AppTheme.PushFragment.EditText"
                     android:layout_height="wrap_content"
                     android:hint="@string/please_input_shares_code"/>

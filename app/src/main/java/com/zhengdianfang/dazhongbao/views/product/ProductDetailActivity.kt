@@ -49,9 +49,12 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productRecyclerView.adapter = productRecyclerViewAdapter
     }
 
-    override fun renderActionBar(backgroundColorResId: Int, textResId: Int){
+    override fun renderActionBar(backgroundColorResId: Int, textResId: Int, statusInfoStringResId: Int){
         statusView.setText(textResId)
         statusView.setBackgroundColor(ContextCompat.getColor(this.applicationContext, backgroundColorResId))
+        if(statusInfoStringResId != 0){
+            statusInfoView.setText(statusInfoStringResId)
+        }
     }
 
 }
