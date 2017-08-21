@@ -48,7 +48,8 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".views.user.MyProductListActivity" />
-        <activity android:name=".views.user.MyFollowProductListActivity"></activity>
+        <activity android:name=".views.user.MyFollowProductListActivity" />
+        <activity android:name=".views.user.MyAttentionActivity"></activity>
     </application>
 
 </manifest>

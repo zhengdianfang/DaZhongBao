@@ -122,7 +122,7 @@ class UserPresenter: BasePresenter() {
 
     }
 
-    fun fetchUserPushedProduct(token: String){
+    fun fetchUserPushedProducts(token: String){
        if (phoneNumberValidate.checkLogin()) {
            mView?.showLoadingDialog()
            addSubscription(mUserRepository.fetchUserPushedProduct(token), Consumer { list ->
@@ -130,6 +130,16 @@ class UserPresenter: BasePresenter() {
                mView?.hideLoadingDialog()
            })
        }
+    }
+
+    fun fetchUserAttentionProducts(token: String){
+        if (phoneNumberValidate.checkLogin()) {
+            mView?.showLoadingDialog()
+            addSubscription(mUserRepository.fetchUserAttentionProducts(token), Consumer { list ->
+                (mView as IUserAttentionListView).receiveUserAttentionList(list)
+                mView?.hideLoadingDialog()
+            })
+        }
     }
 
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
@@ -176,4 +186,7 @@ class UserPresenter: BasePresenter() {
        fun receiveUserProductList(list: MutableList<Product>)
     }
 
+    interface IUserAttentionListView: IView {
+        fun receiveUserAttentionList(list: MutableList<Product>)
+    }
 }

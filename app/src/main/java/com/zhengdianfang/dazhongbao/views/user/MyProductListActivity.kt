@@ -57,7 +57,7 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
     }
 
     override fun requestList(pageNumber: Int) {
-        userPresenter.fetchUserPushedProduct(CApplication.INSTANCE.loginUser?.token!!)
+        userPresenter.fetchUserPushedProducts(CApplication.INSTANCE.loginUser?.token!!)
     }
 
     override fun createRecyclerView(): XRecyclerView {
