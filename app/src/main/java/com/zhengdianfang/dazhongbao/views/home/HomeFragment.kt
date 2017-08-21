@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         advertPresenter.attachView(this)
         setupViewPager()
         setupTabViewPager()
-        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
+//        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
         advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
 
     }
@@ -57,7 +57,8 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     private fun setupViewPager() {
         mAdvertViewPager.setMultiScreen(0.75f)
         mAdvertViewPager.setPageTransformer(false, MiracleScaleTransformer())
-        mAdvertViewPager.setInfiniteLoop(true)
+ //
+        //       mAdvertViewPager.setInfiniteLoop(true)
         //        mAdvertViewPager.setAutoScroll(2000)
         mAdvertViewPager.adapter = advertViewPagerAdapter
         mTabViewPager.adapter = tabViewPagerAdapter

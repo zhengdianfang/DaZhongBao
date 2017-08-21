@@ -100,7 +100,7 @@
     <string name="fragment_push_sale_count">卖出数量</string>
     <string name="the_smallest_unit_is_one_share">(精确到1股)</string>
     <string name="fragment_push_share_unit">股</string>
-    <string name="fragment_push_price_unit">元 /  股</string>
+    <string name="fragment_push_price_unit">元 / 股</string>
     <string name="fragment_push_limit_label">买方限售6个月</string>
     <string name="yes_label">是</string>
     <string name="no_label">否</string>
@@ -146,4 +146,9 @@
     <string name="ready_beal_status">等待交割</string>
     <string name="verify_fail_status">审核没通过</string>
     <string name="pay_label">支付</string>
+    <string name="my_product_item_total_price_label">合计: %s万元</string>
+    <string name="detail_more_label">明细</string>
+    <string name="auction_success_total_count">成功竞拍：%s万股</string>
+    <string name="my_start_gap_time">%1$s天%2$s小时</string>
+    <string name="my_start_gap_label">距离开拍：%s</string>
 </resources>
