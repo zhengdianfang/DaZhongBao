@@ -1,9 +1,12 @@
 package com.zhengdianfang.dazhongbao.models.login
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.UserApi
 import com.zhengdianfang.dazhongbao.models.mock.mockUser
+import com.zhengdianfang.dazhongbao.models.mock.mockUserProducts
+import com.zhengdianfang.dazhongbao.models.product.Product
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -14,8 +17,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by dfgzheng on 08/08/2017.
  */
-class UserRepository {
-    private val MOCK = false
+class UserRepository(private var MOCK: Boolean = false) {
     fun modifyPassword(password: String, token: String): Observable<String> {
         return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
                 .map {json ->
@@ -91,5 +93,25 @@ class UserRepository {
         return API.appClient.create(UserApi::class.java).modifyPhoneNumber(token, phoneNumber, verifyCode)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
+    }
+
+    fun fetchIndexCount(token: String): Observable<IntArray>{
+        return API.appClient.create(UserApi::class.java).fetchIndexCount(token)
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        val data = json.get("data")
+                        return@map intArrayOf(data.get("DealCount").asInt(), data.get("ProductCount").asInt(), data.get("MessageCount").asInt())
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
+    }
+
+    fun fetchUserPushedProduct(token: String): Observable<MutableList<Product>> {
+        if (MOCK){
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(UserApi::class.java).fetchUserPushedProduct(token)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
     }
 }

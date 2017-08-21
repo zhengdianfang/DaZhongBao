@@ -1,26 +1,19 @@
 package com.zhengdianfang.dazhongbao.views.login
 
-
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
-import com.zhengdianfang.dazhongbao.views.home.MainActivity
-
 
 /**
  * A simple [Fragment] subclass.
  */
-class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView{
+class FindPasswordFragment : BaseFragment() , IFindPasswordView {
 
     private val passwordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
     private val submitButton by lazy { view?.findViewById<Button>(R.id.submitButton)!! }
@@ -37,7 +30,9 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
 
         mUserPresenter.attachView(this)
         submitButton.setOnClickListener {
-            mUserPresenter.setPassword(passwordEditText.text.toString(), CApplication.INSTANCE.loginUser?.token ?: "")
+            val phoneNumber = arguments?.getString("phoneNumber") ?: ""
+            val verifyCode = arguments?.getString("verifyCode") ?: ""
+            mUserPresenter.findPassword(passwordEditText.text.toString(), verifyCode, phoneNumber)
         }
     }
 
@@ -59,13 +54,8 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
         toast(errorMsgResId)
     }
 
-    override fun setPasswordSuccess(user: User) {
-        toast(R.string.toast_set_password_successful)
-        CApplication.INSTANCE.loginUser = user
-        replaceFragment(android.R.id.content, SetOrganizationInfoFragment(), "login")
-    }
     override fun findPasswordSuccess(msg: String) {
         toast(msg)
-        startActivity(Intent(getParentActivity(), MainActivity::class.java))
+        replaceFragment(android.R.id.content, LoginFragment())
     }
 }// Required empty public constructor

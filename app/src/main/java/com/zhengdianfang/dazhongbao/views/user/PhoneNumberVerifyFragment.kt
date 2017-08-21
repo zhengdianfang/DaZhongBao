@@ -13,10 +13,10 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.login.FindPasswordFragment
 import com.zhengdianfang.dazhongbao.views.login.ISendSmsCode
 import com.zhengdianfang.dazhongbao.views.login.IVerifySmsCode
 import com.zhengdianfang.dazhongbao.views.login.ModifyPasswordFragment
-import com.zhengdianfang.dazhongbao.views.login.SetPasswordFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -96,7 +96,7 @@ class PhoneNumberVerifyFragment: BaseFragment(), IVerifySmsCode , ISendSmsCode{
                 val bundle = Bundle()
                 bundle.putString("phoneNumber", phoneEditText.text.toString())
                 bundle.putString("verifyCode", smsCodeEditText.text.toString())
-                val fragment = SetPasswordFragment()
+                val fragment = FindPasswordFragment()
                 fragment.arguments = bundle
                 replaceFragment(android.R.id.content, fragment, "login")
             }

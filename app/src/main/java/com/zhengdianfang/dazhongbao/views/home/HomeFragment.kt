@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Advert
+import com.zhengdianfang.dazhongbao.presenters.AdvertPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleViewPager
 import com.zhengdianfang.dazhongbao.views.components.miraclePageView.transformer.MiracleScaleTransformer
@@ -22,7 +24,7 @@ import com.zhengdianfang.dazhongbao.views.home.adapter.TabViewPagerAdapter
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : BaseFragment(){
+class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPresenter.IIndexCountView{
 
     private val tabs = arrayOf("3,4,5", "0")
 
@@ -34,6 +36,7 @@ class HomeFragment : BaseFragment(){
     private val tabOneView by lazy { view?.findViewById<TextView>(R.id.tabOne)!! }
     private val tabTwoView by lazy { view?.findViewById<TextView>(R.id.tabTwo)!! }
     private val dealCountView by lazy { view?.findViewById<TextView>(R.id.dealCountView)!! }
+    private val advertPresenter by lazy { AdvertPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,10 +46,19 @@ class HomeFragment : BaseFragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        advertPresenter.attachView(this)
+        setupViewPager()
+        setupTabViewPager()
+        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
+        advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
+
+    }
+
+    private fun setupViewPager() {
         mAdvertViewPager.setMultiScreen(0.75f)
         mAdvertViewPager.setPageTransformer(false, MiracleScaleTransformer())
         mAdvertViewPager.setInfiniteLoop(true)
-//        mAdvertViewPager.setAutoScroll(2000)
+        //        mAdvertViewPager.setAutoScroll(2000)
         mAdvertViewPager.adapter = advertViewPagerAdapter
         mTabViewPager.adapter = tabViewPagerAdapter
 
@@ -57,8 +69,11 @@ class HomeFragment : BaseFragment(){
                 ?.setNormalResId(R.mipmap.advert_viewpager_normal_indicator)
                 ?.build()
 
+    }
+
+    private fun setupTabViewPager() {
         tabOneView.setOnClickListener {
-           mTabViewPager.currentItem = 0
+            mTabViewPager.currentItem = 0
         }
         tabTwoView.setOnClickListener {
             mTabViewPager.currentItem = 1
@@ -72,12 +87,10 @@ class HomeFragment : BaseFragment(){
             }
 
             override fun onPageSelected(position: Int) {
-               switchTab(position)
+                switchTab(position)
             }
 
         })
-        dealCountView.text = getString(R.string.fragment_home_deal_count_label, 0, 0)
-
     }
 
     private fun switchTab(positon: Int) {
@@ -93,6 +106,17 @@ class HomeFragment : BaseFragment(){
 
     override fun onDestroyView() {
         super.onDestroyView()
+        advertPresenter.detachView()
     }
 
+    override fun receiveBanner(advertList: MutableList<Advert>) {
+        adverts.clear()
+        adverts.addAll(advertList)
+//        advertViewPagerAdapter.notifyDataSetChanged()
+ //       mAdvertViewPager.adapter?.notifyDataSetChanged()
+    }
+
+    override fun receiveIndexCount(dealCount: Int, productCount: Int, messageCount: Int) {
+        dealCountView.text = getString(R.string.fragment_home_deal_count_label, dealCount, productCount)
+    }
 }

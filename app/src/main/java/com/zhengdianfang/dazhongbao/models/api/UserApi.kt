@@ -3,42 +3,44 @@ package com.zhengdianfang.dazhongbao.models.api
 import com.fasterxml.jackson.databind.JsonNode
 import io.reactivex.Observable
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by dfgzheng on 26/07/2017.
  */
 interface UserApi {
 
+    @FormUrlEncoded
     @POST("users/login")
-    fun loginByPhone(@Query("username") username: String,
-                     @Query("password") password: String,
-                     @Query("ver") ver: String,
-                     @Query("deviceid") deviceId: String,
-                     @Query("platform") platform: String = "Android"): Observable<JsonNode>
+    fun loginByPhone(@Field("username") username: String,
+                     @Field("password") password: String,
+                     @Field("ver") ver: String,
+                     @Field("deviceid") deviceId: String,
+                     @Field("platform") platform: String = "Android"): Observable<JsonNode>
 
+    @FormUrlEncoded
     @POST("users/sendvno")
-    fun getSmsVerifyCode(@Query("phonenumber") phoneNumber: String,
-                     @Query("ac") type: Int): Observable<JsonNode>
+    fun getSmsVerifyCode(@Field("phonenumber") phoneNumber: String,
+                     @Field("ac") type: Int): Observable<JsonNode>
 
+    @FormUrlEncoded
     @POST("users/registered")
-    fun register(@Query("phonenumber") phoneNumber: String,
-                 @Query("verifyCode") verifyCode: String,
-                 @Query("recommendPerson") recommendPerson: String): Observable<JsonNode>
+    fun register(@Field("phonenumber") phoneNumber: String,
+                 @Field("verifyCode") verifyCode: String,
+                 @Field("recommendPerson") recommendPerson: String): Observable<JsonNode>
 
+    @FormUrlEncoded
     @POST("users/resetpwd")
-    fun modifyPassword(@Query("password") password: String,
-                       @Query("phonenumber") phoneNumber: String,
-                       @Query("verifyCode") verifyCode: String,
-                       @Query("token") token: String): Observable<JsonNode>
+    fun modifyPassword(@Field("password") password: String,
+                       @Field("phonenumber") phoneNumber: String,
+                       @Field("verifyCode") verifyCode: String,
+                       @Field("token") token: String): Observable<JsonNode>
 
+    @FormUrlEncoded
     @POST("users/checkvno")
-    fun verifySmsCode(@Query("phonenumber") phoneNumber: String,
-                      @Query("ac") type: Int,
-                      @Query("verifyCode") verifyCode: String
+    fun verifySmsCode(@Field("phonenumber") phoneNumber: String,
+                      @Field("ac") type: Int,
+                      @Field("verifyCode") verifyCode: String
     ): Observable<JsonNode>
 
     @Multipart
@@ -60,7 +62,17 @@ interface UserApi {
                            @Part file1: MultipartBody.Part,
                           @Part file2: MultipartBody.Part): Observable<JsonNode>
 
+    @FormUrlEncoded
     @POST("users/resetPhonenumber")
-    fun modifyPhoneNumber(@Query("token") token: String , @Query("phonenumber") phoneNumber: String,
-                 @Query("verifyCode") verifyCode: String): Observable<JsonNode>
+    fun modifyPhoneNumber(@Field("token") token: String , @Field("phonenumber") phoneNumber: String,
+                 @Field("verifyCode") verifyCode: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("index/getIndexCount")
+    fun fetchIndexCount(@Field("token") token: String): Observable<JsonNode>
+
+
+    @FormUrlEncoded
+    @POST("products/myPlist")
+    fun fetchUserPushedProduct(@Field("token")token: String): Observable<JsonNode>
 }

@@ -30,6 +30,7 @@ open class BasePresenter: IPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(consumer, Consumer{ error ->
+                         mView?.hideLoadingDialog()
                          mView?.networkError(error.message ?: "")
             }))
     }

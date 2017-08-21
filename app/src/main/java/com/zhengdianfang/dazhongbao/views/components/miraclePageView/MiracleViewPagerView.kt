@@ -96,15 +96,15 @@ class MiracleViewPagerView : ViewPager, MiracleViewPagerAdapter.MiracleViewPager
         if (child == null) {
             return
         }
-        for (i in 0..childCount - 1) {
-            val view = getChildAt(i)
-            if (view.paddingLeft != itemMarginLeft ||
-                    view.paddingTop != itemMarginTop ||
-                    view.paddingRight != itemMarginRight ||
-                    view.paddingBottom != itemMarginBottom) {
-                view.setPadding(itemMarginLeft, itemMarginTop, itemMarginRight, itemMarginBottom)
-            }
-        }
+        (0 until childCount)
+                .map { getChildAt(it) }
+                .filter {
+                    it.paddingLeft != itemMarginLeft ||
+                            it.paddingTop != itemMarginTop ||
+                            it.paddingRight != itemMarginRight ||
+                            it.paddingBottom != itemMarginBottom
+                }
+                .forEach { it.setPadding(itemMarginLeft, itemMarginTop, itemMarginRight, itemMarginBottom) }
 
         val lp = child.layoutParams
         val childWidthSpec = ViewGroup.getChildMeasureSpec(widthMeasureSpec, 0, lp.width)

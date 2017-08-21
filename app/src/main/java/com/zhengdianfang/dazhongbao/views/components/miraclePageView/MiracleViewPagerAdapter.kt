@@ -75,17 +75,15 @@ internal class MiracleViewPagerAdapter(val adapter: PagerAdapter) : PagerAdapter
     }
 
     override fun getCount(): Int {
-        val count: Int
-        if (isEnableLoop) {
-            if (adapter.count == 0) {
-                count = 0
-            } else {
-                count = adapter.count * infiniteRatio
-            }
-        } else {
-            count = adapter.count
-        }
-        return count
+        return  if (isEnableLoop) {
+                    if (adapter.count == 0) {
+                        0
+                    } else {
+                        adapter.count * infiniteRatio
+                    }
+                } else {
+                    adapter.count
+                }
     }
 
 
@@ -164,7 +162,7 @@ internal class MiracleViewPagerAdapter(val adapter: PagerAdapter) : PagerAdapter
     override fun finishUpdate(container: ViewGroup) {
         // only need to set the center position  when the loop is enabled
         if (!hasCentered) {
-            if (adapter.count > 0 && count > adapter.count) {
+            if (adapter.count in 1..(count - 1)) {
                 centerListener!!.center()
             }
         }
@@ -197,7 +195,7 @@ internal class MiracleViewPagerAdapter(val adapter: PagerAdapter) : PagerAdapter
         return adapter.getPageWidth(position)
     }
 
-    override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
+    override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any?) {
         adapter.setPrimaryItem(container, position, `object`)
     }
 

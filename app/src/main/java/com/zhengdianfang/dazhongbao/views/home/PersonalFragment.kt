@@ -17,6 +17,7 @@ import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
+import com.zhengdianfang.dazhongbao.views.user.MyProductListActivity
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 
@@ -65,6 +66,10 @@ class PersonalFragment : BaseFragment(){
         myStartProductCountTextView.text = "0"
         myProductCountTextView.text = "0"
         myAucationProductCountTextView.text = "0"
+
+        view?.findViewById<TextView>(R.id.textView9)!!.setOnClickListener {
+           startActivity(Intent(getParentActivity(), MyProductListActivity::class.java))
+        }
     }
 
 }// Required empty public constructor

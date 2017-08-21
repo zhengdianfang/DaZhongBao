@@ -339,6 +339,7 @@ class MiracleViewPager : RelativeLayout, MiracleViewPagerFeature {
 
     override fun scrollNextPage() {
         if (viewPager != null && viewPager!!.adapter != null && viewPager!!.adapter.count > 0) {
+            viewPager?.adapter?.notifyDataSetChanged()
             val curr = viewPager!!.currentItemFake
             var nextPage = 0
             if (curr < viewPager!!.adapter.count - 1) {

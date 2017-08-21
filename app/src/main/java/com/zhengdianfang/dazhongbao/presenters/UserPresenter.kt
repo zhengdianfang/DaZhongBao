@@ -3,9 +3,11 @@ package com.zhengdianfang.dazhongbao.presenters
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
+import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.validates.PasswordValidate
 import com.zhengdianfang.dazhongbao.presenters.validates.PhoneNumberValidate
 import com.zhengdianfang.dazhongbao.presenters.validates.VerifySmsCodeValidate
+import com.zhengdianfang.dazhongbao.views.basic.IView
 import com.zhengdianfang.dazhongbao.views.login.IFindPasswordView
 import com.zhengdianfang.dazhongbao.views.login.ISetPasswordView
 import com.zhengdianfang.dazhongbao.views.login.IUploadCard
@@ -18,7 +20,7 @@ import io.reactivex.functions.Consumer
  */
 class UserPresenter: BasePresenter() {
 
-    private val mUserRepository by lazy { UserRepository() }
+    private val mUserRepository by lazy { UserRepository(true) }
     private val passwordValidate by lazy { PasswordValidate(mView) }
     private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
     private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
@@ -120,6 +122,15 @@ class UserPresenter: BasePresenter() {
 
     }
 
+    fun fetchUserPushedProduct(token: String){
+       if (phoneNumberValidate.checkLogin()) {
+           mView?.showLoadingDialog()
+           addSubscription(mUserRepository.fetchUserPushedProduct(token), Consumer { list ->
+               (mView as IUserProductListView).receiveUserProductList(list)
+               mView?.hideLoadingDialog()
+           })
+       }
+    }
 
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
         var ok = true
@@ -159,6 +170,10 @@ class UserPresenter: BasePresenter() {
             ok = false
         }
         return ok
+    }
+
+    interface IUserProductListView: IView {
+       fun receiveUserProductList(list: MutableList<Product>)
     }
 
 }

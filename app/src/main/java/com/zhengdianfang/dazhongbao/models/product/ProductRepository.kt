@@ -2,6 +2,7 @@ package com.zhengdianfang.dazhongbao.models.product
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zhengdianfang.dazhongbao.models.api.API
+import com.zhengdianfang.dazhongbao.models.api.AdvertApi
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.ProductApi
 import io.reactivex.Observable
@@ -46,4 +47,28 @@ class ProductRepository {
                     throw CException(json.get("msg").asText(), json.get("errCode").asInt())
                 }
     }
+
+    fun addBidIntention(token: String, productId: Long ): Observable<String> {
+        return API.appClient.create(ProductApi::class.java).addBidIntention(token, productId)
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        return@map json.get("msg").asText()
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
+
+    }
+
+    fun fetchBidList(token: String, productId: Long): Observable<MutableList<Bid>> {
+        return API.appClient.create(ProductApi::class.java).fetchBidList(token, productId)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<Bid>>(data, object : TypeReference<MutableList<Bid>>() { }) }
+    }
+
+    fun fetchAdvertList(token: String): Observable<MutableList<Advert>> {
+        return API.appClient.create(AdvertApi::class.java).fetchAdvertBanner(token)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<Advert>>(data, object : TypeReference<MutableList<Advert>>() { }) }
+    }
+
 }

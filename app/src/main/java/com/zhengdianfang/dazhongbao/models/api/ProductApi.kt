@@ -35,4 +35,15 @@ interface ProductApi {
     @FormUrlEncoded
     @POST("products/attention")
     fun followProduct(@Field("token") token: String, @Field("productId")productId: Long): Observable<JsonNode>
+
+
+    @FormUrlEncoded
+    @POST("products/attention")
+    fun addBidIntention(@Field("token") token: String, @Field("productId")productId: Long): Observable<JsonNode>
+
+
+    @FormUrlEncoded
+    @POST("products/productBids")
+    fun fetchBidList(@Field("token") token: String, @Field("productId")productId: Long, @Field("size")size: Int = 3): Observable<JsonNode>
+
 }

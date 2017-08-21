@@ -4,13 +4,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import kotlin.properties.Delegates
 
 /**
  * Created by dfgzheng on 13/08/2017.
  */
-class ProductRecyclerViewAdapter(val product: Product?, val bidPriceList: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductRecyclerViewAdapter(val product: Product?, private val bidPriceList: MutableList<Bid>, private val followProductPresenter: FollowProductPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val HEADER_COUNT = 2
     private val PRODUCT_INFO_ITEM = 0
     private val PRODUCT_BID_ITEM = 1
@@ -32,7 +34,7 @@ class ProductRecyclerViewAdapter(val product: Product?, val bidPriceList: Mutabl
         var viewHolder: RecyclerView.ViewHolder by Delegates.notNull<RecyclerView.ViewHolder>()
         when(viewType) {
             PRODUCT_INFO_ITEM -> {
-                viewHolder = ProductDetailHeaderViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_detail_header, parent, false))
+                viewHolder = ProductDetailHeaderViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_detail_header, parent, false), followProductPresenter)
             }
             PRODUCT_BID_ITEM -> {
                 viewHolder = ProductDidItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_bid_item, parent, false))

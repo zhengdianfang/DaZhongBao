@@ -96,8 +96,9 @@
     <style name="AppTheme.ProductDetail.Button">
         <item name="android:textSize">14sp</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColor">#8c6465</item>
+        <item name="android:textColor">@color/c_8c6465</item>
         <item name="android:layout_height">32dp</item>
         <item name="android:background">@drawable/activity_product_detail_button_background</item>
     </style>
+
 </resources>

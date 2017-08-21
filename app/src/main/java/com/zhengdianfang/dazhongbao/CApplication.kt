@@ -4,6 +4,8 @@ import android.app.Application
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.TextUtils
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.login.User
@@ -47,6 +49,11 @@ class CApplication : Application(){
         if (appDir.exists().not()) {
             appDir.mkdirs()
         }
+        Logger.addLogAdapter(object : AndroidLogAdapter() {
+            override fun isLoggable(priority: Int, tag: String?): Boolean {
+                return BuildConfig.DEBUG
+            }
+        })
     }
 
     fun isLogin(): Boolean {

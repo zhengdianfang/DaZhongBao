@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/fragment_background_color"
+    android:background="@color/bottom_bar_background_color"
     tools:context="com.zhengdianfang.dazhongbao.views.user.MyProductListActivity">
 
 
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/app_name"
+        app:title="@string/my_product_title"
         app:enable_back="true"/>
 
     <android.support.v7.widget.RecyclerView
