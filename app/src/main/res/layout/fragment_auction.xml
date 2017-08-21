@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/fragment_background_color"
+    android:background="@color/bottom_bar_background_color"
     android:clickable="true"
     android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,8 +17,8 @@
         app:title="@string/app_name"
         app:enable_back="false"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/auctionReyclerView"
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/auctionRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

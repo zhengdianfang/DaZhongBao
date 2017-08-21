@@ -2,47 +2,53 @@ package com.zhengdianfang.dazhongbao.views.components
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import com.zhengdianfang.dazhongbao.presenters.ProductPresenter
-import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.product.IProductList
 
 /**
  * Created by dfgzheng on 10/08/2017.
  */
-class ProductRecyclerView(context: Context?, val status: String) : RecyclerView(context), IProductList, FollowProductPresenter.IFollowProductView {
+class ProductRecyclerView(context: Context?, val status: String) : XRecyclerView(context), IProductList {
 
-    val products = mutableListOf<Product>()
-    val productAdapter by lazy { RecyclerViewAdapter(products, mFollowProductPresenter) }
+    private val products = mutableListOf<Product>()
+    private val productAdapter by lazy { RecyclerViewAdapter(context!!, products) }
     val mProductPresenter by lazy { ProductPresenter() }
-    val mFollowProductPresenter by lazy { FollowProductPresenter() }
+    private var pageNumber = 0
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         mProductPresenter.attachView(this)
-        mFollowProductPresenter.attachView(this)
         layoutManager = LinearLayoutManager(context ,  LinearLayoutManager.VERTICAL, false)
         adapter = productAdapter
-        mProductPresenter.fetchProductList(CApplication.INSTANCE.loginUser?.token, 0, status, "dealDateTime")
+
+
+        setLoadingListener(object : XRecyclerView.LoadingListener {
+            override fun onLoadMore() {
+                ++pageNumber
+                mProductPresenter.fetchProductList(CApplication.INSTANCE.loginUser?.token, pageNumber, status, "dealDateTime")
+            }
+
+            override fun onRefresh() {
+                pageNumber = 0
+                mProductPresenter.fetchProductList(CApplication.INSTANCE.loginUser?.token, pageNumber, status, "dealDateTime")
+            }
+
+        })
+        this.refresh()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mProductPresenter.detachView()
-        mFollowProductPresenter.detachView()
+        productAdapter.destory()
     }
 
-    override fun showLoadingDialog() {
-        (context as BaseActivity).showLoadingDialog()
-    }
-
-    override fun hideLoadingDialog() {
-        (context as BaseActivity).hideLoadingDialog()
-    }
+    override fun showLoadingDialog() { }
+    override fun hideLoadingDialog() { }
 
     override fun validateErrorUI(errorMsgResId: Int) {
         Toast.makeText(context, errorMsgResId, Toast.LENGTH_SHORT).show()
@@ -53,19 +59,15 @@ class ProductRecyclerView(context: Context?, val status: String) : RecyclerView(
     }
 
     override fun receiverProductList(list: List<Product>) {
-        products.clear()
+        if (pageNumber == 0){
+            products.clear()
+        }
         products.addAll(list)
         productAdapter.notifyDataSetChanged()
+        this.setLoadingMoreEnabled(products.count() % com.zhengdianfang.dazhongbao.helpers.Constants.PAGE_SIZE == 0)
+        this.refreshComplete()
+        this.loadMoreComplete()
     }
     override fun noLogin() { }
 
-    override fun followSuccess(msg: String, productId: Long) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        val filters = products.filter { it.id == productId }
-        filters.forEach {
-            it.attention = 1
-            val pos = products.indexOf(it)
-            adapter.notifyItemChanged(pos)
-        }
-    }
 }

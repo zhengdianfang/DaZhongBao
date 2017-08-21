@@ -16,11 +16,11 @@ abstract class BaseActivity : AppCompatActivity() {
         val dialogFragment = DialogFragment()
         dialogFragment
     }
-    fun showLoadingDialog() {
+    open fun showLoadingDialog() {
         mDialogFragment.show(supportFragmentManager, "loadingDialog")
     }
 
-    fun hideLoadingDialog() {
+    open fun hideLoadingDialog() {
         mDialogFragment.dismiss()
     }
 

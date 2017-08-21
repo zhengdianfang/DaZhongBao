@@ -57,11 +57,8 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     private fun setupViewPager() {
         mAdvertViewPager.setMultiScreen(0.75f)
         mAdvertViewPager.setPageTransformer(false, MiracleScaleTransformer())
- //
-        //       mAdvertViewPager.setInfiniteLoop(true)
-        //        mAdvertViewPager.setAutoScroll(2000)
+        mAdvertViewPager.setInfiniteLoop(true)
         mAdvertViewPager.adapter = advertViewPagerAdapter
-        mTabViewPager.adapter = tabViewPagerAdapter
 
         mAdvertViewPager.initIndicator()
         mAdvertViewPager.indicator?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
@@ -73,6 +70,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     }
 
     private fun setupTabViewPager() {
+        mTabViewPager.adapter = tabViewPagerAdapter
         tabOneView.setOnClickListener {
             mTabViewPager.currentItem = 0
         }
@@ -113,8 +111,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     override fun receiveBanner(advertList: MutableList<Advert>) {
         adverts.clear()
         adverts.addAll(advertList)
-//        advertViewPagerAdapter.notifyDataSetChanged()
- //       mAdvertViewPager.adapter?.notifyDataSetChanged()
+        advertViewPagerAdapter.notifyDataSetChanged()
     }
 
     override fun receiveIndexCount(dealCount: Int, productCount: Int, messageCount: Int) {

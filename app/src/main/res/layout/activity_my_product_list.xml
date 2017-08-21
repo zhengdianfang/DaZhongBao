@@ -16,7 +16,7 @@
         app:title="@string/my_product_title"
         app:enable_back="true"/>
 
-    <android.support.v7.widget.RecyclerView
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/myProductRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -1,130 +1,112 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/fragment_background_color"
+    android:columnCount="2"
+    android:padding="16dp">
 
 
-    <RelativeLayout
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_columnSpan="2"
+        android:layout_columnWeight="1"
         android:layout_gravity="center_horizontal">
+
         <com.zhengdianfang.dazhongbao.views.components.ColorArcProgressBar
             android:id="@+id/timeProgressbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
             app:arc_finished_color="@color/colorPrimary"
-            app:arc_unfinished_color="@color/bottom_bar_divider_color"
             app:arc_progress="50"
-            android:layout_centerHorizontal="true" />
+            app:arc_unfinished_color="@color/bottom_bar_divider_color" />
 
         <TextView
             android:id="@+id/timerTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
             android:text="20:46:00"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:textColor="@color/c_3cc751"
-            android:layout_centerInParent="true"
-            />
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/shareCodeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:text="[000004]"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/industryView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
             android:text="汽车-汽车零件"
             android:textColor="@android:color/black"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="12sp"/>
-        <TextView
-            android:id="@+id/shareCodeView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[000004]"
-            android:textColor="@android:color/black"
-            android:layout_above="@id/industryView"
-            android:layout_centerHorizontal="true"
-            android:textSize="12sp"/>
-
-
-    </RelativeLayout>
+            android:textSize="12sp" />
+    </FrameLayout>
 
     <Button
+        android:id="@+id/statusButton"
         android:layout_width="100dp"
         android:layout_height="40dp"
+        android:layout_columnSpan="2"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:textSize="12sp"
+        android:background="@drawable/product_item_attentioned_button_background"
         android:text="@string/product_status_bid"
-        android:background="@drawable/product_item_attentioned_button_background"/>
-    <LinearLayout
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/basicPriceView"
+        android:layout_marginTop="32dp"
+        tools:text="@string/start_auction_price" />
+
+    <TextView
+        android:id="@+id/soldCountView"
+        android:layout_gravity="right"
+        android:drawableLeft="@drawable/stock_sale_count_icon"
+        android:drawablePadding="8dp"
+        android:layout_marginTop="32dp"
+        tools:text="@string/sold_count_value" />
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:background="@drawable/fragment_setting_item_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/start_auction_price"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="23:00元"/>
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-       <ImageView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginRight="8dp"
-           android:src="@drawable/stock_sale_count_icon"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="出让200万股"/>
-    </LinearLayout>
-    <LinearLayout
+        android:layout_height="1px"
+        android:layout_columnSpan="2"
+        android:layout_columnWeight="1"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/bottom_bar_divider_color" />
+
+    <TextView
+        android:id="@+id/endTimeView"
+        android:layout_marginTop="8dp"
+        tools:text="@string/finish_auction_time" />
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:background="@drawable/fragment_setting_item_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/finish_auction_time"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="2017-09-11  11:00~21:00"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/now_price"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="￥24.90  4次出价"/>
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="买方限售6个月"/>
-    </LinearLayout>
-</LinearLayout>
+        android:layout_height="1px"
+        android:layout_columnSpan="2"
+        android:layout_columnWeight="1"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/bottom_bar_divider_color" />
+
+    <TextView
+        android:id="@+id/nowUnitPriceView"
+        tools:text="@string/now_price" />
+
+    <TextView
+        android:id="@+id/limitTimeView"
+        android:layout_gravity="right"
+        tools:text="买方限售6个月" />
+</GridLayout>

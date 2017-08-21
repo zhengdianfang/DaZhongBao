@@ -5,14 +5,19 @@ import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.AdvertApi
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.ProductApi
+import com.zhengdianfang.dazhongbao.models.mock.mockUserProducts
 import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by dfgzheng on 10/08/2017.
  */
-class ProductRepository {
+class ProductRepository(private val MOCK :Boolean = false) {
 
     fun getProductList(token: String?, pageNumber: Int, checkStatus: String, order: String = ""): Observable<MutableList<Product>> {
+        if (MOCK){
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(ProductApi::class.java).getProductList(token, pageNumber, checkStatus, order)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){}) }

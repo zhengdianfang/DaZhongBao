@@ -130,8 +130,8 @@
     <string name="product_status_itention_info">项目已完成核调，正在排期</string>
     <string name="product_status_waiting_start">等待开拍</string>
     <string name="product_status_auctioning">正在竞拍中</string>
-    <string name="start_auction_price">起拍价：%s</string>
-    <string name="finish_auction_time">截拍：</string>
+    <string name="start_auction_price">起拍价：%s 元</string>
+    <string name="finish_auction_time">截拍：%s</string>
     <string name="now_price">当前价：</string>
     <string name="product_status_intention_info">项目已完成核调，正在排期</string>
     <string name="product_status_auctioning_no_bid">您未支付保证金，无法查看出价过程 ...</string>
