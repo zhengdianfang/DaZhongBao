@@ -109,4 +109,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productRecyclerViewAdapter.notifyDataSetChanged()
     }
 
+    override fun getActivity(): BaseActivity {
+        return this
+    }
 }

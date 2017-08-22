@@ -46,10 +46,12 @@ val mockBidList = mutableListOf(
         Bid(realname = "黄凯", price = 11.00, count = 40000, productId = 9, ctime = System.currentTimeMillis(), sharesName = "九江银行", sharesCode = "000048")
 )
 
-val mockProduct = Product(id = 9, sharesCode = "000048", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-check_status = 5, sharesName = "九江银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 1, bidCount = 0,
-companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = System.currentTimeMillis() + 1000 * 24 * 3600)
-
+//val mockProduct = Product(id = 9, sharesCode = "000048", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
+//check_status = 5, sharesName = "九江银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 1, bidCount = 0,
+//companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = System.currentTimeMillis() + 1000 * 24 * 3600)
+val mockProduct = Product(id = 10, sharesCode = "000049", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
+                check_status = 4, sharesName = "山东银行", description = "test", bond = 0, bond_status = 1, yestodayClosePrice = 0.0, attention = 1, bidCount = 0,
+                companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = System.currentTimeMillis() + 1000 * 24 * 3600, endDateTime = 0)
 
 val mockUserProducts = mutableListOf(
         Product(id = 5, sharesCode = "002739", basicUnitPrice = 23.09, soldCount = 3000000, limitTime = 6, industry = "汽车",

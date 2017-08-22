@@ -5,7 +5,9 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.basic.IView
+import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
@@ -73,15 +75,16 @@ class ProductDetailPresenter: BasePresenter() {
                 })
             }
             4 ->{
-                if(product.bond_status != 2){
-                    getStatusView(product,  { textResId, backgroundColorId ->
-                        (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_waiting_start_info, null)
+                getStatusView(product,  { textResId, backgroundColorId ->
+                    (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_waiting_start_info, {
+                        if(product.bond_status != 2){
+                            val activity = (mView as IProductInfoView).getActivity()
+                            val fragment = PayBondFragment()
+                            fragment.product = product
+                            activity.startFragment(android.R.id.content, fragment , "productDetail")
+                        }
                     })
-                }else{
-                    getStatusView(product,  { textResId, backgroundColorId ->
-                        (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_waiting_start_info, null)
-                    })
-                }
+                })
             }
             5 ->{
                 if(product?.bidCount == 3) {
@@ -131,6 +134,7 @@ class ProductDetailPresenter: BasePresenter() {
         fun renderActionBar(backgroundColorResId: Int, textResId: Int, statusInfoStringResId: Int, onClick: (()-> Unit)?)
         fun bidIntentionSuccess(msg: String)
         fun renderBidList(list: MutableList<Bid>)
+        fun getActivity(): BaseActivity
     }
 
 }

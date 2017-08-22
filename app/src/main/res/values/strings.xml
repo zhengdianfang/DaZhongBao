@@ -152,4 +152,12 @@
     <string name="my_start_gap_time">%1$s天%2$s小时</string>
     <string name="my_start_gap_label">距离开拍：%s</string>
     <string name="top_price_label">最高价</string>
+    <string name="confirm_pay_title">支付确认</string>
+    <string name="bond_confirm_label">保证金额</string>
+    <string name="pay_funcation">支付方式</string>
+    <string name="alipay_label">支付宝</string>
+    <string name="likely_tips">温馨提示</string>
+    <string name="likely_tips_info">保证金在竞拍结束之后，自动原路退回支付宝账户，请放心支付</string>
+    <string name="confirm_pay">确认支付</string>
+    <string name="max_auction_shares_count">最多可竞拍%d万股</string>
 </resources>

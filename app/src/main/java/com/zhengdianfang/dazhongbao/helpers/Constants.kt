@@ -11,4 +11,8 @@ object Constants {
     val PAGE_SIZE = 20
 
     val MOCK = true
+
+    val ADD_INTERVAL = 1000
+
+    val MIN_BOND_PRICE = 10000
 }
