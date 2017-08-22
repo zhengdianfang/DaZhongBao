@@ -46,4 +46,11 @@ interface ProductApi {
     @POST("products/productBids")
     fun fetchBidList(@Field("token") token: String, @Field("productId")productId: Long, @Field("size")size: Int = 3): Observable<JsonNode>
 
+    @FormUrlEncoded
+    @POST("products/bid")
+    fun pushBid(@Field("token") token: String, @Field("productId")productId: Long, @Field("money")size: Double, @Field("count")count: Long): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/removebid")
+    fun removeBid(@Field("token") token: String, @Field("bidId")bidId: Long): Observable<JsonNode>
 }

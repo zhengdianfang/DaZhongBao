@@ -160,4 +160,13 @@
     <string name="likely_tips_info">保证金在竞拍结束之后，自动原路退回支付宝账户，请放心支付</string>
     <string name="confirm_pay">确认支付</string>
     <string name="max_auction_shares_count">最多可竞拍%d万股</string>
+    <string name="bid_history_title">出价记录</string>
+    <string name="cancel_bond_price">取消报价</string>
+    <string name="now_top_price_label">当前最高价</string>
+    <string name="pay_count_label">购买数量</string>
+    <string name="bid_tip">单次报价不低于300万</string>
+    <string name="push_bid_success">出价成功</string>
+    <string name="please_input_leggal_price">请输入正确的金额</string>
+    <string name="please_input_leggal_count">请输入正确的数量</string>
+    <string name="the_bid_max_count">最多出价三次</string>
 </resources>

@@ -14,7 +14,7 @@ import java.util.*
  */
 object ViewsUtils {
 
-    fun renderSharesSoldCount(context: Context, count: Int): SpannableString {
+    fun renderSharesSoldCount(context: Context, count: Long): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
         val soldCount = count.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
         val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!

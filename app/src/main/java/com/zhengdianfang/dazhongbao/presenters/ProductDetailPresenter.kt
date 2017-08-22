@@ -1,21 +1,33 @@
 package com.zhengdianfang.dazhongbao.presenters
 
+import android.content.Context
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
-import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.basic.IView
-import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by dfgzheng on 14/08/2017.
  */
 class ProductDetailPresenter: BasePresenter() {
+    companion object {
+        val FINISH_BUTTON_TYPE = 0
+        val CHECKING_BUTTON_TYPE = 1
+        val MAKE_AUCTION_TIME_BUTTON_TYPE = 2
+        val PAY_BOND_BUTTON_TYPE = 3
+        val WATTING_AUCTION_START_BUTTON_TYPE = 4
+        val AUCTIONING_BUTTON_TYPE = 5
+        val SUMBIT_ATTETION_BUTTON_TYPE = 6
+        val AUCTIONING_BUTTON_NO_BOND_TYPE = 7
+    }
+    data class ButtonStyle(var textResId: Int, var backgroundColorId: Int)
     private val productRepository by lazy { ProductRepository() }
 
     fun fetchProductInfo(productId: Long) {
@@ -24,7 +36,6 @@ class ProductDetailPresenter: BasePresenter() {
         addSubscription(productRepository.getProductInfo(loginUser?.token ?: "", productId),
                 Consumer { product ->
                     (mView as IProductInfoView).renderProductInfo(product)
-                    switchActionBarButtonStyle(product)
                     mView?.hideLoadingDialog()
                 })
     }
@@ -49,92 +60,107 @@ class ProductDetailPresenter: BasePresenter() {
         addSubscription(requestObservable, Consumer{ (first, second) ->
                     (mView as IProductInfoView).renderProductInfo(first)
                     (mView as IProductInfoView).renderBidList(second)
-                    switchActionBarButtonStyle(first)
                     mView?.hideLoadingDialog()
                 })
 
     }
 
-    private fun switchActionBarButtonStyle(product: Product) {
-        when(product?.check_status){
-            0,6,7 ->{
-                getStatusView(product,  { textResId, backgroundColorId ->
-                    (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, 0, null)
-                })
+    fun getStatusNoteString(context: Context, product: Product): String {
+        var notes = ""
+        when(getStatusViewType(product)){
+            CHECKING_BUTTON_TYPE ->{
+                notes = context.getString(R.string.product_status_verify)
             }
-            1 ->{
-                getStatusView(product,  { textResId, backgroundColorId ->
-                    (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_verify, null)
-                })
+            MAKE_AUCTION_TIME_BUTTON_TYPE ->{
+                notes = context.getString(R.string.product_status_intention_info)
             }
-            3 ->{
-                getStatusView(product,  { textResId, backgroundColorId ->
-                    (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_intention_info, {
-                        addBidIntention(product.id)
-                    })
-                })
+            WATTING_AUCTION_START_BUTTON_TYPE ->{
+                notes = context.getString(R.string.product_status_waiting_start_info, SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Date(product.startDateTime)) )
             }
-            4 ->{
-                getStatusView(product,  { textResId, backgroundColorId ->
-                    (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_waiting_start_info, {
-                        if(product.bond_status != 2){
-                            val activity = (mView as IProductInfoView).getActivity()
-                            val fragment = PayBondFragment()
-                            fragment.product = product
-                            activity.startFragment(android.R.id.content, fragment , "productDetail")
-                        }
-                    })
-                })
+            PAY_BOND_BUTTON_TYPE -> {
+                notes = context.getString(R.string.product_status_waiting_start_info)
             }
-            5 ->{
-                if(product?.bidCount == 3) {
-                    getStatusView(product,  { textResId, backgroundColorId ->
-                        (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, R.string.product_status_auctioning_no_bid, null)
-                    })
-                }else{
-                    getStatusView(product,  { textResId, backgroundColorId ->
-                        (mView as IProductInfoView).renderActionBar(backgroundColorId, textResId, 0, null)
-                    })
-                }
+            AUCTIONING_BUTTON_NO_BOND_TYPE->{
+                notes = context.getString(R.string.product_status_auctioning_no_bid)
+            }
+            SUMBIT_ATTETION_BUTTON_TYPE ->{
+                notes = context.getString(R.string.product_status_waiting_start_info, SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Date(product.startDateTime)) )
             }
         }
+        return notes
     }
 
-    fun getStatusView(product: Product, callback: (textResId: Int, backgroundColorId: Int) -> Unit) {
+    fun getStatusViewType(product: Product): Int {
+        var type = FINISH_BUTTON_TYPE
         when(product?.check_status){
             0,6,7 ->{
-                callback(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color)
+               type = FINISH_BUTTON_TYPE //已结束
             }
             1 ->{
-                callback(R.string.product_status_verify, R.color.c_f43d3d)
+                type = CHECKING_BUTTON_TYPE //审核中
             }
             3 ->{
-                callback(R.string.product_status_itention, R.color.c_f9b416)
+                if (product.attention == 1){
+                    type = MAKE_AUCTION_TIME_BUTTON_TYPE //排期中
+                }else{
+                    type = SUMBIT_ATTETION_BUTTON_TYPE //提交意向
+                }
             }
             4 ->{
                 if(product.bond_status != 2){
-                    callback(R.string.product_status_margin, R.color.c_3cc751)
-                }else{
-                    callback(R.string.product_status_waiting_start, R.color.colorPrimary)
+                    type = PAY_BOND_BUTTON_TYPE //提交保证金
+                }else {
+                    type = WATTING_AUCTION_START_BUTTON_TYPE //等待开拍
                 }
             }
             5 ->{
-                if(product?.bidCount == 3) {
-                    callback(R.string.product_status_auctioning, R.color.colorPrimary)
+                if(product?.bond_status != 2) {
+                    type = AUCTIONING_BUTTON_NO_BOND_TYPE //竞拍中， 没交保证金
                 }else{
-                    callback(R.string.product_status_bid, R.color.c_3cc751)
+                    type = AUCTIONING_BUTTON_TYPE //出价
                 }
             }
         }
+
+        return type
+    }
+
+    fun getStatusViewStyle(product: Product): ButtonStyle {
+        var buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color)
+        when(getStatusViewType(product)){
+            FINISH_BUTTON_TYPE ->{
+               buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color)
+            }
+            CHECKING_BUTTON_TYPE ->{
+                buttonStyle = ButtonStyle(R.string.product_status_verify, R.color.c_f43d3d)
+            }
+            SUMBIT_ATTETION_BUTTON_TYPE  ->{
+                buttonStyle = ButtonStyle(R.string.product_status_itention, R.color.c_f9b416)
+            }
+            PAY_BOND_BUTTON_TYPE ->{
+                buttonStyle = ButtonStyle(R.string.product_status_margin, R.color.c_3cc751)
+            }
+            WATTING_AUCTION_START_BUTTON_TYPE -> {
+                buttonStyle = ButtonStyle(R.string.product_status_waiting_start, R.color.colorPrimary)
+            }
+            AUCTIONING_BUTTON_TYPE->{
+                buttonStyle = ButtonStyle(R.string.product_status_bid, R.color.c_3cc751)
+            }
+            AUCTIONING_BUTTON_NO_BOND_TYPE -> {
+                buttonStyle = ButtonStyle(R.string.product_status_auctioning, R.color.colorPrimary)
+            }
+            MAKE_AUCTION_TIME_BUTTON_TYPE -> {
+                buttonStyle = ButtonStyle(R.string.product_status_itention_info, R.color.colorPrimary)
+            }
+        }
+        return buttonStyle
     }
 
 
     interface IProductInfoView: IView {
         fun renderProductInfo(product: Product)
-        fun renderActionBar(backgroundColorResId: Int, textResId: Int, statusInfoStringResId: Int, onClick: (()-> Unit)?)
         fun bidIntentionSuccess(msg: String)
         fun renderBidList(list: MutableList<Bid>)
-        fun getActivity(): BaseActivity
     }
 
 }

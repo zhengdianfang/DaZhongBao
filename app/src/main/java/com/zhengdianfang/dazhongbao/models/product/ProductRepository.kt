@@ -6,6 +6,7 @@ import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.AdvertApi
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.ProductApi
+import com.zhengdianfang.dazhongbao.models.mock.mockBid
 import com.zhengdianfang.dazhongbao.models.mock.mockBidList
 import com.zhengdianfang.dazhongbao.models.mock.mockProduct
 import com.zhengdianfang.dazhongbao.models.mock.mockUserProducts
@@ -85,4 +86,25 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
                 .map {data -> API.objectMapper.readValue<MutableList<Advert>>(data, object : TypeReference<MutableList<Advert>>() { }) }
     }
 
+    fun pushBid(token: String,productId: Long, price: Double, count: Long): Observable<Bid>{
+        if (MOCK){
+            return Observable.just(mockBid).delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(ProductApi::class.java).pushBid(token, productId,price, count)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<Bid>(data, Bid::class.java) }
+    }
+
+    fun removeBid(token: String, bidId: Long): Observable<String>{
+        if (MOCK){
+            return Observable.just("取消成功").delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(ProductApi::class.java).removeBid(token, bidId)
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        return@map json.get("msg").asText()
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
+    }
 }

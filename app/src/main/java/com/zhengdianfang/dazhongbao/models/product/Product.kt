@@ -9,9 +9,9 @@ import com.zhengdianfang.dazhongbao.models.login.User
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Product(var id: Long, var sharesCode: String, var sharesName: String, var yestodayClosePrice: Double,
                    var companyName: String?, var lastUnitPrice: Double, var nowUnitPrice: Double, var basicUnitPrice: Double,
-                   var soldCount: Int , var limitTime: Int, var description: String?, var bidCount: Int, var check_status: Int,
+                   var soldCount: Long, var limitTime: Int, var description: String?, var bidCount: Int, var check_status: Int,
                    var contact: User?, var industry: String?, var attention: Int, var bond: Int, var bond_status: Int, var deal: MutableList<Deal>,
-                   var startDateTime: Long, var endDateTime: Long) {
+                   var startDateTime: Long, var endDateTime: Long, var mybids: MutableList<Bid>) {
 
     override fun equals(other: Any?): Boolean {
         return id == (other as Product).id

@@ -72,14 +72,12 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
         }else {
             limitTimeView.visibility = View.GONE
         }
-        productDetailPresenter.getStatusView(product, {textResId, backgroundColorId ->
-            val drawable = ContextCompat.getDrawable(context, R.drawable.status_button_background)
-            val wrappedDrawable = DrawableCompat.wrap(drawable)
-            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(context, backgroundColorId))
-            statusButton.background = drawable
-            statusButton.setText(textResId)
-
-        })
+        val (textResId, backgroundColorId) = productDetailPresenter.getStatusViewStyle(product)
+        val drawable = ContextCompat.getDrawable(context, R.drawable.status_button_background)
+        val wrappedDrawable = DrawableCompat.wrap(drawable)
+        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(context, backgroundColorId))
+        statusButton.background = drawable
+        statusButton.setText(textResId)
         val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
         endTimeView.text = context.getString(R.string.finish_auction_time, format.format(Date(product.endDateTime)))

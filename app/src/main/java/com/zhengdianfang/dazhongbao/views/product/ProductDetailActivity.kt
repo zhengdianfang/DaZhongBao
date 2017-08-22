@@ -2,6 +2,7 @@ package com.zhengdianfang.dazhongbao.views.product
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -37,6 +38,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
+
         productDetailPresenter.attachView(this)
         followProductPresenter.attachView(this)
         productRecyclerView.addHeaderView(productDetailHeaderViewHolder.itemView)
@@ -58,6 +60,9 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         this.product = product
         renderProductHeaderView(product)
         renderToolbar()
+        val (textResId, backgroundColorId) = productDetailPresenter.getStatusViewStyle(product)
+        val notesString = productDetailPresenter.getStatusNoteString(this.applicationContext, product)
+        renderActionBar(backgroundColorId, textResId, notesString, productDetailPresenter.getStatusViewType(product))
         renderList()
         renderNotesFooter(product)
     }
@@ -81,18 +86,31 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         toast(msg)
     }
 
-    override fun renderActionBar(backgroundColorResId: Int, textResId: Int, statusInfoStringResId: Int, onClick: (() -> Unit)?) {
+    private fun renderActionBar(backgroundColorResId: Int, textResId: Int, statusInfoString: String, buttonType: Int) {
         statusView.setText(textResId)
         statusView.setBackgroundColor(ContextCompat.getColor(this.applicationContext, backgroundColorResId))
-        if(statusInfoStringResId != 0){
-            statusInfoView.setText(statusInfoStringResId)
+        if(!TextUtils.isEmpty(statusInfoString)){
+            statusInfoView.text = statusInfoString
             statusInfoView.visibility = View.VISIBLE
         }else {
             statusInfoView.visibility = View.GONE
         }
         statusView.setOnClickListener {
-            onClick?.invoke()
-
+            when(buttonType){
+                ProductDetailPresenter.SUMBIT_ATTETION_BUTTON_TYPE -> {
+                    productDetailPresenter.addBidIntention(productId)
+                }
+                ProductDetailPresenter.PAY_BOND_BUTTON_TYPE -> {
+                    val fragment = PayBondFragment()
+                    fragment.product = this.product
+                    startFragment(android.R.id.content, fragment)
+                }
+                ProductDetailPresenter.AUCTIONING_BUTTON_TYPE -> {
+                    val fragment = CreateBidFragment()
+                    fragment.product = this.product
+                    startFragment(android.R.id.content, fragment)
+                }
+            }
         }
     }
 
@@ -109,7 +127,4 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productRecyclerViewAdapter.notifyDataSetChanged()
     }
 
-    override fun getActivity(): BaseActivity {
-        return this
-    }
 }
