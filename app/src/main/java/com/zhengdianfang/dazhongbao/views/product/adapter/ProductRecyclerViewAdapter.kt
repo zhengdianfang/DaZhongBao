@@ -2,60 +2,38 @@ package com.zhengdianfang.dazhongbao.views.product.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Bid
-import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
-import kotlin.properties.Delegates
 
 /**
  * Created by dfgzheng on 13/08/2017.
  */
-class ProductRecyclerViewAdapter(val product: Product?, private val bidPriceList: MutableList<Bid>, private val followProductPresenter: FollowProductPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val HEADER_COUNT = 2
-    private val PRODUCT_INFO_ITEM = 0
-    private val PRODUCT_BID_ITEM = 1
-    private val PRODUCT_NOTES_ITEM = 2
+class ProductRecyclerViewAdapter(private val bidList: MutableList<Bid>, private val productNotesFooterView: View) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        when(getItemViewType(position)) {
-            PRODUCT_INFO_ITEM -> {
-                (holder as ProductDetailHeaderViewHolder).setData(product)
-            }
-            PRODUCT_BID_ITEM -> {
-            }
-            PRODUCT_NOTES_ITEM -> {
-            }
+        if (getItemViewType(position) == 0) {
+            (holder as ProductBidItemViewHolder).setData(bidList[position], position)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder: RecyclerView.ViewHolder by Delegates.notNull<RecyclerView.ViewHolder>()
-        when(viewType) {
-            PRODUCT_INFO_ITEM -> {
-                viewHolder = ProductDetailHeaderViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_detail_header, parent, false), followProductPresenter)
-            }
-            PRODUCT_BID_ITEM -> {
-                viewHolder = ProductDidItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_bid_item, parent, false))
-            }
-            PRODUCT_NOTES_ITEM -> {
-                viewHolder = ProductDetailFooterViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_notes_footer, parent, false))
-            }
+        if(viewType == 1){
+           return object : RecyclerView.ViewHolder(productNotesFooterView){}
         }
-        return viewHolder
-    }
-
-    override fun getItemCount(): Int {
-       return bidPriceList.size + HEADER_COUNT
+        return ProductBidItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.product_bid_item, parent, false))
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == 0){
-           return PRODUCT_INFO_ITEM
-        }else if (position == itemCount - 1){
-           return PRODUCT_BID_ITEM
+        if (position == itemCount - 1) {
+           return 1
         }
-        return PRODUCT_NOTES_ITEM
+        return 0
     }
+
+    override fun getItemCount(): Int {
+       return bidList.count() + 1
+    }
+
 }

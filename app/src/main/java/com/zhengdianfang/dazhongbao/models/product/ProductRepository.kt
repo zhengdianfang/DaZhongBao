@@ -6,6 +6,8 @@ import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.AdvertApi
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.ProductApi
+import com.zhengdianfang.dazhongbao.models.mock.mockBidList
+import com.zhengdianfang.dazhongbao.models.mock.mockProduct
 import com.zhengdianfang.dazhongbao.models.mock.mockUserProducts
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
@@ -33,6 +35,9 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
     }
 
     fun getProductInfo(token: String, productId: Long): Observable<Product> {
+        if (MOCK){
+            return Observable.just(mockProduct).delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(ProductApi::class.java).getProductInfo(token, productId)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<Product>(data, Product::class.java) }
@@ -66,6 +71,9 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
     }
 
     fun fetchBidList(token: String, productId: Long): Observable<MutableList<Bid>> {
+        if (MOCK){
+            return Observable.just(mockBidList).delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(ProductApi::class.java).fetchBidList(token, productId)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Bid>>(data, object : TypeReference<MutableList<Bid>>() { }) }

@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/fragment_setting_item_background"
+    android:padding="16dp">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/realnameView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:textSize="14sp"
+        android:background="@drawable/bid_user_realname_active_background"
+        tools:text="刘"/>
+
+    <TextView
+        android:id="@+id/priceView"
+        tools:text="￥23.44"
+        android:textSize="20sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="16dp"/>
+
+    <TextView
+        android:id="@+id/timeGapView"
+        android:layout_gravity="right|center_vertical"
+        android:drawableLeft="@mipmap/the_new_mark_icon"
+        android:gravity="center_vertical"
+        android:drawablePadding="8dp"
+        tools:text="1天前"/>
+</GridLayout>

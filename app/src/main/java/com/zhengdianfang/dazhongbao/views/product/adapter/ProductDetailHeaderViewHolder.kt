@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.product.adapter
 
+import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -20,7 +21,7 @@ class ProductDetailHeaderViewHolder(itemView: View?, private val followProductPr
    private val soldCountView by lazy { itemView?.findViewById<TextView>(R.id.soldCountView)!! }
    private val limitTimeView by lazy { itemView?.findViewById<TextView>(R.id.limitTimeView)!! }
 
-   fun setData(product: Product?) {
+   fun setData(product: Product) {
        if (null != product){
            val context = itemView?.context!!
            yestodayClosePriceView.text = product.yestodayClosePrice.toString()
@@ -30,17 +31,21 @@ class ProductDetailHeaderViewHolder(itemView: View?, private val followProductPr
            }else{
                limitTimeView.setText( R.string.no_label)
            }
-           if (product.attention == 1) {
-               attentionButton.setBackgroundResource(R.drawable.product_item_attentioned_button_background)
-               attentionButton.setTextColor(ContextCompat.getColor(context, R.color.bottom_bar_tab_text_color))
-               attentionButton.setText(R.string.attentioned)
-           } else {
-               attentionButton.setBackgroundResource(R.drawable.activity_product_detail_button_background)
-               attentionButton.setTextColor(ContextCompat.getColor(context, R.color.c_8c6465))
-               attentionButton.setText(R.string.un_attention)
-               attentionButton.setOnClickListener {
-                   followProductPresenter.followProduct(CApplication.INSTANCE.loginUser?.token!!, product.id)
-               }
+           attention(context,product.attention == 1, product.id)
+       }
+   }
+
+   fun attention(context: Context, attention: Boolean, productId: Long) {
+       if (attention) {
+           attentionButton.setBackgroundResource(R.drawable.product_item_attentioned_button_background)
+           attentionButton.setTextColor(ContextCompat.getColor(context, R.color.bottom_bar_tab_text_color))
+           attentionButton.setText(R.string.attentioned)
+       } else {
+           attentionButton.setBackgroundResource(R.drawable.activity_product_detail_button_background)
+           attentionButton.setTextColor(ContextCompat.getColor(context, R.color.c_8c6465))
+           attentionButton.setText(R.string.un_attention)
+           attentionButton.setOnClickListener {
+               followProductPresenter.followProduct(CApplication.INSTANCE.loginUser?.token!!, productId)
            }
        }
    }

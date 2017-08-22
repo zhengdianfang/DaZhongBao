@@ -151,4 +151,5 @@
     <string name="auction_success_total_count">成功竞拍：%s万股</string>
     <string name="my_start_gap_time">%1$s天%2$s小时</string>
     <string name="my_start_gap_label">距离开拍：%s</string>
+    <string name="top_price_label">最高价</string>
 </resources>
