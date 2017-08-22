@@ -77,7 +77,7 @@
     <string name="fragment_personal_upgrade_vip">升级会员</string>
     <string name="product_item_to_sell">出让 %s 股</string>
     <string name="stock_unit">股</string>
-    <string name="product_item_will_pay_price">意向价格 %s</string>
+    <string name="product_item_will_pay_price">意向价格 %s 元</string>
     <string name="sold_count_value">%s万</string>
     <string name="price_unit_value">￥%s</string>
     <string name="un_attention">+ 感兴趣</string>

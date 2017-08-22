@@ -9,4 +9,6 @@ object Constants {
     val SOLD_COUNT_BASE_UNIT = 10000
 
     val PAGE_SIZE = 20
+
+    val MOCK = true
 }

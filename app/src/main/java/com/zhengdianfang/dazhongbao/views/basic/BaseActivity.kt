@@ -12,7 +12,7 @@ import com.zhengdianfang.dazhongbao.views.login.LoginActivity
  * Created by dfgzheng on 25/07/2017.
  */
 abstract class BaseActivity : AppCompatActivity() {
-    val mDialogFragment by lazy {
+    private val mDialogFragment by lazy {
         val dialogFragment = DialogFragment()
         dialogFragment
     }
@@ -21,7 +21,9 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun hideLoadingDialog() {
-        mDialogFragment.dismiss()
+        if (mDialogFragment.isAdded){
+            mDialogFragment.dismiss()
+        }
     }
 
     fun toast(msg: Any, long: Boolean = false) {

@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.models.product
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.AdvertApi
 import com.zhengdianfang.dazhongbao.models.api.CException
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by dfgzheng on 10/08/2017.
  */
-class ProductRepository(private val MOCK :Boolean = false) {
+class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
 
     fun getProductList(token: String?, pageNumber: Int, checkStatus: String, order: String = ""): Observable<MutableList<Product>> {
         if (MOCK){

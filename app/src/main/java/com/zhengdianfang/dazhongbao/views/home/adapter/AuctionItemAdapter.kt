@@ -1,6 +1,5 @@
 package com.zhengdianfang.dazhongbao.views.home.adapter
 
-import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
@@ -10,12 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
-import com.zhengdianfang.dazhongbao.helpers.DateUtils
-import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
+import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.ProductDetailPresenter
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,19 +61,11 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
 
     fun setData(product: Product){
         val context = itemView?.context!!
-        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
         shareCodeView.text = "[${product.sharesCode}]"
         industryView.text = product.industry
-        basicPriceView.text = context.getString(R.string.start_auction_price, product.basicUnitPrice.toString())
-        val soldCount = product.soldCount.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
-        val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!
-        val soldCountSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_to_sell,soldCountString)!!,
-                soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
-        soldCountView.text = soldCountSpannedString
-        val wantPriceString = context.getString(R.string.price_unit_value, product.basicUnitPrice.toString())!!
-        val wantPriceSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_will_pay_price, wantPriceString)!!,
-                wantPriceString, highlightColor, PixelUtils.sp2px(context, 14f).toInt())
-        nowUnitPriceView.text = wantPriceSpannedString
+        basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.start_auction_price)
+        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
+        nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
         if (product.limitTime == 0){
             limitTimeView.text = context.getString(R.string.fragment_push_limit_label)
             limitTimeView.visibility = View.VISIBLE
@@ -109,32 +97,19 @@ class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
 
     fun setData(product: Product){
         val context = itemView?.context!!
-        sharesNameView.text = "${product.sharesName} [${product.sharesCode}]"
-        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
+        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(product.sharesName, product.sharesCode)
 
-        val soldCount = product.soldCount.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
-        val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!
-        val soldCountSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_to_sell,soldCountString)!!,
-                soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
-        soldCountView.text = soldCountSpannedString
+        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = product.industry
 
-        val wantPriceString = context.getString(R.string.price_unit_value, product.basicUnitPrice.toString())!!
-        val wantPriceSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_will_pay_price, wantPriceString)!!,
-                wantPriceString, highlightColor, PixelUtils.sp2px(context, 14f).toInt())
-        basicPriceView.text = wantPriceSpannedString
-        if (product.attention == 0){
-            attentionButton.setText(R.string.un_attention)
-            attentionButton.setTextColor(Color.WHITE)
-            attentionButton.setBackgroundResource(R.drawable.product_item_attentioned_button_background)
-        }else {
-            attentionButton.setText(R.string.attentioned)
-            attentionButton.setTextColor(ContextCompat.getColor(itemView?.context, R.color.activity_login_weixin_button_text_color))
-            attentionButton.setBackgroundResource(R.drawable.product_item_un_attention_button_background)
-        }
-        val (day , hour, _) = DateUtils.diffTime(Date(System.currentTimeMillis()), Date(product.startDateTime))
-        val statusString = context.getString(R.string.my_start_gap_time, day.toString(), hour.toString())
-        timeGapView.text = SpannableStringUtils.addColorSpan(context.getString(R.string.my_start_gap_label, statusString), statusString, ContextCompat.getColor(context, R.color.colorPrimary), PixelUtils.sp2px(context, 14f).toInt())
+        basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
+        ViewsUtils.renderAttentionView(context, product.attention, {textResId, color, backgroundResId ->
+            attentionButton.setText(textResId)
+            attentionButton.setTextColor(color)
+            attentionButton.setBackgroundResource(backgroundResId)
+        })
+        timeGapView.text = ViewsUtils.renderStatusView(context, product, { _, _ ->  })
+
     }
 
 }

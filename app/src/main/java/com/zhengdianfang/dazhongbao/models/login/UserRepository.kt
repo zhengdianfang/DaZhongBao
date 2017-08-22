@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.models.login
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.UserApi
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by dfgzheng on 08/08/2017.
  */
-class UserRepository(private var MOCK: Boolean = false) {
+class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     fun modifyPassword(password: String, token: String): Observable<String> {
         return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
                 .map {json ->

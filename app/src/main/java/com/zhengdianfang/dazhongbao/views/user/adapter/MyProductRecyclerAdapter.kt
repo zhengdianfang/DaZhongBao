@@ -13,6 +13,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.helpers.DateUtils
 import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
+import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
@@ -22,7 +23,7 @@ import java.util.*
  * Created by dfgzheng on 18/08/2017.
  */
 
-class MyProductRecyclerAdapter(val myProducts: MutableList<Product>) : RecyclerView.Adapter<MyProductRecyclerViewHolder>() {
+class MyProductRecyclerAdapter(private val myProducts: MutableList<Product>) : RecyclerView.Adapter<MyProductRecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyProductRecyclerViewHolder {
         return MyProductRecyclerViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.my_product_list_item, parent, false))
     }
@@ -49,20 +50,15 @@ class MyProductRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
 
     fun setData(product: Product) {
         val context = itemView?.context!!
-        sharesNameView.text = "${product.sharesName} [${product.sharesCode}]"
-        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
-
-        val soldCount = product.soldCount.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
-        val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!
-        val soldCountSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_to_sell,soldCountString)!!,
-                soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
-        soldCountView.text = soldCountSpannedString
+        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(product.sharesName, product.sharesCode)
+        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = product.industry
 
-        val wantPriceString = context.getString(R.string.price_unit_value, product.basicUnitPrice.toString())!!
-        val wantPriceSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_will_pay_price, wantPriceString)!!,
-                wantPriceString, highlightColor, PixelUtils.sp2px(context, 14f).toInt())
-        nowUnitPriceView.text = wantPriceSpannedString
+        nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.nowUnitPrice, R.string.product_item_will_pay_price)
+        statusView.text = ViewsUtils.renderStatusView(context, product, {canPay, dealSuccess ->
+            payButton.visibility = if (canPay) View.VISIBLE else View.GONE
+            bidListViewGroup.visibility = if (dealSuccess) View.VISIBLE else View.GONE
+        })
         renderStatusView(context, product)
         itemView.setOnClickListener {
             context.startActivity(Intent(context, ProductDetailActivity::class.java).putExtra("productId", product.id))
