@@ -30,7 +30,7 @@ class ProductDetailPresenter: BasePresenter() {
     data class ButtonStyle(var textResId: Int, var backgroundColorId: Int)
     private val productRepository by lazy { ProductRepository() }
 
-    fun fetchProductInfo(productId: Long) {
+    private fun fetchProductInfo(productId: Long) {
         val loginUser = CApplication.INSTANCE.loginUser
         mView?.showLoadingDialog()
         addSubscription(productRepository.getProductInfo(loginUser?.token ?: "", productId),
@@ -54,13 +54,11 @@ class ProductDetailPresenter: BasePresenter() {
 
     fun fetchProductInfoAndBidList(productId: Long){
         val loginUser = CApplication.INSTANCE.loginUser!!
-        mView?.showLoadingDialog()
         val requestObservable = Observable.zip(productRepository.getProductInfo(loginUser.token!!, productId), productRepository.fetchBidList(loginUser.token!! , productId)
                 , BiFunction<Product, MutableList<Bid>, Pair<Product, MutableList<Bid>>> { product, list-> Pair(product, list)})
         addSubscription(requestObservable, Consumer{ (first, second) ->
                     (mView as IProductInfoView).renderProductInfo(first)
                     (mView as IProductInfoView).renderBidList(second)
-                    mView?.hideLoadingDialog()
                 })
 
     }

@@ -1,19 +1,23 @@
 package com.zhengdianfang.dazhongbao.views.basic
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
 /**
  * Created by dfgzheng on 25/07/2017.
  */
+@SuppressLint("RestrictedApi")
 abstract class BaseActivity : AppCompatActivity() {
     private val mDialogFragment by lazy {
         val dialogFragment = DialogFragment()
+        dialogFragment.setupDialog(MaterialDialog.Builder(this).progress(true, 100).show(), DialogFragment.STYLE_NORMAL)
         dialogFragment
     }
     open fun showLoadingDialog() {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
+import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
@@ -63,7 +65,12 @@ abstract class BaseFragment: Fragment(), IView {
     override fun networkError(msg: String) {
         hideLoadingDialog()
         Log.e("network error", msg)
-        toast(msg)
+        if (BuildConfig.DEBUG) {
+            MaterialDialog.Builder(context).content(msg).onPositive { dialog, which -> dialog.cancel() }.show()
+
+        }else{
+            toast(msg)
+        }
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {

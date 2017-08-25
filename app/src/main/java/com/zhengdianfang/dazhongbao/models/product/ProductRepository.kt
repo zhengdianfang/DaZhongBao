@@ -51,6 +51,9 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
     }
 
     fun followProduct(token: String, productId: Long): Observable<String>{
+        if (MOCK){
+            return Observable.just("注关成功").delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(ProductApi::class.java).followProduct(token, productId)
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){

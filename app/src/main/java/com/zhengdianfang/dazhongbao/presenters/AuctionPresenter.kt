@@ -10,15 +10,13 @@ import io.reactivex.functions.Consumer
  */
 class AuctionPresenter: BasePresenter() {
 
-    private val productRepository by lazy { ProductRepository(true) }
+    private val productRepository by lazy { ProductRepository() }
 
     fun fetchAuctionList(token:String,number: Int) {
-        mView?.showLoadingDialog()
-        addSubscription(productRepository.getProductList(token, number,  "4, 5", "productRepository"), Consumer {list->
+        addSubscription(productRepository.getProductList(token, number,  "4, 5", "startDateTime"), Consumer {list->
             list.sortBy { it.endDateTime}
             list.reverse()
             (mView as IAuctionListView).receiveAuctionProductList(list.filter { (it.check_status == 4 || it.check_status == 5) } as MutableList<Product>)
-            mView?.hideLoadingDialog()
         })
     }
 

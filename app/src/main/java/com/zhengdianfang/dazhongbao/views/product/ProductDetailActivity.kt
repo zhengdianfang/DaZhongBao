@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.TextView
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
@@ -17,6 +19,8 @@ import com.zhengdianfang.dazhongbao.views.components.Toolbar
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductDetailFooterViewHolder
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductDetailHeaderViewHolder
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductRecyclerViewAdapter
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 
 class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductInfoView, FollowProductPresenter.IFollowProductView {
 
@@ -35,21 +39,44 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     private val productDetailHeaderViewHolder by lazy { ProductDetailHeaderViewHolder(LayoutInflater.from(this).inflate(R.layout.product_detail_header, productRecyclerView, false), followProductPresenter) }
     private val productNotesFooterViewHolder by lazy { ProductDetailFooterViewHolder(LayoutInflater.from(this).inflate(R.layout.product_notes_footer, productRecyclerView, false)) }
 
+    private var followDisposable: Disposable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
 
         productDetailPresenter.attachView(this)
         followProductPresenter.attachView(this)
+        setupRecyclerView()
+        followDisposable = RxBus.instance.register(Action.FOLLOW_PRODUCT_ACTION, Consumer { productId ->
+            if (productId is Long) {
+                this.product?.attention = 1
+                productDetailHeaderViewHolder.attention(this.applicationContext, true, productId)
+            }
+        })
+        productRecyclerView.refresh()
+    }
+
+    private fun setupRecyclerView() {
         productRecyclerView.addHeaderView(productDetailHeaderViewHolder.itemView)
+        productRecyclerView.setLoadingListener(object : XRecyclerView.LoadingListener {
+            override fun onLoadMore() {
+            }
+
+            override fun onRefresh() {
+                productDetailPresenter.fetchProductInfoAndBidList(productId)
+            }
+
+        })
+        productRecyclerView.setLoadingMoreEnabled(false)
         productRecyclerView.adapter = productRecyclerViewAdapter
-        productDetailPresenter.fetchProductInfoAndBidList(productId)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         productDetailPresenter.detachView()
         followProductPresenter.detachView()
+        RxBus.instance.unregister(followDisposable)
     }
 
     private fun renderProductHeaderView(product: Product) {
@@ -65,6 +92,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         renderActionBar(backgroundColorId, textResId, notesString, productDetailPresenter.getStatusViewType(product))
         renderList()
         renderNotesFooter(product)
+        productRecyclerView.refreshComplete()
     }
 
     private fun renderNotesFooter(product: Product) {
@@ -114,11 +142,8 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         }
     }
 
-    override fun followSuccess(msg: String, productId: Long) {
+    override fun followSuccess(msg: String) {
         toast(msg)
-        this.product?.attention = 1
-        productDetailHeaderViewHolder.attention(this.applicationContext, true, productId)
-        productRecyclerViewAdapter.notifyItemChanged(0)
     }
 
     override fun renderBidList(list: MutableList<Bid>) {

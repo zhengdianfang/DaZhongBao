@@ -13,6 +13,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
  * Created by dfgzheng on 05/08/2017.
  */
 class RecyclerViewAdapter(private  val context: Context, private val products: MutableList<Product>) : RecyclerView.Adapter<ProductItemViewHolder>(), FollowProductPresenter.IFollowProductView  {
+
     private val  followProductPresenter = FollowProductPresenter()
 
     init {
@@ -53,14 +54,9 @@ class RecyclerViewAdapter(private  val context: Context, private val products: M
         (context as BaseActivity).noLogin()
     }
 
-    override fun followSuccess(msg: String, productId: Long) {
+
+    override fun followSuccess(msg: String) {
         (context as BaseActivity).toast(msg)
-        val filters = products.filter { it.id == productId }
-        filters.forEach {
-            it.attention = 1
-            val pos = products.indexOf(it)
-            notifyItemChanged(pos)
-        }
     }
 
     override fun onBindViewHolder(holder: ProductItemViewHolder?, position: Int) {

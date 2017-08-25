@@ -44,7 +44,7 @@ class PushBidPresenter: BasePresenter() {
        }else if(count == 0L){
            mView?.validateErrorUI(R.string.please_input_leggal_count)
            res = false
-       }else if (product.mybids.count() == 3) {
+       }else if (product.mybids?.count() == 3) {
            mView?.validateErrorUI(R.string.the_bid_max_count)
            res = false
        }

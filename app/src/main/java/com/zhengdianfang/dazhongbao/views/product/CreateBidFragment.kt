@@ -119,8 +119,8 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
 
     override fun removeBidSuccess(bidId: Long, msg: String) {
         if (null != product){
-            val removeItem = this.product!!.mybids.filter { it.id == bidId }
-            this.product?.mybids?.remove(removeItem.first())
+            val removeItem = this.product!!.mybids?.filter { it.id == bidId }
+            this.product?.mybids?.remove(removeItem?.first())
             renderMyBidList()
             toast(msg)
         }
