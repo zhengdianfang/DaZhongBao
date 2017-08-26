@@ -45,9 +45,9 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
             }
         })
 
-        unFollowDisposable = RxBus.instance.register(Action.CANCEL_FOLLOW_PRODUCT_ACTION, Consumer { productId ->
-            if (productId is Long) {
-                val product = datas.find { it.id == productId }
+        unFollowDisposable = RxBus.instance.register(Action.CANCEL_FOLLOW_PRODUCT_ACTION, Consumer { (type, data) ->
+            if (data is Long) {
+                val product = datas.find { it.id == data}
                 if (product != null) {
                     adapter.notifyItemRemoved(datas.indexOf(product) + 1)
                     datas.remove(product)

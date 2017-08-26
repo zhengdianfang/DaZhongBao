@@ -56,8 +56,8 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productDetailPresenter.attachView(this)
         followProductPresenter.attachView(this)
         setupRecyclerView()
-        followDisposable = RxBus.instance.register(Action.FOLLOW_PRODUCT_ACTION, Consumer { productId ->
-            if (productId is Long) {
+        followDisposable = RxBus.instance.register(Action.FOLLOW_PRODUCT_ACTION, Consumer { (type, data)->
+            if (data is Long) {
                 this.product?.attention = 1
                 productDetailHeaderViewHolder.attention(this.applicationContext, true, productId)
             }

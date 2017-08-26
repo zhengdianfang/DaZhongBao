@@ -21,9 +21,14 @@ class RxBus {
         publishSubject.onNext(action)
     }
 
-    fun register(actionType: String, consumer: Consumer<Any>): Disposable? {
-        val disposable = publishSubject.filter { (type) -> type == actionType }
-                .map { action -> action.data }
+    fun register(actionTypes: Array<String>, consumer: Consumer<Action>): Disposable? {
+        val disposable = publishSubject.filter { (type) -> actionTypes.contains(type) }
+                .subscribe(consumer)
+        mCompositeDisposable.add(disposable)
+        return disposable
+    }
+    fun register(actionType: String, consumer: Consumer<Action>): Disposable? {
+        val disposable = publishSubject.filter { (type) -> actionType == type }
                 .subscribe(consumer)
         mCompositeDisposable.add(disposable)
         return disposable

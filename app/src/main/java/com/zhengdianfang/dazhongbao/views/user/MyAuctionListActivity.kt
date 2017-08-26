@@ -53,7 +53,7 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
 
             }
         })
-        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { data ->
+        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { (type, data) ->
             if (data is RemoveBidResult) {
                 val filters = datas.filter { it.id == data.productId }
                 filters.forEach {

@@ -44,14 +44,15 @@ class ProductRecyclerView(context: Context?, val status: String) : XRecyclerView
             }
 
         })
-        followDisposable = RxBus.instance.register(Action.FOLLOW_PRODUCT_ACTION, Consumer { productId ->
-            if (productId is Long ) {
-                val filters = products.filter { it.id == productId }
-                filters.forEach {
-                    it.attention = 1
-                    val pos = products.indexOf(it)
-                    productAdapter.notifyItemChanged(pos + 1)
+        followDisposable = RxBus.instance.register(actionTypes = arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION), consumer = Consumer { (type, data) ->
+            val filters = products.filter { it.id == data}
+            filters.forEach {
+                when(type){
+                    Action.FOLLOW_PRODUCT_ACTION -> it.attention = 1
+                    Action.CANCEL_FOLLOW_PRODUCT_ACTION -> it.attention = 0
                 }
+                val pos = products.indexOf(it)
+                productAdapter.notifyItemChanged(pos + 1)
             }
         })
         this.refresh()

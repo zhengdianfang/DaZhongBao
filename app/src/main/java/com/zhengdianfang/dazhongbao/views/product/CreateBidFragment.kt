@@ -60,7 +60,7 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
                         payCountView.text.toString())
             }
         }
-        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { data ->
+        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { (type, data) ->
             if (data is RemoveBidResult) {
                 val removeItem = this.product!!.mybids?.filter { it.bidid == data.bidId }
                 this.product?.mybids?.remove(removeItem?.first())
