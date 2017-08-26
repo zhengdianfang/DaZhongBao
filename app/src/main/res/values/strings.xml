@@ -171,4 +171,5 @@
     <string name="please_input_leggal_count">请输入正确的数量</string>
     <string name="the_bid_max_count">最多出价三次</string>
     <string name="my_auction_title">我的竞拍</string>
+    <string name="starting_price_label">起拍价: %s</string>
 </resources>

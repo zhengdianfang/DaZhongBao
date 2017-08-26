@@ -6,21 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="@color/fragment_background_color"
+    android:background="@android:color/white"
     android:columnCount="3">
 
     <TextView
         android:id="@+id/sharesNameView"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
+        style="@style/AppTheme.ProductItem.SharesName"
         android:layout_columnSpan="2"
         android:layout_columnWeight="1"
         tools:text="天成自控 [00004]"/>
 
     <TextView
-        android:textSize="14sp"
         android:id="@+id/industryNameView"
-        android:textColor="@color/bottom_bar_tab_text_color"
+        style="@style/AppTheme.ProductItem.Industry"
         android:layout_column="0"
         android:layout_row="1"
         android:layout_columnSpan="3"
@@ -28,33 +26,28 @@
         android:layout_marginTop="8dp"
         tools:text="汽车 - 汽车零件"/>
     <TextView
-        android:id="@+id/nowUnitPriceView"
-        android:textSize="14sp"
-        android:textColor="@color/bottom_bar_tab_text_color"
+        android:id="@+id/basicPriceView"
+        style="@style/AppTheme.ProductItem.Price"
         android:layout_column="0"
         android:layout_row="2"
         android:layout_marginTop="8dp"
         tools:text="出让价格: ￥28.60"/>
     <TextView
         android:id="@+id/soldCountView"
-        android:textSize="14sp"
-        android:textColor="@color/bottom_bar_tab_text_color"
+        style="@style/AppTheme.ProductItem.SoldCount"
+        android:layout_gravity="right"
         android:layout_column="2"
         android:layout_row="2"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        android:drawableLeft="@drawable/stock_sale_count_icon"
-        android:drawablePadding="8dp"
         tools:text="出让200股"/>
 
-    <TextView
-        android:background="@android:color/black"
-        android:layout_height="1px"
-        android:layout_columnSpan="3"
-        android:layout_row="3"
+    <View
+        style="@style/AppTheme.ProductItem.Divider"
         android:layout_column="0"
+        android:layout_columnSpan="3"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_columnWeight="1"/>
     <TextView
         android:id="@+id/statusView"
@@ -62,7 +55,6 @@
         android:textColor="@color/bottom_bar_tab_text_color"
         android:layout_column="0"
         android:layout_row="4"
-        android:layout_marginTop="8dp"
         tools:text="保证金：3000元"/>
 
     <Button
@@ -70,10 +62,9 @@
         android:layout_row="4"
         android:layout_height="32dp"
         android:layout_column="2"
-        android:layout_marginTop="8dp"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:text="@string/pay_label"
         android:background="@drawable/my_product_item_pay_button_background"
         android:layout_gravity="right"
@@ -86,7 +77,7 @@
         android:layout_row="5"
         android:layout_columnSpan="3"
         android:layout_columnWeight="1"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:columnCount="3">
 
         <TextView
@@ -94,7 +85,7 @@
             tools:text="竞拍成功: 129万股"
             android:textSize="14sp"
             android:layout_row="0"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/c_3c3c3c" />
         <TextView
             android:id="@+id/totalSoldPriceView"
             tools:text="合计: 1290万元"
@@ -102,7 +93,7 @@
             android:layout_marginLeft="32dp"
             android:layout_columnWeight="1"
             android:layout_row="0"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/c_3c3c3c" />
 
         <TextView
             android:id="@+id/expandableView"

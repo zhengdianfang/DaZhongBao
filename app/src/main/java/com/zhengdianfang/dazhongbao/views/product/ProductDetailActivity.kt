@@ -1,5 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.product
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
@@ -23,6 +25,12 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
 class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductInfoView, FollowProductPresenter.IFollowProductView {
+
+    companion object {
+        fun startActivity(context: Context, productId: Long){
+            context.startActivity(Intent(context, ProductDetailActivity::class.java).putExtra("productId", productId))
+        }
+    }
 
     private var product: Product? = null
     private val bidList = arrayListOf<Bid>()

@@ -100,5 +100,32 @@
         <item name="android:layout_height">32dp</item>
         <item name="android:background">@drawable/activity_product_detail_button_background</item>
     </style>
-
+    <style name="AppTheme.ProductItem"></style>
+    <style name="AppTheme.ProductItem.SoldCount">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/bottom_bar_tab_text_color</item>
+        <item name="android:drawableLeft">@drawable/stock_sale_count_icon</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="AppTheme.ProductItem.SharesName">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/c_3c3c3c</item>
+    </style>
+    <style name="AppTheme.ProductItem.Industry">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/bottom_bar_tab_text_color</item>
+    </style>
+    <style name="AppTheme.ProductItem.Price">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/bottom_bar_tab_text_color</item>
+    </style>
+    <style name="AppTheme.ProductItem.Divider">
+        <item name="android:background">@color/c_ebebeb</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+    <style name="AppTheme.ProductItem.Status">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/bottom_bar_tab_text_color</item>
+    </style>
 </resources>

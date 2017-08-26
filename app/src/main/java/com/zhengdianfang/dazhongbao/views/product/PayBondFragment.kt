@@ -39,6 +39,11 @@ class PayBondFragment : BaseFragment() {
         setupBondViews()
     }
 
+    override fun onBackPressed(): Boolean {
+        getParentActivity().supportFragmentManager.popBackStack()
+        return true
+    }
+
     private fun setupBondViews() {
         bondEditText.setText(Constants.MIN_BOND_PRICE.toString())
         maxAuctionCountView.text = getString(R.string.max_auction_shares_count, (bondCount  / product!!.basicUnitPrice).toInt())

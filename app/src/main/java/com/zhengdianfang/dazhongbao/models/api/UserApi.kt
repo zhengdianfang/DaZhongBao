@@ -77,10 +77,10 @@ interface UserApi {
     fun fetchUserPushedProduct(@Field("token")token: String): Observable<JsonNode>
 
     @FormUrlEncoded
-    @POST("products/myPlist")
+    @POST("products/myAttentions")
     fun fetchUserAttentionProducts(@Field("token")token: String): Observable<JsonNode>
 
     @FormUrlEncoded
-    @POST("products/myPlist")
+    @POST("products/myBidProducts")
     fun fetchUserAuctionProducts(@Field("token")token: String): Observable<JsonNode>
 }
