@@ -67,9 +67,6 @@
 
 
     <TextView
-        android:id="@+id/timeGapView"
-        tools:text="距离开拍："/>
-    <TextView
         android:id="@+id/nowUnitPriceView"
         android:layout_row="4"
         android:layout_column="2"

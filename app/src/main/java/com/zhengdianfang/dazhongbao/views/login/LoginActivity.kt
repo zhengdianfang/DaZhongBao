@@ -1,9 +1,9 @@
 package com.zhengdianfang.dazhongbao.views.login
 
 import android.os.Bundle
-import com.zhengdianfang.dazhongbao.views.basic.PresenterActivity
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 
-class LoginActivity : PresenterActivity(){
+class LoginActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Advert
 import com.zhengdianfang.dazhongbao.presenters.AdvertPresenter
@@ -28,8 +27,6 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
 
     private val tabs = arrayOf("3,4,5", "0")
 
-    private val adverts = mutableListOf<Advert>()
-    private val advertViewPagerAdapter by lazy { AdvertViewPagerAdapter(adverts) }
     private val tabViewPagerAdapter by lazy { TabViewPagerAdapter(tabs) }
     private val mAdvertViewPager by lazy { view?.findViewById<MiracleViewPager>(R.id.advertViewPager)!! }
     private val mTabViewPager by lazy { view?.findViewById<MiracleViewPager>(R.id.tabViewPager)!! }
@@ -49,7 +46,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         advertPresenter.attachView(this)
         setupViewPager()
         setupTabViewPager()
-//        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
+        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
         advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
 
     }
@@ -58,8 +55,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         mAdvertViewPager.setMultiScreen(0.75f)
         mAdvertViewPager.setPageTransformer(false, MiracleScaleTransformer())
         mAdvertViewPager.setInfiniteLoop(true)
-        mAdvertViewPager.adapter = advertViewPagerAdapter
-
+        mAdvertViewPager.adapter = AdvertViewPagerAdapter(mutableListOf())
         mAdvertViewPager.initIndicator()
         mAdvertViewPager.indicator?.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
                 ?.setOrientation(MiracleViewPager.Orientation.HORIZONTAL)
@@ -109,9 +105,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     }
 
     override fun receiveBanner(advertList: MutableList<Advert>) {
-        adverts.clear()
-        adverts.addAll(advertList)
-        advertViewPagerAdapter.notifyDataSetChanged()
+        mAdvertViewPager.adapter = AdvertViewPagerAdapter(advertList)
     }
 
     override fun receiveIndexCount(dealCount: Int, productCount: Int, messageCount: Int) {

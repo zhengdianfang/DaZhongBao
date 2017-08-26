@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.AuctionPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseListFragment
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import com.zhengdianfang.dazhongbao.views.home.adapter.AuctionItemAdapter
 
 

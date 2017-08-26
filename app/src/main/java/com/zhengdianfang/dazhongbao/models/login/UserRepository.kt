@@ -124,4 +124,13 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
     }
+
+    fun fetchUserAuctionProducts(token: String): Observable<MutableList<Product>>{
+        if (MOCK){
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(UserApi::class.java).fetchUserAuctionProducts(token)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+    }
 }

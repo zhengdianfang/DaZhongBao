@@ -1,6 +1,9 @@
 package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.RemoveBidResult
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
@@ -27,11 +30,12 @@ class PushBidPresenter: BasePresenter() {
         }
     }
 
-    fun removeBid(token: String, bidId: Long){
+    fun removeBid(token: String, bid: Bid){
         mView?.showLoadingDialog()
-        addSubscription(productRepository.removeBid(token, bidId), Consumer {msg->
+        addSubscription(productRepository.removeBid(token, bid.bidid), Consumer {msg->
             mView?.hideLoadingDialog()
-            (mView as IRemoveBidView).removeBidSuccess(bidId, msg)
+            (mView as IRemoveBidView).removeBidSuccess(msg)
+            RxBus.instance.post(Action(Action.REMOVE_BID_ACTION, RemoveBidResult(bid.productId, bid.bidid)))
 
         })
     }
@@ -55,6 +59,6 @@ class PushBidPresenter: BasePresenter() {
        fun pushBidSuccess(bid: Bid)
     }
     interface IRemoveBidView: IView {
-        fun removeBidSuccess(bidId: Long, msg: String)
+        fun removeBidSuccess(msg: String)
     }
 }

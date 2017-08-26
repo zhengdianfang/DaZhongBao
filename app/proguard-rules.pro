@@ -43,3 +43,9 @@
 -keep class com.alipay.tscenter.** { *; }
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
+
+#AgentWeb
+-keep class com.just.library.** {
+    *;
+}
+-dontwarn com.just.library.**

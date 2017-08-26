@@ -9,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 
 
 /**

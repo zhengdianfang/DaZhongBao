@@ -10,12 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
-import com.zhengdianfang.dazhongbao.helpers.DateUtils
-import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
-import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
+import com.zhengdianfang.dazhongbao.helpers.*
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 import java.util.*
 

@@ -34,7 +34,7 @@ import android.util.SparseIntArray
 /**
  * Created by mikeafc on 15/11/25.
  */
-internal class TimerHandler(var miracleViewPager: MiracleViewPager, var listener: TimerHandlerListener?, var interval: Long) : Handler() {
+internal class TimerHandler(private var miracleViewPager: MiracleViewPager, var listener: TimerHandlerListener?, private var interval: Long) : Handler() {
 
     internal interface TimerHandlerListener {
         fun callBack()

@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
 import com.zhengdianfang.dazhongbao.models.product.Product
@@ -20,7 +21,7 @@ import io.reactivex.functions.Consumer
  */
 class UserPresenter: BasePresenter() {
 
-    private val mUserRepository by lazy { UserRepository(true) }
+    private val mUserRepository by lazy { UserRepository(Constants.MOCK) }
     private val passwordValidate by lazy { PasswordValidate(mView) }
     private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
     private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
@@ -124,20 +125,24 @@ class UserPresenter: BasePresenter() {
 
     fun fetchUserPushedProducts(token: String){
        if (phoneNumberValidate.checkLogin()) {
-           mView?.showLoadingDialog()
            addSubscription(mUserRepository.fetchUserPushedProduct(token), Consumer { list ->
                (mView as IUserProductListView).receiveUserProductList(list)
-               mView?.hideLoadingDialog()
            })
        }
     }
 
     fun fetchUserAttentionProducts(token: String){
         if (phoneNumberValidate.checkLogin()) {
-            mView?.showLoadingDialog()
             addSubscription(mUserRepository.fetchUserAttentionProducts(token), Consumer { list ->
                 (mView as IUserAttentionListView).receiveUserAttentionList(list)
-                mView?.hideLoadingDialog()
+            })
+        }
+    }
+
+    fun fetchUserAuctionProducts(token: String){
+        if (phoneNumberValidate.checkLogin()) {
+            addSubscription(mUserRepository.fetchUserAuctionProducts(token), Consumer { list ->
+                (mView as IUserAuctionListView).receiveUserAuctionList(list)
             })
         }
     }
@@ -188,5 +193,9 @@ class UserPresenter: BasePresenter() {
 
     interface IUserAttentionListView: IView {
         fun receiveUserAttentionList(list: MutableList<Product>)
+    }
+
+    interface IUserAuctionListView: IView {
+        fun receiveUserAuctionList(list: MutableList<Product>)
     }
 }

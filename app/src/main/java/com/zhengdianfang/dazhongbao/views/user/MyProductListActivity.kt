@@ -7,11 +7,11 @@ import android.view.View
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseListActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import com.zhengdianfang.dazhongbao.views.user.adapter.MyProductRecyclerAdapter
 
 class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserProductListView {

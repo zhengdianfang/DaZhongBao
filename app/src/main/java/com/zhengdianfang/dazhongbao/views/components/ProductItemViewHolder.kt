@@ -11,10 +11,10 @@ import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 /**

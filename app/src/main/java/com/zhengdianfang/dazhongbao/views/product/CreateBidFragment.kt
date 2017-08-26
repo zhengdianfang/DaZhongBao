@@ -13,13 +13,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.RemoveBidResult
+import com.zhengdianfang.dazhongbao.helpers.RxBus
+import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.PushBidPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 
 
 /**
@@ -43,6 +47,8 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
         return inflater!!.inflate(R.layout.fragment_create_bid, container, false)
     }
 
+    private var removeBidDisposable: Disposable? = null
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         pushBidPresenter.attachView(this)
@@ -54,11 +60,19 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
                         payCountView.text.toString())
             }
         }
+        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { data ->
+            if (data is RemoveBidResult) {
+                val removeItem = this.product!!.mybids?.filter { it.bidid == data.bidId }
+                this.product?.mybids?.remove(removeItem?.first())
+                renderMyBidList()
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         pushBidPresenter.detachView()
+        RxBus.instance.unregister(removeBidDisposable)
     }
 
     private fun renderViews() {
@@ -97,17 +111,10 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
 
     private fun renderMyBidList() {
         cancelBidViewGroup.removeAllViews()
-        this.product?.mybids?.forEachIndexed { index, bid ->
-            val itemView = LayoutInflater.from(context).inflate(R.layout.cancel_bond_price_item_layout, null, false)
-            itemView.findViewById<TextView>(R.id.dealUnitPriceView).text = bid.price.toString() + getString(R.string.fragment_push_price_unit)
-            itemView.findViewById<TextView>(R.id.dealCountView).text = getString(R.string.sold_count_value,
-                    (bid.count/ Constants.SOLD_COUNT_BASE_UNIT).toString()) + getString(R.string.stock_unit)
-            itemView.findViewById<TextView>(R.id.dealTotlaPriceView).text =
-                    getString(R.string.total_price_label, getString(R.string.sold_count_value, (bid.count * bid.price / Constants.SOLD_COUNT_BASE_UNIT).toInt().toString()))
-            itemView.findViewById<Button>(R.id.removeButton).setOnClickListener {
-                pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, bid.id)
-            }
-            cancelBidViewGroup.addView(itemView)
+        ViewsUtils.renderBidListView(context, this.product, removeOnClick = {bid ->
+            pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, bid)
+        }).forEach {
+            cancelBidViewGroup.addView(it)
         }
     }
 
@@ -117,11 +124,8 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
         toast(R.string.push_bid_success)
     }
 
-    override fun removeBidSuccess(bidId: Long, msg: String) {
+    override fun removeBidSuccess(msg: String) {
         if (null != product){
-            val removeItem = this.product!!.mybids?.filter { it.id == bidId }
-            this.product?.mybids?.remove(removeItem?.first())
-            renderMyBidList()
             toast(msg)
         }
     }

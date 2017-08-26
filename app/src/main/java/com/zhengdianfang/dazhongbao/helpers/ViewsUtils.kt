@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.text.SpannableString
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
 import java.util.*
 
 /**
@@ -87,5 +91,23 @@ object ViewsUtils {
             callback(R.string.attentioned, ContextCompat.getColor(context, R.color.activity_login_weixin_button_text_color), R.drawable.product_item_un_attention_button_background)
         }
 
+    }
+
+    fun renderBidListView(context: Context, product: Product?, removeOnClick: (bid: Bid)->Unit): MutableList<View> {
+        val itemViews = mutableListOf<View>()
+        product?.mybids?.forEachIndexed { index, bid ->
+            val itemView = LayoutInflater.from(context).inflate(R.layout.cancel_bond_price_item_layout, null, false)
+            itemView.findViewById<TextView>(R.id.dealUnitPriceView).text = bid.price.toString() + context.getString(R.string.fragment_push_price_unit)
+            itemView.findViewById<TextView>(R.id.dealCountView).text = context.getString(R.string.sold_count_value,
+                    (bid.count/ Constants.SOLD_COUNT_BASE_UNIT).toString()) + context.getString(R.string.stock_unit)
+            itemView.findViewById<TextView>(R.id.dealTotlaPriceView).text =
+                    context.getString(R.string.total_price_label, context.getString(R.string.sold_count_value, (bid.count * bid.price / Constants.SOLD_COUNT_BASE_UNIT).toInt().toString()))
+            itemView.findViewById<Button>(R.id.removeButton).setOnClickListener {
+                removeOnClick(bid)
+            }
+
+            itemViews.add(itemView)
+        }
+        return itemViews
     }
 }

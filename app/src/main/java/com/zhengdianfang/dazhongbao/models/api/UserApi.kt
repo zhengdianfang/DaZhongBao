@@ -78,5 +78,9 @@ interface UserApi {
 
     @FormUrlEncoded
     @POST("products/myPlist")
-    fun fetchUserAttentionProducts(token: String): Observable<JsonNode>
+    fun fetchUserAttentionProducts(@Field("token")token: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/myPlist")
+    fun fetchUserAuctionProducts(@Field("token")token: String): Observable<JsonNode>
 }

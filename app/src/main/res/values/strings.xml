@@ -133,6 +133,7 @@
     <string name="start_auction_price">起拍价：%s 元</string>
     <string name="finish_auction_time">截拍：%s</string>
     <string name="now_price">当前价：</string>
+    <string name="now_price_label">当前叫价：%s 元</string>
     <string name="product_status_intention_info">项目已完成核调，正在排期</string>
     <string name="product_status_auctioning_no_bid">您未支付保证金，无法查看出价过程 ...</string>
     <string name="product_status_waiting_start_info">即将开拍，倒计时：%s</string>
@@ -169,4 +170,5 @@
     <string name="please_input_leggal_price">请输入正确的金额</string>
     <string name="please_input_leggal_count">请输入正确的数量</string>
     <string name="the_bid_max_count">最多出价三次</string>
+    <string name="my_auction_title">我的竞拍</string>
 </resources>

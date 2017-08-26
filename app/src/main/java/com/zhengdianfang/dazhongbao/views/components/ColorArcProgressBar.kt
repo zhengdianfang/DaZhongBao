@@ -13,7 +13,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.views.components.refreshLayout.utils.PixelUtils
+import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 
 /**
  * Created by bruce on 11/6/14.

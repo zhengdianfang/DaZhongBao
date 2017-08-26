@@ -18,6 +18,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.MyAttentionActivity
+import com.zhengdianfang.dazhongbao.views.user.MyAuctionListActivity
 import com.zhengdianfang.dazhongbao.views.user.MyProductListActivity
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
@@ -73,6 +74,9 @@ class PersonalFragment : BaseFragment(){
         }
         view?.findViewById<TextView>(R.id.textView10)!!.setOnClickListener {
             startActivity(Intent(getParentActivity(), MyAttentionActivity::class.java))
+        }
+        view?.findViewById<TextView>(R.id.textView11)!!.setOnClickListener {
+            startActivity(Intent(getParentActivity(), MyAuctionListActivity::class.java))
         }
     }
 

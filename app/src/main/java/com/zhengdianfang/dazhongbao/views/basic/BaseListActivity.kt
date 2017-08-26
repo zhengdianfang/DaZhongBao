@@ -19,8 +19,6 @@ abstract class BaseListActivity<T> : BaseActivity(), XRecyclerView.LoadingListen
         recyclerView.setLoadingListener(this)
     }
 
-    override fun showLoadingDialog() { }
-    override fun hideLoadingDialog() { }
 
     override fun onRefresh() {
         pageNumber = 0
