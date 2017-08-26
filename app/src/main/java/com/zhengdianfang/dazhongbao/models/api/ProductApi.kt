@@ -34,7 +34,8 @@ interface ProductApi {
 
     @FormUrlEncoded
     @POST("products/attention")
-    fun followProduct(@Field("token") token: String, @Field("productId")productId: Long): Observable<JsonNode>
+    fun followProduct(@Field("token") token: String, @Field("productId")productId: Long , @Field("cancel") cancel: Int): Observable<JsonNode>
+
 
 
     @FormUrlEncoded

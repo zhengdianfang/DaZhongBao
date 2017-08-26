@@ -37,6 +37,7 @@ class RxBus {
 data class Action(var type: String, var data: Any){
     companion object {
         val FOLLOW_PRODUCT_ACTION = "follow_product_action"
+        val CANCEL_FOLLOW_PRODUCT_ACTION = "cancel_follow_product_action"
         val REMOVE_BID_ACTION = "remove_bid_action"
     }
 }

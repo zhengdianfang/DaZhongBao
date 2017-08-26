@@ -50,11 +50,11 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
                 .map {data ->API.objectMapper.readValue<SharesInfo>(data, SharesInfo::class.java) }
     }
 
-    fun followProduct(token: String, productId: Long): Observable<String>{
+    fun followProduct(token: String, productId: Long, cancel: Int = 0): Observable<String>{
         if (MOCK){
-            return Observable.just("注关成功").delay(2, TimeUnit.SECONDS)
+            return Observable.just(if(cancel == 0)"注关成功" else "取消成功成功").delay(2, TimeUnit.SECONDS)
         }
-        return API.appClient.create(ProductApi::class.java).followProduct(token, productId)
+        return API.appClient.create(ProductApi::class.java).followProduct(token, productId, cancel)
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){
                         return@map json.get("msg").asText()

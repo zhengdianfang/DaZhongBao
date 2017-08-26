@@ -160,4 +160,6 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productRecyclerViewAdapter.notifyDataSetChanged()
     }
 
+    override fun unfollowSuccess(msg: String) {
+    }
 }

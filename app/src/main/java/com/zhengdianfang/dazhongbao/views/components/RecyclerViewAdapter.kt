@@ -62,4 +62,7 @@ class RecyclerViewAdapter(private  val context: Context, private val products: M
     override fun onBindViewHolder(holder: ProductItemViewHolder?, position: Int) {
         holder?.setData(products[position])
     }
+
+    override fun unfollowSuccess(msg: String) {
+    }
 }
