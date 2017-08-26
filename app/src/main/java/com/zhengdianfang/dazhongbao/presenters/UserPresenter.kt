@@ -3,6 +3,7 @@ package com.zhengdianfang.dazhongbao.presenters
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.login.UserCount
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.validates.PasswordValidate
@@ -147,6 +148,14 @@ class UserPresenter: BasePresenter() {
         }
     }
 
+    fun fetchUserInfo(token: String){
+        if (verifySmsCodeValidate.checkLogin()){
+            addSubscription(mUserRepository.fetchUserInfo(token), Consumer {(user, userCount)->
+                (mView as IUserInfo).receiverUserInfo(user, userCount)
+            })
+        }
+    }
+
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
         var ok = true
         if(contactName.isNullOrEmpty()){
@@ -197,5 +206,9 @@ class UserPresenter: BasePresenter() {
 
     interface IUserAuctionListView: IView {
         fun receiveUserAuctionList(list: MutableList<Product>)
+    }
+
+    interface IUserInfo :IView{
+        fun receiverUserInfo(user: User, userCount: UserCount)
     }
 }

@@ -101,7 +101,7 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){
                         val data = json.get("data")
-                        return@map intArrayOf(data.get("DealCount").asInt(), data.get("ProductCount").asInt(), data.get("MessageCount").asInt())
+                        return@map intArrayOf(data.get("DealCount").asInt(), data.get("ProductCount").asInt(), json.get("MessageCount").asInt())
                     }
                     throw CException(json.get("msg").asText(), json.get("errCode").asInt())
                 }
@@ -132,5 +132,14 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
         return API.appClient.create(UserApi::class.java).fetchUserAuctionProducts(token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+    }
+
+    fun fetchUserInfo(token: String): Observable<Pair<User, UserCount>>{
+        return API.appClient.create(UserApi::class.java).fetchUserInfo(token)
+                .map {json->
+                    val user = API.objectMapper.readValue(json.get("data").toString(), User::class.java)
+                    val userCount = API.objectMapper.readValue(json.get("usercount").toString(), UserCount::class.java)
+                    Pair(user, userCount)
+                }
     }
 }

@@ -16,6 +16,9 @@ import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.login.UserCount
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
@@ -29,7 +32,8 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
 /**
  * A simple [Fragment] subclass.
  */
-class PersonalFragment : BaseFragment(){
+class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
+
     private val avatarImageView by lazy { view?.findViewById<ImageView>(R.id.userHeaderView)!! }
     private val userRealNameTextView by lazy { view?.findViewById<TextView>(R.id.userNameTextview)!! }
     private val userPhoneNumberTextView by lazy { view?.findViewById<TextView>(R.id.phoneNumberTextView)!! }
@@ -38,8 +42,10 @@ class PersonalFragment : BaseFragment(){
     private val myStartProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myStartProductCountTextView)!! }
     private val myProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myProductCountTextView)!! }
     private val myAucationProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myAucationProductCountTextView)!! }
+    private val bondCountView by lazy { view?.findViewById<TextView>(R.id.bondCountView)!! }
     private val settingViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.settingViewGroup)!! }
     private val partnerViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.partnerViewGroup)!! }
+    private val userPersenter = UserPresenter()
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -51,17 +57,17 @@ class PersonalFragment : BaseFragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        userPersenter.attachView(this)
         settingViewGroup.setOnClickListener {
             startActivity(Intent(getParentActivity(), SettingActivity::class.java))
         }
         partnerViewGroup.setOnClickListener {
            WebActivity.startActivity(context, String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
         }
+        userPersenter.fetchUserInfo(CApplication.INSTANCE.loginUser?.token!!)
     }
 
-    override fun onResume() {
-        super.onResume()
-        val loginUser = CApplication.INSTANCE.loginUser
+    private fun setupUserInfo(loginUser: User, userCount: UserCount) {
         if(null != loginUser){
             Glide.with(this).load(loginUser.avatar).
                     apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
@@ -72,9 +78,10 @@ class PersonalFragment : BaseFragment(){
             upgradeVIPView.visibility = if (loginUser.integrity!! == 0) View.GONE else View.VISIBLE
         }
 
-        myStartProductCountTextView.text = "0"
-        myProductCountTextView.text = "0"
-        myAucationProductCountTextView.text = "0"
+        myStartProductCountTextView.text = userCount.myAttention.toString()
+        myProductCountTextView.text = userCount.myDazhongbao.toString()
+        myAucationProductCountTextView.text = userCount.myAuction.toString()
+        bondCountView.text = userCount.myDeposit.toString()
 
         view?.findViewById<TextView>(R.id.textView9)!!.setOnClickListener {
            startActivity(Intent(getParentActivity(), MyProductListActivity::class.java))
@@ -91,4 +98,12 @@ class PersonalFragment : BaseFragment(){
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        userPersenter.detachView()
+    }
+
+    override fun receiverUserInfo(user: User, userCount: UserCount) {
+        setupUserInfo(user, userCount)
+    }
 }// Required empty public constructor
