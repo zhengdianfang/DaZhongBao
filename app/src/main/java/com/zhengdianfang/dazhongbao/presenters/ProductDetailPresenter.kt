@@ -77,7 +77,7 @@ class ProductDetailPresenter: BasePresenter() {
                 notes = context.getString(R.string.product_status_waiting_start_info, DateUtils.formatTime(product.startDateTime))
             }
             PAY_BOND_BUTTON_TYPE -> {
-                notes = context.getString(R.string.product_status_waiting_start_info)
+                notes = context.getString(R.string.product_status_waiting_start_info, DateUtils.formatTime(product.startDateTime))
             }
             AUCTIONING_BUTTON_NO_BOND_TYPE->{
                 notes = context.getString(R.string.product_status_auctioning_no_bid)
@@ -87,6 +87,10 @@ class ProductDetailPresenter: BasePresenter() {
             }
         }
         return notes
+    }
+
+    fun canStartTimer(type: Int): Boolean {
+       return type == WATTING_AUCTION_START_BUTTON_TYPE || type == PAY_BOND_BUTTON_TYPE || type == SUMBIT_ATTETION_BUTTON_TYPE
     }
 
     fun getStatusViewType(product: Product): Int {
@@ -131,7 +135,7 @@ class ProductDetailPresenter: BasePresenter() {
                buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color, null)
             }
             CHECKING_BUTTON_TYPE ->{
-                buttonStyle = ButtonStyle(R.string.product_status_verify, R.color.c_f43d3d, null)
+                buttonStyle = ButtonStyle(R.string.product_status_verify, R.color.activity_login_weixin_button_text_color, null)
             }
             SUMBIT_ATTETION_BUTTON_TYPE  ->{
                 buttonStyle = ButtonStyle(R.string.product_status_itention, R.color.c_f9b416, null)
@@ -150,10 +154,10 @@ class ProductDetailPresenter: BasePresenter() {
                 })
             }
             AUCTIONING_BUTTON_NO_BOND_TYPE -> {
-                buttonStyle = ButtonStyle(R.string.product_status_auctioning, R.color.colorPrimary, null)
+                buttonStyle = ButtonStyle(R.string.product_status_auctioning, R.color.activity_login_weixin_button_text_color, null)
             }
             MAKE_AUCTION_TIME_BUTTON_TYPE -> {
-                buttonStyle = ButtonStyle(R.string.product_status_itention_info, R.color.colorPrimary, null)
+                buttonStyle = ButtonStyle(R.string.product_status_itention_info, R.color.activity_login_weixin_button_text_color, null)
             }
         }
         return buttonStyle

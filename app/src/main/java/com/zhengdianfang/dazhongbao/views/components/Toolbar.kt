@@ -31,6 +31,8 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
     var backListener: (() -> Unit)? = null
     var confirmListener: (() -> Unit)? = null
 
+    private var toolbarBackground: Int? = 0
+
     init {
         val typeArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.app_toolbar, 0, 0)
 
@@ -39,6 +41,7 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
         enableBack = typeArray?.getBoolean(R.styleable.app_toolbar_enable_back, true) ?: true
         enableConfirm = typeArray?.getBoolean(R.styleable.app_toolbar_enable_confirm, false) ?: false
         confirmLabel = typeArray?.getString(R.styleable.app_toolbar_confirm_label) ?: ""
+        toolbarBackground = typeArray?.getResourceId(R.styleable.app_toolbar_toolbar_background, 0)
     }
 
     override fun onAttachedToWindow() {
@@ -52,6 +55,9 @@ class Toolbar(context: Context?, attrs: AttributeSet?) : FrameLayout(context, at
         }
         confirmButton.isEnabled = enableConfirm
         confirmButton.text = confirmLabel
+        if (toolbarBackground != null && toolbarBackground != 0){
+            setBackgroundResource(toolbarBackground!!)
+        }
     }
 
     override fun onFinishInflate() {

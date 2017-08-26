@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
@@ -26,6 +27,7 @@ class PayBondFragment : BaseFragment() {
     private val addTextView by lazy { view?.findViewById<View>(R.id.addTextView)!! }
     private val bondEditText by lazy { view?.findViewById<EditText>(R.id.bondEditText)!! }
     private val maxAuctionCountView by lazy { view?.findViewById<TextView>(R.id.maxAuctionCountView)!! }
+    private val payButton by lazy { view?.findViewById<Button>(R.id.payButton)!! }
     var product: Product? = null
     private var bondCount = Constants.MIN_BOND_PRICE
 
@@ -80,6 +82,9 @@ class PayBondFragment : BaseFragment() {
             }
 
         })
+        payButton.setOnClickListener {
+            toast("还未开通支付宝")
+        }
     }
 
 }// Required empty public constructor

@@ -15,11 +15,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.MyAttentionActivity
 import com.zhengdianfang.dazhongbao.views.user.MyAuctionListActivity
 import com.zhengdianfang.dazhongbao.views.user.MyProductListActivity
+import com.zhengdianfang.dazhongbao.views.user.PersonalInfoActivity
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 
@@ -36,6 +39,7 @@ class PersonalFragment : BaseFragment(){
     private val myProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myProductCountTextView)!! }
     private val myAucationProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myAucationProductCountTextView)!! }
     private val settingViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.settingViewGroup)!! }
+    private val partnerViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.partnerViewGroup)!! }
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -49,6 +53,9 @@ class PersonalFragment : BaseFragment(){
 
         settingViewGroup.setOnClickListener {
             startActivity(Intent(getParentActivity(), SettingActivity::class.java))
+        }
+        partnerViewGroup.setOnClickListener {
+           WebActivity.startActivity(context, String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
         }
     }
 
@@ -77,6 +84,10 @@ class PersonalFragment : BaseFragment(){
         }
         view?.findViewById<TextView>(R.id.textView11)!!.setOnClickListener {
             startActivity(Intent(getParentActivity(), MyAuctionListActivity::class.java))
+        }
+
+        avatarImageView.setOnClickListener {
+            context.startActivity(Intent(context, PersonalInfoActivity::class.java))
         }
     }
 

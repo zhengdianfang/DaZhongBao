@@ -1,20 +1,19 @@
 package com.zhengdianfang.dazhongbao.views.product.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 
 /**
  * Created by dfgzheng on 13/08/2017.
  */
-class ProductDetailHeaderViewHolder(itemView: View?, private val followProductPresenter: FollowProductPresenter) : RecyclerView.ViewHolder(itemView) {
+class ProductDetailHeaderViewHolder(itemView: View?, private val intentionOnClick: (product: Long)->Unit) : RecyclerView.ViewHolder(itemView) {
 
    private val attentionButton by lazy { itemView?.findViewById<Button>(R.id.attentionButton)!! }
    private val yestodayClosePriceView by lazy { itemView?.findViewById<TextView>(R.id.yestodyClosePriceView)!! }
@@ -38,15 +37,15 @@ class ProductDetailHeaderViewHolder(itemView: View?, private val followProductPr
    fun attention(context: Context, attention: Boolean, productId: Long) {
        if (attention) {
            attentionButton.setBackgroundResource(R.drawable.product_item_attentioned_button_background)
-           attentionButton.setTextColor(ContextCompat.getColor(context, R.color.bottom_bar_tab_text_color))
+           attentionButton.setTextColor(Color.WHITE)
            attentionButton.setText(R.string.attentioned)
        } else {
            attentionButton.setBackgroundResource(R.drawable.activity_product_detail_button_background)
            attentionButton.setTextColor(ContextCompat.getColor(context, R.color.c_8c6465))
            attentionButton.setText(R.string.un_attention)
-           attentionButton.setOnClickListener {
-               followProductPresenter.followProduct(CApplication.INSTANCE.loginUser?.token!!, productId)
-           }
+       }
+       attentionButton.setOnClickListener {
+           intentionOnClick(productId)
        }
    }
 

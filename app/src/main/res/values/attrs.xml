@@ -9,5 +9,6 @@
         <attr name="enable_back" format="boolean"/>
         <attr name="enable_confirm" format="boolean"/>
         <attr name="confirm_label" format="string"/>
+        <attr name="toolbar_background" format="reference"/>
     </declare-styleable>
 </resources>

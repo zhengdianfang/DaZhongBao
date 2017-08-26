@@ -9,7 +9,7 @@
     android:paddingRight="32dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/product_detail_header_background">
 
    <TextView
        style="@style/AppTheme.ProductDetail.TextLabel"

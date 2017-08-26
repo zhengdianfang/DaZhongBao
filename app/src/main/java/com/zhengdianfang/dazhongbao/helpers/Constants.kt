@@ -15,4 +15,6 @@ object Constants {
     val ADD_INTERVAL = 1000
 
     val MIN_BOND_PRICE = 10000
+
+    val PARTNER_URL: String = "http://47.92.128.105/partner/index/index?token=%s"
 }
