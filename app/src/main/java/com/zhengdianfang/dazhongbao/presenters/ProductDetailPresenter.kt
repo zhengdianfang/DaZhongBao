@@ -3,15 +3,16 @@ package com.zhengdianfang.dazhongbao.presenters
 import android.content.Context
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.DateUtils
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.basic.IView
+import com.zhengdianfang.dazhongbao.views.product.CreateBidFragment
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by dfgzheng on 14/08/2017.
@@ -27,7 +28,7 @@ class ProductDetailPresenter: BasePresenter() {
         val SUMBIT_ATTETION_BUTTON_TYPE = 6
         val AUCTIONING_BUTTON_NO_BOND_TYPE = 7
     }
-    data class ButtonStyle(var textResId: Int, var backgroundColorId: Int)
+    data class ButtonStyle(var textResId: Int, var backgroundColorId: Int, var onClick: (() -> Unit)?)
     private val productRepository by lazy { ProductRepository() }
 
     private fun fetchProductInfo(productId: Long) {
@@ -73,7 +74,7 @@ class ProductDetailPresenter: BasePresenter() {
                 notes = context.getString(R.string.product_status_intention_info)
             }
             WATTING_AUCTION_START_BUTTON_TYPE ->{
-                notes = context.getString(R.string.product_status_waiting_start_info, SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Date(product.startDateTime)) )
+                notes = context.getString(R.string.product_status_waiting_start_info, DateUtils.formatTime(product.startDateTime))
             }
             PAY_BOND_BUTTON_TYPE -> {
                 notes = context.getString(R.string.product_status_waiting_start_info)
@@ -82,7 +83,7 @@ class ProductDetailPresenter: BasePresenter() {
                 notes = context.getString(R.string.product_status_auctioning_no_bid)
             }
             SUMBIT_ATTETION_BUTTON_TYPE ->{
-                notes = context.getString(R.string.product_status_waiting_start_info, SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Date(product.startDateTime)) )
+                notes = context.getString(R.string.product_status_waiting_start_info, DateUtils.formatTime(product.startDateTime))
             }
         }
         return notes
@@ -123,32 +124,36 @@ class ProductDetailPresenter: BasePresenter() {
         return type
     }
 
-    fun getStatusViewStyle(product: Product): ButtonStyle {
-        var buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color)
+    fun getStatusViewStyle(activity: BaseActivity, product: Product): ButtonStyle {
+        var buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color, null)
         when(getStatusViewType(product)){
             FINISH_BUTTON_TYPE ->{
-               buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color)
+               buttonStyle = ButtonStyle(R.string.product_status_complete, R.color.activity_login_weixin_button_text_color, null)
             }
             CHECKING_BUTTON_TYPE ->{
-                buttonStyle = ButtonStyle(R.string.product_status_verify, R.color.c_f43d3d)
+                buttonStyle = ButtonStyle(R.string.product_status_verify, R.color.c_f43d3d, null)
             }
             SUMBIT_ATTETION_BUTTON_TYPE  ->{
-                buttonStyle = ButtonStyle(R.string.product_status_itention, R.color.c_f9b416)
+                buttonStyle = ButtonStyle(R.string.product_status_itention, R.color.c_f9b416, null)
             }
             PAY_BOND_BUTTON_TYPE ->{
-                buttonStyle = ButtonStyle(R.string.product_status_margin, R.color.c_3cc751)
+                buttonStyle = ButtonStyle(R.string.product_status_margin, R.color.c_3cc751, null)
             }
             WATTING_AUCTION_START_BUTTON_TYPE -> {
-                buttonStyle = ButtonStyle(R.string.product_status_waiting_start, R.color.colorPrimary)
+                buttonStyle = ButtonStyle(R.string.product_status_waiting_start, R.color.colorPrimary, null)
             }
             AUCTIONING_BUTTON_TYPE->{
-                buttonStyle = ButtonStyle(R.string.product_status_bid, R.color.c_3cc751)
+                buttonStyle = ButtonStyle(R.string.product_status_bid, R.color.c_3cc751, {
+                    val fragment = CreateBidFragment()
+                    fragment.product = product
+                   activity.startFragment(android.R.id.content, fragment, "pay")
+                })
             }
             AUCTIONING_BUTTON_NO_BOND_TYPE -> {
-                buttonStyle = ButtonStyle(R.string.product_status_auctioning, R.color.colorPrimary)
+                buttonStyle = ButtonStyle(R.string.product_status_auctioning, R.color.colorPrimary, null)
             }
             MAKE_AUCTION_TIME_BUTTON_TYPE -> {
-                buttonStyle = ButtonStyle(R.string.product_status_itention_info, R.color.colorPrimary)
+                buttonStyle = ButtonStyle(R.string.product_status_itention_info, R.color.colorPrimary, null)
             }
         }
         return buttonStyle

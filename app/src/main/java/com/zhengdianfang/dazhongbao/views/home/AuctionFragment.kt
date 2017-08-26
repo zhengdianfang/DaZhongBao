@@ -11,19 +11,24 @@ import android.view.ViewGroup
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.RxBusUtils
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.AuctionPresenter
+import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseListFragment
 import com.zhengdianfang.dazhongbao.views.home.adapter.AuctionItemAdapter
+import io.reactivex.disposables.Disposable
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionListView  {
+class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionListView, FollowProductPresenter.IFollowProductView  {
 
-    private val auctionPresenter by lazy { AuctionPresenter() }
+    private val auctionPresenter = AuctionPresenter()
+    private val followProductPresenter = FollowProductPresenter()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,11 +36,23 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
         return inflater!!.inflate(R.layout.fragment_auction, container, false)
     }
 
+    private var followDisposable: Disposable? = null
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         auctionPresenter.attachView(this)
+        followProductPresenter.attachView(this)
         setupRecyclerView()
+
+        followDisposable = RxBusUtils.registerFollowAndUnFollowProductActionsForRecyclerView(datas, { pos -> adapter.notifyItemChanged(pos + 1)})
         recyclerView.refresh()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        auctionPresenter.detachView()
+        followProductPresenter.detachView()
+        RxBus.instance.unregister(followDisposable)
     }
 
     override fun createRecyclerView(): XRecyclerView {
@@ -43,7 +60,9 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
     }
 
     override fun createRecyclerViewAdapter(): RecyclerView.Adapter<*> {
-        return AuctionItemAdapter(datas)
+        return AuctionItemAdapter(datas, {productId ->
+           followProductPresenter.followProduct(CApplication.INSTANCE.loginUser?.token!!, productId)
+        })
     }
 
     private fun setupRecyclerView() {
@@ -62,15 +81,18 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
         auctionPresenter.fetchAuctionList(CApplication.INSTANCE.loginUser?.token!!, pageNumber)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        auctionPresenter.detachView()
-    }
 
     override fun receiveAuctionProductList(list: MutableList<Product>) {
         reponseProcessor(list)
     }
 
+    override fun followSuccess(msg: String) {
+        toast(msg)
+    }
+
+    override fun unfollowSuccess(msg: String) {
+        toast(msg)
+    }
 
 
 }// Required empty public constructor

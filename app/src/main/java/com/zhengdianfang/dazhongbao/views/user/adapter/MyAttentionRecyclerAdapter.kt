@@ -10,6 +10,8 @@ import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
+import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 /**
@@ -58,6 +60,13 @@ class MyAttentionRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(i
             context.startActivity(Intent(context, ProductDetailActivity::class.java).putExtra("productId", product.id))
         }
         removeButton.visibility = if (product.attention == 1) View.VISIBLE else View.GONE
+        payButton.setOnClickListener {
+            if(context is BaseActivity){
+                val fragment = PayBondFragment()
+                fragment.product = product
+                context.startFragment(android.R.id.content, fragment, "myProductItem")
+            }
+        }
     }
 
 }

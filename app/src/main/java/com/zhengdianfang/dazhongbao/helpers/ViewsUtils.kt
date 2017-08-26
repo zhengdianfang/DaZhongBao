@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
-import java.util.*
 
 /**
  * Created by dfgzheng on 22/08/2017.
@@ -60,12 +59,12 @@ object ViewsUtils {
             }
             4 -> {
                 resultSpannableString = if(product.bond_status != 2){
-                    val statusString = context.getString(R.string.product_status_margin)
+                    val statusString = context.getString(R.string.to_pay_the_deposit)
                     callback(true, false)
                     SpannableStringUtils.addColorSpan(context.getString(R.string.status_label, statusString), statusString, highlightColor, textSize.toInt())
                 }else{
                     callback(false, false)
-                    val (day , hour, _) = DateUtils.diffTime(Date(System.currentTimeMillis()), Date(product.startDateTime))
+                    val (day , hour, _) = DateUtils.diffTime(System.currentTimeMillis(), DateUtils.changeTimeLenght(product.startDateTime))
                     val statusString = context.getString(R.string.my_start_gap_time, day.toString(), hour.toString())
                     SpannableStringUtils.addColorSpan(context.getString(R.string.my_start_gap_label, statusString), statusString, highlightColor, textSize.toInt())
                 }

@@ -95,7 +95,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         this.product = product
         renderProductHeaderView(product)
         renderToolbar()
-        val (textResId, backgroundColorId) = productDetailPresenter.getStatusViewStyle(product)
+        val (textResId, backgroundColorId) = productDetailPresenter.getStatusViewStyle(this, product)
         val notesString = productDetailPresenter.getStatusNoteString(this.applicationContext, product)
         renderActionBar(backgroundColorId, textResId, notesString, productDetailPresenter.getStatusViewType(product))
         renderList()

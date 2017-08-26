@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.ProductItem.PayButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:background">@drawable/my_product_item_pay_button_background</item>
+    </style>
+    <style name="AppTheme.ProductItem.IntentionButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:background">@drawable/product_item_attentioned_button_background</item>
+    </style>
+</resources>

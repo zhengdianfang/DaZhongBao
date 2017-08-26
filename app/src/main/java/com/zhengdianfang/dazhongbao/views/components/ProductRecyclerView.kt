@@ -5,14 +5,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
-import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.RxBusUtils
 import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.ProductPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.product.IProductList
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 
 /**
  * Created by dfgzheng on 10/08/2017.
@@ -44,17 +43,7 @@ class ProductRecyclerView(context: Context?, val status: String) : XRecyclerView
             }
 
         })
-        followDisposable = RxBus.instance.register(actionTypes = arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION), consumer = Consumer { (type, data) ->
-            val filters = products.filter { it.id == data}
-            filters.forEach {
-                when(type){
-                    Action.FOLLOW_PRODUCT_ACTION -> it.attention = 1
-                    Action.CANCEL_FOLLOW_PRODUCT_ACTION -> it.attention = 0
-                }
-                val pos = products.indexOf(it)
-                productAdapter.notifyItemChanged(pos + 1)
-            }
-        })
+        followDisposable = RxBusUtils.registerFollowAndUnFollowProductActionsForRecyclerView(products, {pos -> productAdapter.notifyItemChanged(pos + 1)})
         this.refresh()
     }
 

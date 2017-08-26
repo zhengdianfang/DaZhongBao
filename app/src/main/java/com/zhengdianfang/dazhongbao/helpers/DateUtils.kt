@@ -1,6 +1,6 @@
 package com.zhengdianfang.dazhongbao.helpers
 
-import com.orhanobut.logger.Logger
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -22,13 +22,14 @@ object DateUtils {
 
     data class Day(var day: Long, var hour: Long, var min: Long, var sec: Long)
 
-    fun diffTime(startDate: Date, endDate: Date): Day {
+    fun diffTime(startTime: Long, endTime: Long): Day {
+        val startTime = changeTimeLenght(startTime)
+        val endTime = changeTimeLenght(endTime)
         val nd = 1000*24*60*60//一天的毫秒数
         val nh = 1000*60*60//一小时的毫秒数
         val nm = 1000*60//一分钟的毫秒数
         val ns = 1000//一秒钟的毫秒数long diff;try {
-        val diff = endDate.time - startDate.time
-        Logger.d("diff time $diff  start: ${startDate.time} end: ${endDate.time}")
+        val diff = endTime - startTime
         val day = diff/nd//计算差多少天
         val hour = diff%nd/nh//计算差多少小时
         val min = diff%nd%nh/nm//计算差多少分钟
@@ -37,10 +38,7 @@ object DateUtils {
     }
 
     fun formatDateStr2Desc(nowTime: Long, curTime: Long): String {
-        var curTime = curTime
-        if (curTime < 10000000000L) {
-            curTime = curTime * 1000
-        }
+        var curTime = changeTimeLenght(curTime)
         val delta = Math.abs(nowTime - curTime)
         if (delta < 1L * ONE_MINUTE) {
             val seconds = toSeconds(delta)
@@ -91,4 +89,26 @@ object DateUtils {
         return toMonths(date) / 365L
     }
 
+    fun changeTimeLenght(time: Long): Long {
+        var time = time
+        if (time < 10000000000L) {
+            time *= 1000
+        }
+        return time
+    }
+
+    fun formatTime(time: Long, format: String = "yyyy-MM-dd hh:mm:ss" ): String {
+        val format = SimpleDateFormat(format)
+        return format.format(Date(DateUtils.changeTimeLenght(time)))
+    }
+
+    fun calTimeDistanceByHH_MM_SS(startTime: Long, endTime: Long): String {
+        val startTime = changeTimeLenght(startTime)
+        val endTime = changeTimeLenght(endTime)
+        val delta = Math.abs(endTime - startTime)
+        val hour = delta / 24L
+        val min = delta % 24L / 60L
+        val sec = delta % 24L % 60L / 60L
+        return "$hour:$min:$sec"
+    }
 }

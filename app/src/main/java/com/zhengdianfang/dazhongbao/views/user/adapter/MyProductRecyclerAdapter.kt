@@ -14,7 +14,6 @@ import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
-import java.util.*
 
 /**
  * Created by dfgzheng on 18/08/2017.
@@ -92,7 +91,7 @@ class MyProductRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
                     val statusString = context.getString(R.string.product_status_margin)
                     statusView.text = SpannableStringUtils.addColorSpan(context.getString(R.string.status_label, statusString), statusString, highlightColor, textSize.toInt())
                     payButton.visibility = View.VISIBLE                }else{
-                    val (day , hour, _) = DateUtils.diffTime(Date(System.currentTimeMillis()), Date(product.startDateTime))
+                    val (day , hour, _) = DateUtils.diffTime(System.currentTimeMillis(), DateUtils.changeTimeLenght(product.startDateTime))
                     val statusString = context.getString(R.string.my_start_gap_time, day.toString(), hour.toString())
                     statusView.text = SpannableStringUtils.addColorSpan(context.getString(R.string.my_start_gap_label, statusString), statusString, highlightColor, textSize.toInt())
                 }

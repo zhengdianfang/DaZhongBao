@@ -172,4 +172,6 @@
     <string name="the_bid_max_count">最多出价三次</string>
     <string name="my_auction_title">我的竞拍</string>
     <string name="starting_price_label">起拍价: %s</string>
+    <string name="intention_price_label">意向价格: %s</string>
+    <string name="to_pay_the_deposit">支付保证金</string>
 </resources>

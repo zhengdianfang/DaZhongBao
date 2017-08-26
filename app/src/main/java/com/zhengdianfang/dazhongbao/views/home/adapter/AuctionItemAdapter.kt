@@ -9,23 +9,34 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.DateUtils
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.ProductDetailPresenter
-import java.text.SimpleDateFormat
-import java.util.*
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
+import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
+import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 
 /**
  * Created by dfgzheng on 21/08/2017.
  */
-class AuctionItemAdapter(private val auctionProducts: MutableList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AuctionItemAdapter(private val auctionProducts: MutableList<Product>, private val intentionOnClick: (productId: Long)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (getItemViewType(position) == 0){
             (holder as AuctionFirstItemViewHolder).setData(auctionProducts[position])
         }else{
-            (holder as AuctionNormalItemViewHolder).setData(auctionProducts[position]) }
+            val auctionNormalViewHolder = holder as AuctionNormalItemViewHolder
+            auctionNormalViewHolder.attentionButton.setOnClickListener {
+               intentionOnClick(auctionProducts[position].id)
+            }
+            auctionNormalViewHolder.setData(auctionProducts[position])
+        }
+
+        holder.itemView.setOnClickListener {
+            ProductDetailActivity.startActivity(holder.itemView.context, auctionProducts[position].id)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
@@ -58,6 +69,7 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
     private val endTimeView by lazy { itemView?.findViewById<TextView>(R.id.endTimeView)!! }
     private val nowUnitPriceView by lazy { itemView?.findViewById<TextView>(R.id.nowUnitPriceView)!! }
     private val limitTimeView by lazy { itemView?.findViewById<TextView>(R.id.limitTimeView)!! }
+    private val timerTextView by lazy { itemView?.findViewById<TextView>(R.id.timerTextView)!! }
 
     fun setData(product: Product){
         val context = itemView?.context!!
@@ -72,26 +84,28 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
         }else {
             limitTimeView.visibility = View.GONE
         }
-        val (textResId, backgroundColorId) = productDetailPresenter.getStatusViewStyle(product)
+        val (textResId, backgroundColorId, onClick) = productDetailPresenter.getStatusViewStyle(context as BaseActivity, product)
         val drawable = ContextCompat.getDrawable(context, R.drawable.status_button_background)
         val wrappedDrawable = DrawableCompat.wrap(drawable)
         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(context, backgroundColorId))
         statusButton.background = drawable
         statusButton.setText(textResId)
-        val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-
-        endTimeView.text = context.getString(R.string.finish_auction_time, format.format(Date(product.endDateTime)))
+        statusButton.setOnClickListener {
+            onClick?.invoke()
+        }
+        endTimeView.text = context.getString(R.string.finish_auction_time, DateUtils.formatTime(product.endDateTime))
+//        timerTextView.text = DateUtils.calTimeDistanceByHH_MM_SS(System.currentTimeMillis(), product.endDateTime)
     }
 
 }
 
-class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    private val sharesNameView = itemView?.findViewById<TextView>(R.id.sharesNameView)!!
+class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) { private val sharesNameView = itemView?.findViewById<TextView>(R.id.sharesNameView)!!
     private val soldCountView = itemView?.findViewById<TextView>(R.id.soldCountView)!!
     private val industryNameView = itemView?.findViewById<TextView>(R.id.industryNameView)!!
     private val basicPriceView = itemView?.findViewById<TextView>(R.id.basicPriceView)!!
-    private val timeGapView = itemView?.findViewById<TextView>(R.id.timeGapView)!!
-    private val attentionButton = itemView?.findViewById<Button>(R.id.attentionButton)!!
+    private val statusView = itemView?.findViewById<TextView>(R.id.statusView)!!
+    val attentionButton = itemView?.findViewById<Button>(R.id.attentionButton)!!
+    private val payButton = itemView?.findViewById<Button>(R.id.payButton)!!
 
     fun setData(product: Product){
         val context = itemView?.context!!
@@ -100,13 +114,27 @@ class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = product.industry
 
-        basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
+        basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.intention_price_label)
         ViewsUtils.renderAttentionView(context, product.attention, {textResId, color, backgroundResId ->
             attentionButton.setText(textResId)
             attentionButton.setTextColor(color)
             attentionButton.setBackgroundResource(backgroundResId)
         })
-        timeGapView.text = ViewsUtils.renderStatusView(context, product, { _, _ ->  })
+        statusView.text = ViewsUtils.renderStatusView(context, product, { canPay, _ ->
+            if(canPay) {
+                payButton.visibility = View.VISIBLE
+            }else {
+                payButton.visibility = View.GONE
+            }
+        })
+
+        payButton.setOnClickListener {
+            if(context is BaseActivity){
+                val fragment = PayBondFragment()
+                fragment.product = product
+                context.startFragment(android.R.id.content, fragment, "myProductItem")
+            }
+        }
 
     }
 
