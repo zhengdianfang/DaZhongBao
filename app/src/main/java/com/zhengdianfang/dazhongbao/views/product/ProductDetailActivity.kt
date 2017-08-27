@@ -53,7 +53,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     private val productNotesFooterViewHolder by lazy { ProductDetailFooterViewHolder(LayoutInflater.from(this).inflate(R.layout.product_notes_footer, productRecyclerView, false)) }
     private val timerObservable = Observable.timer(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
     private var timerDisposable: Disposable? = null
-    private var followDisposable: Disposable? = null
+    private var disposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +62,19 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productDetailPresenter.attachView(this)
         followProductPresenter.attachView(this)
         setupRecyclerView()
-        followDisposable = RxBus.instance.register(arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION), Consumer { (type, data)->
-            if (data is Long) {
-                productDetailHeaderViewHolder.attention(this.applicationContext, type == Action.FOLLOW_PRODUCT_ACTION, productId)
-                this.product?.attention = if(type == Action.FOLLOW_PRODUCT_ACTION) 1 else 0
+        disposable = RxBus.instance.register(arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION, Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION), Consumer { (type, data)->
+            when(type){
+                Action.FOLLOW_PRODUCT_ACTION -> {
+                    productDetailHeaderViewHolder.attention(this.applicationContext, true, productId)
+                    this.product?.attention = 1
+                }
+                Action.CANCEL_FOLLOW_PRODUCT_ACTION -> {
+                    productDetailHeaderViewHolder.attention(this.applicationContext, false, productId)
+                    this.product?.attention = 0
+                }
+                Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION  -> {
+                    productRecyclerView.refresh()
+                }
             }
         })
         productRecyclerView.refresh()
@@ -75,7 +84,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         super.onDestroy()
         productDetailPresenter.detachView()
         followProductPresenter.detachView()
-        RxBus.instance.unregister(followDisposable)
+        RxBus.instance.unregister(disposable)
     }
 
     private fun setupRecyclerView() {
@@ -169,7 +178,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
                 ProductDetailPresenter.AUCTIONING_BUTTON_TYPE -> {
                     val fragment = CreateBidFragment()
                     fragment.product = this.product
-                    startFragment(android.R.id.content, fragment)
+                    startFragment(android.R.id.content, fragment, "bid")
                 }
             }
         }

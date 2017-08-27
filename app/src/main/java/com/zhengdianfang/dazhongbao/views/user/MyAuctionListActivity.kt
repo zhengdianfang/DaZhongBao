@@ -57,7 +57,7 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
             if (data is RemoveBidResult) {
                 val filters = datas.filter { it.id == data.productId }
                 filters.forEach {
-                    it.mybids = it.mybids?.filter { it.bidid != data.bidId }?.toMutableList()
+                    it.mybids = it.mybids?.filter { it.bidId != data.bidId }?.toMutableList()
                     Logger.d("remove bid result : ${it.mybids}")
                     adapter.notifyItemChanged(datas.indexOf(it) + 1)
                 }

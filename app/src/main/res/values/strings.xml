@@ -174,4 +174,5 @@
     <string name="starting_price_label">起拍价: %s</string>
     <string name="intention_price_label">意向价格: %s</string>
     <string name="to_pay_the_deposit">支付保证金</string>
+    <string name="now_top_price">当前最高价 %s</string>
 </resources>

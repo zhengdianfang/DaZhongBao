@@ -1,7 +1,10 @@
 package com.zhengdianfang.dazhongbao.models.product
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
 /**
  * Created by dfgzheng on 20/08/2017.
  */
-data class Bid(var bidid:Long, var realname: String, var price: Double, var count: Long, var productId: Long ,
-               var ctime: Long, var sharesName: String, var sharesCode: String)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Bid(var bidId:Long, var realname: String?, var price: Double, var count: Long, var productId: Long ,
+               var ctime: Long, var sharesName: String?, var sharesCode: String?, var highest: Double, var status: Int)

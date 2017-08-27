@@ -1,17 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/fragment_background_color"
+    android:clickable="true"
     tools:context="com.zhengdianfang.dazhongbao.views.product.BidIntentionsFragment">
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/fragment_bid_intention_title"
-        app:enable_back="true"/>
+        app:enable_back="true"
+        app:title="@string/fragment_bid_intention_title" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,39 +23,40 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:columnCount="2">
+            android:columnCount="2"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/basicPriceView"
-                tools:text="起拍价: "/>
+                tools:text="起拍价: " />
+
             <TextView
                 android:id="@+id/soldCountView"
                 android:layout_gravity="right"
                 android:drawableLeft="@drawable/stock_sale_count_icon"
                 android:drawablePadding="8dp"
-                tools:text="出让股数: "/>
+                tools:text="出让股数: " />
 
             <TextView
                 android:layout_height="1dp"
-                android:background="@color/bottom_bar_divider_color"
-                android:layout_row="1"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_columnSpan="2"
-                android:layout_columnWeight="1"/>
+                android:layout_columnWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_row="1"
+                android:background="@color/bottom_bar_divider_color" />
 
             <TextView
                 android:id="@+id/totalPriceView"
-                tools:text="合计: "/>
+                tools:text="合计: " />
 
             <TextView
-                tools:text="13123123123123123123"
-                android:layout_marginTop="16dp"
                 android:layout_column="0"
-                android:layout_columnWeight="1"
                 android:layout_columnSpan="2"
-                android:layout_row="4"/>
+                android:layout_columnWeight="1"
+                android:layout_marginTop="16dp"
+                android:layout_row="4"
+                tools:text="13123123123123123123" />
 
         </GridLayout>
     </ScrollView>
@@ -63,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="@string/agree_and_submit_license"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"
+        android:text="@string/agree_and_submit_license" />
 
 </LinearLayout>

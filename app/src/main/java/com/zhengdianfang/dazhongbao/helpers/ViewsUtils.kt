@@ -37,6 +37,14 @@ object ViewsUtils {
 
     }
 
+    fun renderSharesPrice(context: Context, price: Long, labelResId: Int): SpannableString {
+        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
+        val priceString = context.getString(R.string.price_unit_value, price.toString())
+        return SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString),
+                priceString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
+
+    }
+
     fun renderStatusView(context: Context, product: Product, callback: (canPay: Boolean, dealSuccess: Boolean)-> Unit): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.colorPrimary)
         val textSize = PixelUtils.sp2px(context, 14f)

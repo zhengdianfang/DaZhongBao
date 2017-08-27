@@ -4,18 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp">
 
     <TextView
         android:id="@+id/dealUnitPriceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         tools:text="22.22 元/股" />
 
     <TextView
         android:id="@+id/dealCountView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:layout_marginLeft="16dp"
         tools:text="2000万股" />
 
@@ -23,6 +26,7 @@
         android:id="@+id/dealTotlaPriceView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:layout_marginLeft="16dp"
         android:layout_weight="1"
         tools:text="共322.22万元" />
@@ -30,8 +34,10 @@
     <Button
         android:id="@+id/removeButton"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="24dp"
         android:background="@drawable/cancel_bid_button_background"
         android:text="@string/cancel_bond_price"
-        android:textColor="@color/colorPrimary" />
+        android:textSize="12sp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/c_f9b416" />
 </LinearLayout>

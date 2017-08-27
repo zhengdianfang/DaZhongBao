@@ -82,4 +82,12 @@ object SpannableStringUtils {
         return spannableString
     }
 
+    fun addSizeSpan(content: String, matchStr: String, size: Int): SpannableString {
+        val spannableString = SpannableString(content)
+        val start = spannableString.toString().indexOf(matchStr)
+        val end = start +  matchStr.length
+        val absoluteSizeSpan = AbsoluteSizeSpan(size)
+        spannableString.setSpan(absoluteSizeSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
+    }
 }

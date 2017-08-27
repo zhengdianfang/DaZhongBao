@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/priceView"
         tools:text="￥23.44"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"/>
 

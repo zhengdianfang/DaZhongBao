@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
@@ -70,6 +71,7 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
     private fun setupUserInfo(loginUser: User, userCount: UserCount) {
         if(null != loginUser){
+            Logger.d("userId : ${loginUser.id}, token : ${loginUser.token}")
             Glide.with(this).load(loginUser.avatar).
                     apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
                     .into(avatarImageView)

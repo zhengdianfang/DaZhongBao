@@ -37,6 +37,11 @@ class RxBus {
     fun unregister(disposable: Disposable?){
         mCompositeDisposable.remove(disposable)
     }
+    fun unregister(disposables: Array<Disposable?>){
+        disposables.forEach {
+            mCompositeDisposable.remove(it)
+        }
+    }
 }
 
 data class Action(var type: String, var data: Any){
@@ -44,6 +49,7 @@ data class Action(var type: String, var data: Any){
         val FOLLOW_PRODUCT_ACTION = "follow_product_action"
         val CANCEL_FOLLOW_PRODUCT_ACTION = "cancel_follow_product_action"
         val REMOVE_BID_ACTION = "remove_bid_action"
+        val ADD_BID_ACTION = "add_bid_action"
     }
 }
 

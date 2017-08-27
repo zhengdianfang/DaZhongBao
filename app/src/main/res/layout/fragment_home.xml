@@ -15,59 +15,78 @@
         app:toolbar_theme="dark"
         app:enable_back="false"/>
 
-    <com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleViewPager
-        android:id="@+id/advertViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:paddingBottom="8dp"
-        android:background="@color/colorPrimary"/>
-
-    <TextView
-        android:id="@+id/dealCountView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bottom_bar_tab_text_color"
-        android:padding="8dp"
-        android:textSize="14sp" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:orientation="horizontal"
-        android:padding="1dp"
-        android:background="@drawable/fragment_setting_item_background">
-
-        <TextView
-            android:id="@+id/tabOne"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:drawableBottom="@mipmap/fragment_home_tab_force_indicator"
-            android:text="@string/fragment_home_tab_new_product_title"/>
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:background="@color/bottom_bar_tab_text_color"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/tabTwo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@android:color/black"
-            android:gravity="center"
-            android:drawableBottom="@mipmap/fragment_home_tab_normal_indicator"
-            android:text="@string/fragment_home_tab_completed_product_title"/>
-    </LinearLayout>
-    <com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleViewPager
-        android:id="@+id/tabViewPager"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleViewPager
+                    android:id="@+id/advertViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:paddingBottom="8dp"
+                    android:background="@color/colorPrimary"
+                    />
+
+                <TextView
+                    android:id="@+id/dealCountView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bottom_bar_tab_text_color"
+                    android:background="@color/fragment_background_color"
+                    android:padding="8dp"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:orientation="horizontal"
+                android:padding="1dp"
+                android:background="@drawable/fragment_setting_item_background">
+
+                <TextView
+                    android:id="@+id/tabOne"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:drawableBottom="@mipmap/fragment_home_tab_force_indicator"
+                    android:text="@string/fragment_home_tab_new_product_title"/>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/bottom_bar_tab_text_color"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tabTwo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:drawableBottom="@mipmap/fragment_home_tab_normal_indicator"
+                    android:text="@string/fragment_home_tab_completed_product_title"/>
+            </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
+        <com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleViewPager
+            android:id="@+id/tabViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
+
 
 
 </LinearLayout>
