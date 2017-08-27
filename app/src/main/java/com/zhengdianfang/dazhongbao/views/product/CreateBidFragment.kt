@@ -80,7 +80,7 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
            nowTopPriceView.text = "￥${product?.nowUnitPrice}"
            bidPriceView.addTextChangedListener(object: TextWatcher{
                override fun afterTextChanged(editable: Editable?) {
-                   val price = editable?.toString()!!.toInt()
+                   val price = if(TextUtils.isEmpty(editable.toString())) 0 else editable.toString().toInt()
                    val count = if(TextUtils.isEmpty(payCountView.text.toString())) 0 else payCountView.text.toString().toInt()
                    totalPriceView.text = "￥${price * count}"
                }
@@ -94,7 +94,7 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
            })
            payCountView.addTextChangedListener(object: TextWatcher{
                override fun afterTextChanged(editable: Editable?) {
-                   val count = editable?.toString()!!.toLong()
+                   val count = if(TextUtils.isEmpty(editable?.toString())) 0 else editable?.toString()!!.toLong()
                    val price = if(TextUtils.isEmpty(bidPriceView.text.toString())) 0 else bidPriceView.text.toString().toInt()
                    totalPriceView.text = "￥${price * count}"
                }
@@ -110,11 +110,16 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IPushBidView , PushBi
     }
 
     private fun renderMyBidList() {
-        cancelBidViewGroup.removeAllViews()
-        ViewsUtils.renderBidListView(context, this.product, removeOnClick = {bid ->
-            pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, bid)
-        }).forEach {
-            cancelBidViewGroup.addView(it)
+        if(this.product?.mybids != null && this.product?.mybids!!.isNotEmpty()) {
+            cancelBidViewGroup.visibility = View.VISIBLE
+            cancelBidViewGroup.removeAllViews()
+            ViewsUtils.renderBidListView(context, this.product, removeOnClick = {bid ->
+                pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, bid)
+            }).forEach {
+                cancelBidViewGroup.addView(it)
+            }
+        }else{
+            cancelBidViewGroup.visibility = View.GONE
         }
     }
 

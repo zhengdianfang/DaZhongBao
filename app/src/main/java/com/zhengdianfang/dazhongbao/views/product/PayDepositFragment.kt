@@ -11,25 +11,28 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.presenters.PayDepositPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class PayBondFragment : BaseFragment() {
+class PayDepositFragment : BaseFragment() {
 
     private val subTextView by lazy { view?.findViewById<View>(R.id.subTextView)!! }
     private val addTextView by lazy { view?.findViewById<View>(R.id.addTextView)!! }
-    private val bondEditText by lazy { view?.findViewById<EditText>(R.id.bondEditText)!! }
+    private val depositEditText by lazy { view?.findViewById<EditText>(R.id.depositEditText)!! }
     private val maxAuctionCountView by lazy { view?.findViewById<TextView>(R.id.maxAuctionCountView)!! }
     private val payButton by lazy { view?.findViewById<Button>(R.id.payButton)!! }
     var product: Product? = null
-    private var bondCount = Constants.MIN_BOND_PRICE
+    private var depositCount = Constants.MIN_DEPOSIT_PRICE
+    private val payDepositPresenter = PayDepositPresenter()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,7 +41,13 @@ class PayBondFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        payDepositPresenter.attachView(this)
         setupBondViews()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        payDepositPresenter.detachView()
     }
 
     override fun onBackPressed(): Boolean {
@@ -47,31 +56,31 @@ class PayBondFragment : BaseFragment() {
     }
 
     private fun setupBondViews() {
-        bondEditText.setText(Constants.MIN_BOND_PRICE.toString())
-        maxAuctionCountView.text = getString(R.string.max_auction_shares_count, (bondCount  / product!!.basicUnitPrice).toInt())
+        depositEditText.setText(Constants.MIN_DEPOSIT_PRICE.toString())
+        maxAuctionCountView.text = getString(R.string.max_auction_shares_count, (depositCount / product!!.basicUnitPrice).toInt())
         if (product != null){
             subTextView.setOnClickListener {
-                if (bondCount - Constants.ADD_INTERVAL >= Constants.MIN_BOND_PRICE ){
-                    bondCount -= Constants.ADD_INTERVAL
-                    bondEditText.setText(bondCount.toString())
+                if (depositCount - Constants.ADD_INTERVAL >= Constants.MIN_DEPOSIT_PRICE){
+                    depositCount -= Constants.ADD_INTERVAL
+                    depositEditText.setText(depositCount.toString())
                 }
 
             }
 
             addTextView.setOnClickListener {
-                bondCount += Constants.ADD_INTERVAL
-                bondEditText.setText(bondCount.toString())
+                depositCount += Constants.ADD_INTERVAL
+                depositEditText.setText(depositCount.toString())
             }
         }
 
-        bondEditText.addTextChangedListener(object: TextWatcher{
+        depositEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(editable: Editable?) {
-                bondCount = editable?.toString()!!.toInt()
-                if (bondCount < Constants.MIN_BOND_PRICE){
-                    bondCount = Constants.MIN_BOND_PRICE
-                    bondEditText.setText(Constants.MIN_BOND_PRICE.toString())
+                depositCount = editable?.toString()!!.toInt()
+                if (depositCount < Constants.MIN_DEPOSIT_PRICE){
+                    depositCount = Constants.MIN_DEPOSIT_PRICE
+                    depositEditText.setText(Constants.MIN_DEPOSIT_PRICE.toString())
                 }
-                maxAuctionCountView.text = getString(R.string.max_auction_shares_count, (bondCount  / product!!.basicUnitPrice).toInt())
+                maxAuctionCountView.text = getString(R.string.max_auction_shares_count, (depositCount / product!!.basicUnitPrice).toInt())
 
             }
 
@@ -83,7 +92,8 @@ class PayBondFragment : BaseFragment() {
 
         })
         payButton.setOnClickListener {
-            toast("还未开通支付宝")
+            val money = depositEditText.text.toString().toDouble()
+            payDepositPresenter.payDeposit(CApplication.INSTANCE.loginUser?.token!!, product?.id!!, money)
         }
     }
 

@@ -12,7 +12,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.*
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
-import com.zhengdianfang.dazhongbao.views.product.PayBondFragment
+import com.zhengdianfang.dazhongbao.views.product.PayDepositFragment
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 /**
@@ -61,7 +61,7 @@ class MyProductRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
         }
         payButton.setOnClickListener {
            if(context is BaseActivity){
-               val fragment = PayBondFragment()
+               val fragment = PayDepositFragment()
                fragment.product = product
                context.startFragment(android.R.id.content, fragment, "myProductItem")
            }

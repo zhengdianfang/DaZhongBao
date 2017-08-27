@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/fragment_background_color"
     android:clickable="true"
-    tools:context="com.zhengdianfang.dazhongbao.views.product.PayBondFragment">
+    tools:context="com.zhengdianfang.dazhongbao.views.product.PayDepositFragment">
 
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -39,7 +39,7 @@
                 android:paddingRight="8dp"
                 android:textSize="20sp"/>
             <EditText
-                android:id="@+id/bondEditText"
+                android:id="@+id/depositEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:textSize="14sp"

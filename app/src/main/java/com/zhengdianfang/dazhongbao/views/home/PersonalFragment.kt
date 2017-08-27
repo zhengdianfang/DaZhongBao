@@ -34,6 +34,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
  */
 class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
+    private val markImageView by lazy { view?.findViewById<ImageView>(R.id.markImageView)!! }
     private val avatarImageView by lazy { view?.findViewById<ImageView>(R.id.userHeaderView)!! }
     private val userRealNameTextView by lazy { view?.findViewById<TextView>(R.id.userNameTextview)!! }
     private val userPhoneNumberTextView by lazy { view?.findViewById<TextView>(R.id.phoneNumberTextView)!! }
@@ -72,6 +73,11 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
             Glide.with(this).load(loginUser.avatar).
                     apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
                     .into(avatarImageView)
+
+            when(loginUser.type){
+                1-> markImageView.setImageResource(R.drawable.fragment_personal_people_icon)
+                2-> markImageView.setImageResource(R.drawable.fragment_personal_company_icon)
+            }
             userRealNameTextView.text = if(TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
             userPhoneNumberTextView.text = loginUser.phonenumber
             levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)

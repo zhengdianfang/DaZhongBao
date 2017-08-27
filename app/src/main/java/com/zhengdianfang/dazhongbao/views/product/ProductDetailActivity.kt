@@ -162,7 +162,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
                     productDetailPresenter.addBidIntention(productId)
                 }
                 ProductDetailPresenter.PAY_BOND_BUTTON_TYPE -> {
-                    val fragment = PayBondFragment()
+                    val fragment = PayDepositFragment()
                     fragment.product = this.product
                     startFragment(android.R.id.content, fragment)
                 }

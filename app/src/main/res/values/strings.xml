@@ -74,7 +74,7 @@
     <string name="activity_personal_company_positon">职位</string>
     <string name="activity_personal_company_email">邮箱</string>
     <string name="activity_personal_company_location">公司地址</string>
-    <string name="fragment_personal_upgrade_vip">升级会员</string>
+    <string name="fragment_personal_upgrade_vip">升级</string>
     <string name="product_item_to_sell">出让 %s 股</string>
     <string name="stock_unit">股</string>
     <string name="product_item_will_pay_price">意向价格 %s 元</string>

@@ -54,4 +54,8 @@ interface ProductApi {
     @FormUrlEncoded
     @POST("products/removebid")
     fun removeBid(@Field("token") token: String, @Field("bidId")bidId: Long): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/addbond")
+    fun payDeposit(@Field("token") token: String, @Field("productId")productId: Long, @Field("money") money: Double): Observable<JsonNode>
 }

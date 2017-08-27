@@ -110,4 +110,9 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
                     throw CException(json.get("msg").asText(), json.get("errCode").asInt())
                 }
     }
+
+    fun payDeposit(token: String, productId: Long, money: Double): Observable<AlipayResult> {
+        return API.appClient.create(ProductApi::class.java).payDeposit(token, productId, money)
+                .map {data -> API.objectMapper.readValue(data.toString(), AlipayResult::class.java) }
+    }
 }

@@ -51,32 +51,32 @@ val mockBidList = mutableListOf(
 //check_status = 5, sharesName = "九江银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 1, bidCount = 0,
 //companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = System.currentTimeMillis() + 1000 * 24 * 3600)
 val mockProduct = Product(id = 10, sharesCode = "000049", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-                check_status = 5, sharesName = "山东银行", description = "test", bond = 0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 5, sharesName = "山东银行", description = "test", bond = 0.0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = System.currentTimeMillis() + 1000 * 24 * 3600, endDateTime = 0
 , mybids = mockBidList)
 
 val mockUserProducts = mutableListOf(
         Product(id = 5, sharesCode = "002739", basicUnitPrice = 23.09, soldCount = 3000000, limitTime = 6, industry = "汽车",
-                check_status = 3, sharesName = "万达电影", description = "adadfsdfsdf", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 3, sharesName = "万达电影", description = "adadfsdfsdf", bond = 0.0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 29.01, deal = mockDealList, nowUnitPrice = 22.19, startDateTime = 0, endDateTime = 0, mybids = mutableListOf()),
         Product(id = 6, sharesCode = "000045", basicUnitPrice = 24.01, soldCount = 1000000, limitTime = 6, industry = "金融业",
-                check_status = 1, sharesName = "北京银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 1, sharesName = "北京银行", description = "test", bond = 0.0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 39.01, deal = mockDealList, nowUnitPrice = 43.19,startDateTime = 0 ,endDateTime = 0, mybids = mutableListOf()),
         Product(id = 7, sharesCode = "000046", basicUnitPrice = 26.00, soldCount = 4110000, limitTime = 6, industry = "金融业",
-                check_status = 2, sharesName = "南京银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 2, sharesName = "南京银行", description = "test", bond = 0.0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = 0, mybids = mutableListOf()),
         Product(id = 8, sharesCode = "000047", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-                check_status = 4, sharesName = "大连银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 4, sharesName = "大连银行", description = "test", bond = 0.0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = System.currentTimeMillis() + 2 *
                 1000 * 24 * 3600, endDateTime = 0, mybids = mutableListOf()),
         Product(id = 9, sharesCode = "000048", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-                check_status = 5, sharesName = "九江银行", description = "test", bond = 0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 5, sharesName = "九江银行", description = "test", bond = 0.0, bond_status = 0, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = System.currentTimeMillis() + 1000 * 24 * 3600, mybids = mockBidList),
         Product(id = 10, sharesCode = "000049", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-                check_status = 4, sharesName = "山东银行", description = "test", bond = 0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 4, sharesName = "山东银行", description = "test", bond = 0.0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = System.currentTimeMillis() + 1000 * 24 * 3600, endDateTime = 0, mybids = mutableListOf()),
         Product(id = 11, sharesCode = "000058", basicUnitPrice = 21.40, soldCount = 2110000, limitTime = 6, industry = "金融业",
-                check_status = 6, sharesName = "南昌银行", description = "test", bond = 0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
+                check_status = 6, sharesName = "南昌银行", description = "test", bond = 0.0, bond_status = 2, yestodayClosePrice = 0.0, attention = 0, bidCount = 0,
                 companyName = "" ,contact = mockUser, lastUnitPrice = 19.01, deal = mockDealList, nowUnitPrice = 23.19, startDateTime = 0, endDateTime = 0, mybids = mutableListOf())
 )
 
