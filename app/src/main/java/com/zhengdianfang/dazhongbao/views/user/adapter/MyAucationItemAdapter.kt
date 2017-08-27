@@ -18,10 +18,15 @@ class MyAucationItemAdapter(private val products: MutableList<Product>, private 
 
     override fun onBindViewHolder(holder: MyAuctionItemViewHolder?, position: Int) {
         holder?.setData(products[position])
+        ViewsUtils.renderBidListView(holder?.itemView?.context!!, products[position], removeOnClick = {id->
+            pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, id)
+        }).forEach {
+            holder?.cancelBidViewGroup.addView(it)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyAuctionItemViewHolder {
-        return MyAuctionItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.my_auction_list_item, parent, false), pushBidPresenter)
+        return MyAuctionItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.my_auction_list_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +36,7 @@ class MyAucationItemAdapter(private val products: MutableList<Product>, private 
 }
 
 
-class MyAuctionItemViewHolder(itemView: View?, private val pushBidPresenter: PushBidPresenter) : RecyclerView.ViewHolder(itemView) {
+class MyAuctionItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
     private val sharesNameView by lazy { itemView?.findViewById<TextView>(R.id.sharesNameView)!! }
     private val statusView by lazy { itemView?.findViewById<TextView>(R.id.statusView)!! }
@@ -39,7 +44,7 @@ class MyAuctionItemViewHolder(itemView: View?, private val pushBidPresenter: Pus
     private val basicPriceView by lazy { itemView?.findViewById<TextView>(R.id.basicPriceView)!! }
     private val soldCountView by lazy { itemView?.findViewById<TextView>(R.id.soldCountView)!! }
     private val nowUnitPriceView by lazy { itemView?.findViewById<TextView>(R.id.nowUnitPriceView)!! }
-    private val cancelBidViewGroup by lazy { itemView?.findViewById<ViewGroup>(R.id.cancelBidViewGroup)!! }
+    val cancelBidViewGroup by lazy { itemView?.findViewById<ViewGroup>(R.id.cancelBidViewGroup)!! }
 
     fun setData(product: Product) {
         val context = itemView?.context!!
@@ -50,11 +55,6 @@ class MyAuctionItemViewHolder(itemView: View?, private val pushBidPresenter: Pus
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.nowUnitPrice, R.string.now_price_label)
         cancelBidViewGroup.removeAllViews()
-        ViewsUtils.renderBidListView(context, product, removeOnClick = {id->
-            pushBidPresenter.removeBid(CApplication.INSTANCE.loginUser?.token!!, id)
-        }).forEach {
-            cancelBidViewGroup.addView(it)
-        }
     }
 
 }

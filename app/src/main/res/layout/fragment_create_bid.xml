@@ -23,6 +23,7 @@
         android:visibility="gone"
         android:background="@android:color/white"
         android:layout_marginBottom="16dp"
+        android:paddingHorizontal="16dp"
         android:orientation="vertical" />
 
     <GridLayout
@@ -66,7 +67,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:gravity="right"
                 android:inputType="numberSigned"
-                android:background="@android:color/holo_red_light"/>
+                android:background="@android:color/transparent"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

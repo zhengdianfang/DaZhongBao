@@ -1,42 +1,26 @@
 package com.zhengdianfang.dazhongbao.views.user
 
-
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
-import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.PushBidPresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseListActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
-import com.zhengdianfang.dazhongbao.views.user.adapter.MyAucationItemAdapter
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
+import com.zhengdianfang.dazhongbao.views.user.adapter.MyDepositItemAdapter
 
-
-/**
- * A simple [Fragment] subclass.
- */
-class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRemoveBidView , UserPresenter.IUserAuctionListView{
-
-    private val pushPresenter = PushBidPresenter()
+class MyDepositListActivity : BaseListActivity<Product>(), UserPresenter.IUserDepositListView {
     private val userPresenter = UserPresenter()
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
-    private var removeBidDisposable: Disposable? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_my_auction_list)
-        pushPresenter.attachView(this)
+        setContentView(R.layout.activity_my_deposit)
         userPresenter.attachView(this)
         toolBar.backListener = {
             onBackPressed()
@@ -51,37 +35,31 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
 
             }
         })
-        removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { (type, data) ->
-            recyclerView.refresh()
-        })
         recyclerView.refresh()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
-        pushPresenter.detachView()
         userPresenter.detachView()
-        RxBus.instance.unregister(removeBidDisposable)
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     override fun requestList(pageNumber: Int) {
-        userPresenter.fetchUserAuctionProducts(CApplication.INSTANCE.loginUser?.token!!)
+        userPresenter.fetchDepositProducts(CApplication.INSTANCE.loginUser?.token!!)
     }
 
     override fun createRecyclerView(): XRecyclerView {
-        return findViewById(R.id.productRecyclerView)!!
+        return findViewById(R.id.productRecyclerView)
     }
 
     override fun createRecyclerViewAdapter(): RecyclerView.Adapter<*> {
-        return MyAucationItemAdapter(datas, pushPresenter)
+        return MyDepositItemAdapter(datas)
     }
 
-    override fun removeBidSuccess(msg: String) {
-        toast(msg)
-    }
-
-    override fun receiveUserAuctionList(list: MutableList<Product>) {
+    override fun receiveUserDepositList(list: MutableList<Product>) {
         reponseProcessor(list)
     }
-}// Required empty public constructor
+}

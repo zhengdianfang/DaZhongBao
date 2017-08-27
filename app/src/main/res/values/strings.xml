@@ -175,4 +175,10 @@
     <string name="intention_price_label">意向价格: %s</string>
     <string name="to_pay_the_deposit">支付保证金</string>
     <string name="now_top_price">当前最高价 %s</string>
+    <string name="auction_fail_label">竞拍失败</string>
+    <string name="auction_success_label">竞拍成功</string>
+    <string name="sold_price_secret">卖出价格: 保密</string>
+    <string name="my_deposit_price_status_label">保证金 %1$s (%2$s)</string>
+    <string name="paied_label">已支付</string>
+    <string name="no_pay_label">未支付</string>
 </resources>

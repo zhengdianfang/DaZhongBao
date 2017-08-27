@@ -84,6 +84,9 @@ interface UserApi {
     @POST("products/myBidProducts")
     fun fetchUserAuctionProducts(@Field("token")token: String): Observable<JsonNode>
 
+    @FormUrlEncoded
+    @POST("products/bondProducts")
+    fun fetchUserDepsitProducts(@Field("token")token: String): Observable<JsonNode>
 
     @FormUrlEncoded
     @POST("users/getUserInfo")

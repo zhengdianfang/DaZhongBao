@@ -16,6 +16,7 @@
 
     <include layout="@layout/fragment_personal_user_info" />
     <LinearLayout
+        android:id="@+id/myDepositViewGroup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_personal_item_height"
         android:gravity="center_vertical"
@@ -24,16 +25,11 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/fragment_setting_item_background">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fragment_personal_margin_icon"
-            tools:ignore="ContentDescription" />
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:drawableLeft="@drawable/fragment_personal_margin_icon"
+            android:drawablePadding="16dp"
             android:layout_weight="1"
             android:text="@string/fragment_personal_margin" />
 
@@ -62,16 +58,11 @@
         android:layout_marginLeft="16dp"
         android:background="@drawable/fragment_setting_item_background">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fragment_personal_parter_icon"
-            tools:ignore="ContentDescription" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:drawableLeft="@drawable/fragment_personal_parter_icon"
+            android:drawablePadding="8dp"
             android:text="@string/fragment_personal_pater" />
 
         <RatingBar
@@ -107,16 +98,11 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/fragment_setting_item_background">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fragment_personal_setting_icon"
-            tools:ignore="ContentDescription" />
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:drawableLeft="@drawable/fragment_personal_setting_icon"
+            android:drawablePadding="12dp"
             android:layout_weight="1"
             android:text="@string/fragment_personal_setting" />
 

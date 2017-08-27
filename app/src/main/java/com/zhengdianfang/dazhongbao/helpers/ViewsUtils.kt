@@ -109,8 +109,26 @@ object ViewsUtils {
                     (bid.count/ Constants.SOLD_COUNT_BASE_UNIT).toString()) + context.getString(R.string.stock_unit)
             itemView.findViewById<TextView>(R.id.dealTotlaPriceView).text =
                     context.getString(R.string.total_price_label, context.getString(R.string.sold_count_value, (bid.count * bid.price / Constants.SOLD_COUNT_BASE_UNIT).toInt().toString()))
-            itemView.findViewById<Button>(R.id.removeButton).setOnClickListener {
-                removeOnClick(bid)
+            val removeButton = itemView.findViewById<Button>(R.id.removeButton)
+            when(bid.status){
+                1 -> {
+                    removeButton.setBackgroundResource(R.drawable.cancel_bid_button_background)
+                    removeButton.setTextColor(ContextCompat.getColor(context, R.color.c_f9b416))
+                    removeButton.setText(R.string.cancel_bond_price)
+                    removeButton.setOnClickListener {
+                        removeOnClick(bid)
+                    }
+                }
+                2 -> {
+                    removeButton.setBackgroundResource(R.drawable.md_transparent)
+                    removeButton.setTextColor(ContextCompat.getColor(context, R.color.bottom_bar_tab_text_color))
+                    removeButton.setText(R.string.auction_fail_label)
+                }
+                3 -> {
+                    removeButton.setBackgroundResource(R.drawable.md_transparent)
+                    removeButton.setTextColor(ContextCompat.getColor(context, R.color.bottom_bar_tab_text_color))
+                    removeButton.setText(R.string.auction_success_label)
+                }
             }
 
             itemViews.add(itemView)

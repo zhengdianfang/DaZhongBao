@@ -148,6 +148,14 @@ class UserPresenter: BasePresenter() {
         }
     }
 
+    fun fetchDepositProducts(token: String){
+        if (phoneNumberValidate.checkLogin()) {
+            addSubscription(mUserRepository.fetchDepositProducts(token), Consumer { list ->
+                (mView as IUserDepositListView).receiveUserDepositList(list)
+            })
+        }
+    }
+
     fun fetchUserInfo(token: String){
         if (verifySmsCodeValidate.checkLogin()){
             addSubscription(mUserRepository.fetchUserInfo(token), Consumer {(user, userCount)->
@@ -206,6 +214,10 @@ class UserPresenter: BasePresenter() {
 
     interface IUserAuctionListView: IView {
         fun receiveUserAuctionList(list: MutableList<Product>)
+    }
+
+    interface IUserDepositListView: IView {
+        fun receiveUserDepositList(list: MutableList<Product>)
     }
 
     interface IUserInfo :IView{

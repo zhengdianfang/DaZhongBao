@@ -142,4 +142,10 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                     Pair(user, userCount)
                 }
     }
+
+    fun fetchDepositProducts(token: String): Observable<MutableList<Product>>{
+        return API.appClient.create(UserApi::class.java).fetchUserDepsitProducts(token)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+    }
 }

@@ -71,6 +71,24 @@ object SpannableStringUtils {
     }
 
 
+    fun addColorSpan(content: String, matchStr: String, color: Int): SpannableString {
+        val spannableString = SpannableString(content)
+        val start = spannableString.toString().indexOf(matchStr)
+        val end = start +  matchStr.length
+        val foregroundColorSpan = ForegroundColorSpan(color)
+        spannableString.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
+    }
+
+    fun addColorSpan(content: SpannableString, matchStr: String, color: Int): SpannableString {
+        val spannableString = SpannableString(content)
+        val start = spannableString.toString().indexOf(matchStr)
+        val end = start +  matchStr.length
+        val foregroundColorSpan = ForegroundColorSpan(color)
+        spannableString.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
+    }
+
     fun addColorSpan(content: String, matchStr: String, color: Int, size: Int): SpannableString {
         val spannableString = SpannableString(content)
         val start = spannableString.toString().indexOf(matchStr)

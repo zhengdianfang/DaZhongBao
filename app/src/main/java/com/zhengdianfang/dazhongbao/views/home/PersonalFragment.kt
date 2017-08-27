@@ -23,10 +23,7 @@ import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
-import com.zhengdianfang.dazhongbao.views.user.MyAttentionActivity
-import com.zhengdianfang.dazhongbao.views.user.MyAuctionListActivity
-import com.zhengdianfang.dazhongbao.views.user.MyProductListActivity
-import com.zhengdianfang.dazhongbao.views.user.PersonalInfoActivity
+import com.zhengdianfang.dazhongbao.views.user.*
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 
@@ -47,6 +44,7 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
     private val bondCountView by lazy { view?.findViewById<TextView>(R.id.bondCountView)!! }
     private val settingViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.settingViewGroup)!! }
     private val partnerViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.partnerViewGroup)!! }
+    private val myDepositViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.myDepositViewGroup)!! }
     private val userPersenter = UserPresenter()
 
 
@@ -103,6 +101,10 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
         avatarImageView.setOnClickListener {
             context.startActivity(Intent(context, PersonalInfoActivity::class.java))
+        }
+
+        myDepositViewGroup.setOnClickListener {
+            context.startActivity(Intent(context, MyDepositListActivity::class.java))
         }
     }
 
