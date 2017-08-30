@@ -40,6 +40,12 @@ abstract class BaseListActivity<T> : BaseActivity(), XRecyclerView.LoadingListen
         recyclerView.refreshComplete()
         recyclerView.loadMoreComplete()
     }
+    protected fun responseProcessor(){
+        recyclerView.setLoadingMoreEnabled(datas.count() % Constants.PAGE_SIZE == 0)
+        adapter.notifyDataSetChanged()
+        recyclerView.refreshComplete()
+        recyclerView.loadMoreComplete()
+    }
 
     protected fun isRefresh():Boolean{
         return pageNumber == 0

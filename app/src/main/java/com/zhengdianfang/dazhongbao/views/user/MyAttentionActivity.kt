@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.jcodecraeer.xrecyclerview.XRecyclerView
+import com.miracle.redux.Cancelable
+import com.miracle.redux.Cursors
+import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.actions.MyProductAction
 import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.helpers.RxBus
@@ -25,6 +29,8 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
     private val followProductPresenter = FollowProductPresenter()
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private var unFollowDisposable: Disposable? = null
+
+    private var mCancelable: Cancelable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +60,11 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
                 }
             }
         })
+        mCancelable = Cursors.forEach(CApplication.INSTANCE.store,{
+            Logger.d("my attention receiver list")
+            responseProcessor()
+            adapter.notifyDataSetChanged()
+        } )
         recyclerView.refresh()
 
     }
@@ -62,15 +73,20 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
         super.onDestroy()
         userPresenter.detachView()
         followProductPresenter.detachView()
+        mCancelable?.cancel()
         RxBus.instance.unregister(unFollowDisposable)
     }
+
 
     override fun onBackPressed() {
         finish()
     }
 
     override fun requestList(pageNumber: Int) {
-        userPresenter.fetchUserAttentionProducts(CApplication.INSTANCE.loginUser?.token!!)
+
+        //userPresenter.fetchUserAttentionProducts(CApplication.INSTANCE.loginUser?.token!!)
+        MyProductAction(CApplication.INSTANCE.store).
+                fetchMyAttentionProductListAction(CApplication.INSTANCE.loginUser?.token!!)
     }
 
     override fun createRecyclerView(): XRecyclerView {
@@ -78,7 +94,7 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
     }
 
     override fun createRecyclerViewAdapter(): RecyclerView.Adapter<*> {
-        return MyAttentionRecyclerAdapter(datas, {productId ->
+        return MyAttentionRecyclerAdapter(CApplication.INSTANCE.store.state.myAnttentionProductList, {productId ->
             followProductPresenter.unfollowProduct(CApplication.INSTANCE.loginUser?.token!!, productId)
         })
     }
