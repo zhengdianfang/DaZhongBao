@@ -39,10 +39,6 @@ class MainActivity : BaseActivity() {
        return index <= 1 || CApplication.INSTANCE.isLogin()
     }
 
-    override fun onBackPressed() {
-        finish()
-    }
-
     fun resetCurrentTab() {
         viewPage.currentItem = 0
         bottomBar.setCurrentTab(0)

@@ -5,12 +5,8 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.jcodecraeer.xrecyclerview.XRecyclerView
-import com.miracle.redux.Cancelable
-import com.miracle.redux.Cursors
-import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.actions.MyProductAction
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
@@ -24,7 +20,6 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
     private val userPresenter by lazy { UserPresenter() }
 
 
-    private var mCancelable: Cancelable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +39,6 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
             }
         })
 
-        mCancelable = Cursors.forEach(CApplication.INSTANCE.store,{
-            Logger.d("my products receiver list")
-            responseProcessor()
-            adapter.notifyDataSetChanged()
-        } )
 
         recyclerView.refresh()
 
@@ -58,7 +48,6 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
     override fun onDestroy() {
         super.onDestroy()
         userPresenter.detachView()
-        mCancelable?.cancel()
     }
 
     override fun onBackPressed() {
@@ -70,9 +59,7 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
     }
 
     override fun requestList(pageNumber: Int) {
-//        userPresenter.fetchUserPushedProducts(CApplication.INSTANCE.loginUser?.token!!)
-        MyProductAction(CApplication.INSTANCE.store).
-                fetchMyProductListAction(CApplication.INSTANCE.loginUser?.token!!)
+        userPresenter.fetchUserPushedProducts(CApplication.INSTANCE.loginUser?.token!!)
     }
 
     override fun createRecyclerView(): XRecyclerView {
@@ -80,6 +67,6 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
     }
 
     override fun createRecyclerViewAdapter(): RecyclerView.Adapter<*> {
-        return  MyProductRecyclerAdapter(CApplication.INSTANCE.store.state.myProductList)
+        return  MyProductRecyclerAdapter(datas)
     }
 }

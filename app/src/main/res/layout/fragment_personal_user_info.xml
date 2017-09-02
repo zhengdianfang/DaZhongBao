@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/userHeaderView"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/personal_header_size"
+        android:layout_height="@dimen/personal_header_size"
         android:layout_marginBottom="10dp"
         android:src="@mipmap/fragment_personal_default_header_image"
         tools:layout_editor_absoluteX="166dp"

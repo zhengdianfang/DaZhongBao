@@ -92,4 +92,7 @@ interface UserApi {
     @POST("users/getUserInfo")
     fun fetchUserInfo(@Field("token")token: String): Observable<JsonNode>
 
+    @Multipart
+    @POST("users/modifyUserInfo")
+    fun uploadUserAvatar(@Part("token") token: String, @Part file: MultipartBody.Part): Observable<JsonNode>
 }

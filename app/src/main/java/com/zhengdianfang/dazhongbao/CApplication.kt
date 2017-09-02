@@ -4,16 +4,12 @@ import android.app.Application
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.TextUtils
-import com.miracle.redux.Store
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.product.SharesInfo
-import com.zhengdianfang.dazhongbao.reducers.AppState
-import com.zhengdianfang.dazhongbao.reducers.MyProductReducer
-import com.zhengdianfang.dazhongbao.reducers.RootReducer
 import java.io.File
 import kotlin.properties.Delegates
 
@@ -42,7 +38,6 @@ class CApplication : Application(){
         }
 
     val shareInfosCache = mutableListOf<SharesInfo>()
-    var store = Store.create(RootReducer(arrayOf(MyProductReducer())), AppState())
 
     init {
         INSTANCE = this

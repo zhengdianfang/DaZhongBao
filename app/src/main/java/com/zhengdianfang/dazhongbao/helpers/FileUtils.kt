@@ -21,7 +21,7 @@ import java.io.File
  * Created by dfgzheng on 30/07/2017.
  */
 object FileUtils{
-     val APP_DIR = "dazongbao"
+    val APP_DIR = "dazongbao"
 
     fun createTakePhotoImagePath(): String {
         return Environment.getExternalStorageDirectory().absolutePath + File.separator +

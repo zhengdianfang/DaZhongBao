@@ -14,9 +14,7 @@
         android:layout_height="wrap_content"
         app:title="@string/activity_personal_information"
         app:toolbar_theme="light"
-        app:enable_back="true"
-        app:enable_confirm="true"
-        app:confirm_label="@string/share_title"/>
+        app:enable_back="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,12 +38,12 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/headerViewGroup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_personal_item_height"
         android:gravity="center_vertical"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/fragment_setting_item_background"
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
@@ -55,8 +53,8 @@
             android:text="@string/activity_personal_user_header"/>
         <ImageView
             android:id="@+id/userHeaderView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

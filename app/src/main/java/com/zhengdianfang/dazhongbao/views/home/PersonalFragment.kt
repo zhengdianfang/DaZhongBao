@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 
@@ -22,6 +21,7 @@ import com.zhengdianfang.dazhongbao.models.login.UserCount
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
+import com.zhengdianfang.dazhongbao.views.login.UploadContactCardFragment
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.*
 import jp.wasabeef.glide.transformations.CropCircleTransformation
@@ -69,9 +69,9 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
     private fun setupUserInfo(loginUser: User, userCount: UserCount) {
         if(null != loginUser){
-            Logger.d("userId : ${loginUser.id}, token : ${loginUser.token}")
+            Logger.d("userId : ${loginUser.id}, token : ${loginUser.token}, avatar : ${loginUser.avatar}")
             Glide.with(this).load(loginUser.avatar).
-                    apply(RequestOptions.bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image))
+                    bitmapTransform(CropCircleTransformation(this.context)).placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image)
                     .into(avatarImageView)
 
             when(loginUser.type){
@@ -82,6 +82,10 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
             userPhoneNumberTextView.text = loginUser.phonenumber
             levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
             upgradeVIPView.visibility = if (loginUser.integrity!! == 0) View.GONE else View.VISIBLE
+            upgradeVIPView.setOnClickListener {
+                val fragment = UploadContactCardFragment()
+                startFragment(android.R.id.content,fragment , "personal")
+            }
         }
 
         myStartProductCountTextView.text = userCount.myAttention.toString()
@@ -115,5 +119,10 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
     override fun receiverUserInfo(user: User, userCount: UserCount) {
         setupUserInfo(user, userCount)
+    }
+
+    override fun onBackPressed(): Boolean {
+        getParentActivity().finish()
+        return true
     }
 }// Required empty public constructor

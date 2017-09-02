@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
@@ -38,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if(supportFragmentManager.fragments.size > 0){
-           val fragment = supportFragmentManager.fragments.last()
+           val fragment = supportFragmentManager.fragments.last { it !is SupportRequestManagerFragment }
             if (fragment is BaseFragment && !fragment.isRemoving){
                if(!fragment.onBackPressed()) {
                   finish()

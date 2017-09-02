@@ -147,5 +147,15 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
         return API.appClient.create(UserApi::class.java).fetchUserDepsitProducts(token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+
+    }
+
+    fun uploadUserAvatar(token: String, avatarFilePath: String): Observable<User>{
+        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), avatarFilePath)
+        val body =  MultipartBody.Part.createFormData("avatar", File(avatarFilePath).name, requestBody)
+        return API.appClient.create(UserApi::class.java)
+                .uploadUserAvatar(token, body)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }
 }

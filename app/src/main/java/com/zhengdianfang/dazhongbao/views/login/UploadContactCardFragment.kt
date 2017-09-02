@@ -79,13 +79,13 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
                     0 -> {
                         val bitmap = FileUtils.decodeBitmapFromFile(idCardFrontEndImagePath, idCardFrontEndImageView.width, idCardFrontEndImageView.height)
                         if (null != bitmap){
-                            Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(idCardFrontEndImageView)
+                            Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(idCardFrontEndImageView)
                         }
                     }
                     1-> {
                         val bitmap = FileUtils.decodeBitmapFromFile(idCardBackEndImagePath, idCardBackEndImageView.width, idCardBackEndImageView.height)
                         if (null != bitmap){
-                            Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(idCardBackEndImageView)
+                            Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(idCardBackEndImageView)
                         }
                     }
                 }
@@ -94,11 +94,11 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
                     when(type){
                         0 -> {
                             idCardFrontEndImagePath = FileUtils.getPathFromUri(this.context.applicationContext, data.data!!) ?: ""
-                            Glide.with(this).asBitmap().load(idCardFrontEndImagePath).into(idCardFrontEndImageView)
+                            Glide.with(this).load(idCardFrontEndImagePath).into(idCardFrontEndImageView)
                         }
                         1 -> {
                             idCardBackEndImagePath = FileUtils.getPathFromUri(this.context.applicationContext, data.data!!) ?: ""
-                            Glide.with(this).asBitmap().load(idCardBackEndImagePath).into(idCardBackEndImageView)
+                            Glide.with(this).load(idCardBackEndImagePath).into(idCardBackEndImageView)
                         }
                     }
                 }

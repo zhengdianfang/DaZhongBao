@@ -29,30 +29,32 @@ object DeviceUtils {
     }
 
     fun getAppVersionName(context: Context?): String {
-       return context?.packageManager?.getPackageInfo(context.packageName, 0)!!.versionName
+        return context?.packageManager?.getPackageInfo(context.packageName, 0)!!.versionName
     }
 
-    fun takePhoto(activity: Activity) {
-       val imagePath = FileUtils.createTakePhotoImagePath()
-       RxPermissions(activity).request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { granted ->
-          if (granted) {
-              val photoFile = File(imagePath)
-              photoFile.createNewFile()
-              val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-              val photoURI: Uri
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                  //如果是7.0及以上的系统使用FileProvider的方式创建一个Uri
-                  photoURI = FileProvider.getUriForFile(activity.applicationContext, activity.applicationContext.packageName, photoFile)
-                  intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                  intent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-              } else {
-                  //7.0以下使用这种方式创建一个Uri
-                  photoURI = Uri.fromFile(photoFile)
-              }
-              intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-              activity.startActivityForResult(intent, TAKE_PHOTO)
-          }
-       }
+    fun takePhoto(activity: Activity): String {
+        val imagePath = FileUtils.createTakePhotoImagePath()
+        RxPermissions(activity).request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { granted ->
+            if (granted) {
+                val photoFile = File(imagePath)
+                photoFile.createNewFile()
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                val photoURI: Uri
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    //如果是7.0及以上的系统使用FileProvider的方式创建一个Uri
+                    photoURI = FileProvider.getUriForFile(activity.applicationContext, activity.applicationContext.packageName, photoFile)
+                    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    intent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                } else {
+                    //7.0以下使用这种方式创建一个Uri
+                    photoURI = Uri.fromFile(photoFile)
+                }
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                activity.startActivityForResult(intent, TAKE_PHOTO)
+            }
+        }
+
+        return imagePath
     }
 
     fun takePhoto(fragment: Fragment): String {

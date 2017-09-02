@@ -84,10 +84,10 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     }
 
     override fun takePhotoCallback(bitmap: Bitmap) {
-        Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(licenceCardImageView)
+        Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(licenceCardImageView)
     }
 
     override fun pickPhotoCallback(imagePath: String) {
-        Glide.with(this).asBitmap().load(imagePath).into(licenceCardImageView)
+        Glide.with(this).load(imagePath).into(licenceCardImageView)
     }
 }

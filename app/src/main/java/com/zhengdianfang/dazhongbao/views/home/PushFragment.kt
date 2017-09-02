@@ -112,6 +112,11 @@ class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct{
         }
     }
 
+    override fun onBackPressed(): Boolean {
+        getParentActivity().finish()
+        return true
+    }
+
     private fun showDropDown(sharesInfo: SharesInfo) {
         val adapter =  ArrayAdapter<SharesInfo>(context, android.R.layout.simple_list_item_1, CApplication.INSTANCE.shareInfosCache.filter { it == sharesInfo })
         sharesCodeEditView.setAdapter(adapter)

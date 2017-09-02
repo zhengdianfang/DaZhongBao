@@ -55,6 +55,11 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
         RxBus.instance.unregister(followDisposable)
     }
 
+    override fun onBackPressed(): Boolean {
+        getParentActivity().finish()
+        return true
+    }
+
     override fun createRecyclerView(): XRecyclerView {
         return view?.findViewById(R.id.auctionRecyclerView)!!
     }

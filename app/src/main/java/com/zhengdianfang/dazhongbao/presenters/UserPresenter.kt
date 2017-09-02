@@ -164,6 +164,14 @@ class UserPresenter: BasePresenter() {
         }
     }
 
+    fun uploadUserAvatar(token: String, avatarFilePath: String){
+        mView?.showLoadingDialog()
+        addSubscription(mUserRepository.uploadUserAvatar(token, avatarFilePath), Consumer<User> { user ->
+            (mView as IUploadCard).uploadSuccess(user)
+            mView?.hideLoadingDialog()
+        })
+    }
+
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
         var ok = true
         if(contactName.isNullOrEmpty()){

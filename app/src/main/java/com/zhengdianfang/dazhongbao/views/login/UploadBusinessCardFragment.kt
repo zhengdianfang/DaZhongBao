@@ -75,10 +75,10 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
     }
 
     override fun takePhotoCallback(bitmap: Bitmap) {
-        Glide.with(this).asBitmap().load(FileUtils.bitmapToByte(bitmap)).into(businessCardImageView)
+        Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(businessCardImageView)
     }
 
     override fun pickPhotoCallback(imagePath: String) {
-        Glide.with(this).asBitmap().load(imagePath).into(businessCardImageView)
+        Glide.with(this).load(imagePath).into(businessCardImageView)
     }
 }// Required empty public constructor

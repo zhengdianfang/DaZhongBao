@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Advert
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
@@ -28,7 +27,7 @@ class AdvertViewPagerAdapter(private val adverts: MutableList<Advert>) : PagerAd
     override fun instantiateItem(container: ViewGroup?, position: Int): Any {
         val advert = adverts[position]
         val imageView = ImageView(container?.context)
-        Glide.with(imageView.context).load(advert.banner).apply(RequestOptions().placeholder(R.mipmap.banner_test).error(R.mipmap.banner_test)).into(imageView)
+        Glide.with(imageView.context).load(advert.banner).placeholder(R.mipmap.banner_test).error(R.mipmap.banner_test).into(imageView)
         container?.addView(imageView)
         imageView.setOnClickListener {
             val context = container?.context!!

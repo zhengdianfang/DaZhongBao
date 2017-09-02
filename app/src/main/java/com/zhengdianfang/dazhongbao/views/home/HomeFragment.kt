@@ -104,6 +104,11 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         advertPresenter.detachView()
     }
 
+    override fun onBackPressed(): Boolean {
+        getParentActivity().finish()
+        return true
+    }
+
     override fun receiveBanner(advertList: MutableList<Advert>) {
         mAdvertViewPager.adapter = AdvertViewPagerAdapter(advertList)
     }
