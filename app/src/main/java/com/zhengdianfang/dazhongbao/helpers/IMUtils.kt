@@ -1,6 +1,8 @@
 package com.zhengdianfang.dazhongbao.helpers
 
 import android.content.Context
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Environment
 import com.hyphenate.EMCallBack
 import com.hyphenate.chat.EMClient
@@ -16,10 +18,15 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 
+
+
 /**
  * Created by dfgzheng on 02/09/2017.
  */
 object IMUtils {
+
+    private var mediaPlayer: MediaPlayer? = null
+    var isPlaying = false
 
     fun login(user: User): Observable<User> {
         return Observable.create<User> {ob->
@@ -57,15 +64,21 @@ object IMUtils {
     }
 
     fun getMessageList(userId: String):Observable<MutableList<EMMessage>>{
-        Logger.d("im getMessage for userId : $userId")
         return Observable.just({
             val conversation = EMClient.getInstance().chatManager().getConversation(userId, EMConversation.EMConversationType.Chat, true )
             conversation.markAllMessagesAsRead()
-            conversation.allMessages
+            var messages = mutableListOf<EMMessage>()
+            Logger.d("im getMessage for userId : $userId and message size : ${conversation.allMsgCount}")
+            if (conversation.allMsgCount > 0){
+                val lastMessage = conversation.allMessages.last()
+                messages = conversation.loadMoreMsgFromDB(lastMessage.msgId, conversation.allMsgCount)
+                messages.add(lastMessage)
+            }
+            messages
         }.invoke()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getSoundChaceDirPath(context: Context): String {
+    fun getSoundCacheDirPath(context: Context): String {
         val soundDir = if (BuildConfig.DEBUG)
             Environment.getExternalStorageDirectory().absolutePath + File.separator + "DaZhongBao/IM/Sound/"
         else
@@ -79,9 +92,56 @@ object IMUtils {
 
     fun getSoundCacheFilePath(context: Context, uuid: String): String {
         return if (BuildConfig.DEBUG)
-            Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "DaZhongBao/IM/Sound/" + uuid
+            Environment.getExternalStorageDirectory().absolutePath + File.separator + "DaZhongBao/IM/Sound/" + uuid
         else
             context.cacheDir.absolutePath + File.separator + "IM/Sound/" + uuid
     }
 
+    fun sendTxtMessage(userId: String, msg: String) {
+        val message = EMMessage.createTxtSendMessage(msg, userId)
+        EMClient.getInstance().chatManager().sendMessage(message)
+    }
+
+    fun sendVoiceMessage(filePath: String, length: Int, userId: String){
+        val message = EMMessage.createVoiceSendMessage(filePath, length, userId)
+        EMClient.getInstance().chatManager().sendMessage(message)
+    }
+
+    fun playVoice(context: Context, filePath: String, earpieceMode: Boolean = false) {
+        if (!isPlaying && null == mediaPlayer){
+            mediaPlayer = MediaPlayer()
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            if (earpieceMode){
+                audioManager.isSpeakerphoneOn = false
+                audioManager.mode = AudioManager.MODE_IN_CALL
+                mediaPlayer?.setAudioStreamType(AudioManager.STREAM_VOICE_CALL)
+            }else{
+                audioManager.mode = AudioManager.MODE_NORMAL
+                audioManager.isSpeakerphoneOn = true
+                mediaPlayer?.setAudioStreamType(AudioManager.STREAM_RING)
+            }
+            try {
+                mediaPlayer?.setDataSource(filePath)
+                mediaPlayer?.prepare()
+                mediaPlayer?.setOnCompletionListener {
+                    mediaPlayer?.release()
+                    mediaPlayer = null
+                    isPlaying = false
+
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+            isPlaying = true
+            mediaPlayer?.start()
+        }
+    }
+
+    fun stopVoice() {
+        if (mediaPlayer != null && isPlaying) {
+            mediaPlayer!!.stop()
+            mediaPlayer!!.release()
+            isPlaying = false
+        }
+    }
 }

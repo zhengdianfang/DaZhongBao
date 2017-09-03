@@ -101,7 +101,7 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){
                         val data = json.get("data")
-                        return@map intArrayOf(data.get("DealCount").asInt(), data.get("ProductCount").asInt(), json.get("MessageCount").asInt())
+                        return@map intArrayOf(data.get("DealCount").asInt(), data.get("ProductCount").asInt(), data.get("MessageCount").asInt())
                     }
                     throw CException(json.get("msg").asText(), json.get("errCode").asInt())
                 }

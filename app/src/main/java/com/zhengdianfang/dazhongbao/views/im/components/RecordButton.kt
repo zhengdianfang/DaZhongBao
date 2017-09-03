@@ -42,8 +42,8 @@ class RecordButton : Button {
         finishedListener = listener
     }
 
-    private var mFileName: String? = null
-    private var mFileRoot: String? = null
+    private var mFileName = ""
+    private var mFileRoot = ""
 
     private var finishedListener: OnFinishedRecordListener? = null
     private var startTime: Long = 0
@@ -109,20 +109,21 @@ class RecordButton : Button {
 
         val intervalTime = System.currentTimeMillis() - startTime
         if (intervalTime < MIN_INTERVAL_TIME) {
-            Toast.makeText(getContext(), R.string.record_lenght_too_short, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.record_lenght_too_short, Toast.LENGTH_SHORT).show()
             val file = File(mFileName)
             file.delete()
             return
         }
 
-        if (finishedListener != null)
+        if (finishedListener != null){
             finishedListener!!.onFinishedRecord(mFileName, (intervalTime / 1000).toInt())
+        }
     }
 
     private fun cancelRecord() {
         stopRecording()
         recordIndicator!!.dismiss()
-        Toast.makeText(getContext(), R.string.cancel_record, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.cancel_record, Toast.LENGTH_SHORT).show()
         val file = File(mFileName)
         file.delete()
     }
@@ -221,7 +222,7 @@ class RecordButton : Button {
     }
 
     interface OnFinishedRecordListener {
-        fun onFinishedRecord(audioPath: String?, time: Int)
+        fun onFinishedRecord(audioPath: String, time: Int)
     }
 
     companion object {

@@ -27,8 +27,8 @@ class EmoticonsKeyBoardLayout(context: Context, attrs: AttributeSet) : AutoHeigh
 
 
     private val mSwitchVoiceBtn by lazy { findViewById<ImageView>(R.id.swtichVoiceBtn) }
-    private val mVoiceBtn by lazy { findViewById<RecordButton>(R.id.voiceBtn) }
-    private val mChatEdit by lazy { findViewById<EmoticonsEditText>(R.id.chatEdit) }
+    val mVoiceBtn by lazy { findViewById<RecordButton>(R.id.voiceBtn) }
+    val mChatEdit by lazy { findViewById<EmoticonsEditText>(R.id.chatEdit) }
     private val mFaceBtn by lazy { findViewById<ImageView>(R.id.faceBtn) }
     private val mInputFrameLayout by lazy { findViewById<ViewGroup>(R.id.inputFrameLayout) }
     private val mFunsLayout by lazy { findViewById<FuncLayout>(R.id.funsLayout) }
@@ -46,7 +46,7 @@ class EmoticonsKeyBoardLayout(context: Context, attrs: AttributeSet) : AutoHeigh
         LayoutInflater.from(context).inflate(R.layout.emoticons_keyboard_layout, this)
         initViews(context)
         initViewpager(context)
-        mVoiceBtn.setSavePath(IMUtils.getSoundChaceDirPath(context))
+        mVoiceBtn.setSavePath(IMUtils.getSoundCacheDirPath(context))
 
     }
 
@@ -189,7 +189,7 @@ class EmoticonsKeyBoardLayout(context: Context, attrs: AttributeSet) : AutoHeigh
     fun reset() {
         KeyboardUtils.closeSoftKeyboard(mContext as Activity)
         mFunsLayout.hideAllFuncView()
-        mFaceBtn.setImageResource(R.drawable.icon_face_nomal)
+        mFaceBtn.setImageResource(R.drawable.icon_emoji_normal)
     }
 
     companion object {

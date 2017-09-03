@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao
 
 import android.app.Application
+import android.content.Intent
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.TextUtils
@@ -12,6 +13,7 @@ import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.product.SharesInfo
+import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 import java.io.File
 import kotlin.properties.Delegates
 
@@ -26,7 +28,11 @@ class CApplication : Application(){
     var loginUser: User? = null
         set(value) {
             val preference = PreferenceManager.getDefaultSharedPreferences(this)
-            preference.edit().putString("login_user", API.objectMapper.writeValueAsString(value)).apply()
+            if (value == null){
+                preference.edit().putString("login_user", "").apply()
+            }else{
+                preference.edit().putString("login_user", API.objectMapper.writeValueAsString(value)).apply()
+            }
         }
         get() {
             if (field == null) {
@@ -68,5 +74,13 @@ class CApplication : Application(){
         emOptions.acceptInvitationAlways = false
         EMClient.getInstance().init(this, emOptions)
         EMClient.getInstance().setDebugMode(BuildConfig.DEBUG)
+    }
+
+    fun logout() {
+        loginUser = null
+        EMClient.getInstance().logout(true)
+        startActivity(Intent(this, LoginActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }
