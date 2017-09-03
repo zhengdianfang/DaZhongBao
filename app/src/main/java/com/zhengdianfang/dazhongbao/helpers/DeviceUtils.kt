@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.telephony.TelephonyManager
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import java.io.File
 
 
@@ -95,5 +96,18 @@ object DeviceUtils {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
         intent.action = Intent.ACTION_GET_CONTENT
         fragment.startActivityForResult(intent, PICK_PHOTO)
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun callPhone(activity: BaseActivity, phoneNumber: String){
+        RxPermissions(activity).request(Manifest.permission.CALL_PHONE).subscribe { granted ->
+            if (granted){
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+                activity.startActivity(intent)
+            }else{
+               activity.toast("请在设置中给予应用电话权限")
+            }
+        }
     }
 }

@@ -158,4 +158,10 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }
+
+    fun fetchIMUserInfo(token: String, userIds: String): Observable<MutableList<User>>{
+        return API.appClient.create(UserApi::class.java).fetchIMUserInfo(token, userIds)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue<MutableList<User>>(data, object : TypeReference<MutableList<User>>(){})}
+    }
 }

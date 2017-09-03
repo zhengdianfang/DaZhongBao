@@ -23,7 +23,9 @@
             android:id="@+id/messageRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"/>
+            app:layoutManager="LinearLayoutManager"
+            android:clipToPadding="false"
+            android:overScrollMode="ifContentScrolls"/>
     </LinearLayout>
 
 </com.zhengdianfang.dazhongbao.views.im.components.EmoticonsKeyBoardLayout>

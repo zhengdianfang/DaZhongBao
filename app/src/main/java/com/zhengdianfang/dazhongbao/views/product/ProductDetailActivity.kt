@@ -12,6 +12,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
@@ -19,6 +20,7 @@ import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import com.zhengdianfang.dazhongbao.presenters.ProductDetailPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
+import com.zhengdianfang.dazhongbao.views.im.ChatActivity
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductDetailFooterViewHolder
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductDetailHeaderViewHolder
 import com.zhengdianfang.dazhongbao.views.product.adapter.ProductRecyclerViewAdapter
@@ -45,6 +47,8 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
 
     private val statusView by lazy { findViewById<TextView>(R.id.statusView) }
     private val statusInfoView by lazy { findViewById<TextView>(R.id.statusInfoView) }
+    private val imButton by lazy { findViewById<View>(R.id.imButton) }
+    private val phoneButton by lazy { findViewById<View>(R.id.phoneButton) }
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val loadingView by lazy { findViewById<View>(R.id.loadingView) }
     private val productId by lazy { intent.getLongExtra("productId", -1L) }
@@ -182,6 +186,19 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
                 }
             }
         }
+
+        imButton.setOnClickListener {
+            if (product?.csm_user != null) {
+                startActivity(Intent(this, ChatActivity::class.java).putExtra("userId", product?.csm_user!!.im_id))
+            }
+        }
+
+        phoneButton.setOnClickListener {
+            if (product?.csm_user != null) {
+                DeviceUtils.callPhone(this, product?.csm_user!!.phonenumber ?: "")
+            }
+        }
+
     }
 
     override fun followSuccess(msg: String) {

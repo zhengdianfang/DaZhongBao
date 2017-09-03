@@ -4,11 +4,15 @@ import android.content.Context
 import android.os.Environment
 import com.hyphenate.EMCallBack
 import com.hyphenate.chat.EMClient
+import com.hyphenate.chat.EMConversation
+import com.hyphenate.chat.EMMessage
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.login.User
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 
@@ -50,6 +54,15 @@ object IMUtils {
                }
            }
         }
+    }
+
+    fun getMessageList(userId: String):Observable<MutableList<EMMessage>>{
+        Logger.d("im getMessage for userId : $userId")
+        return Observable.just({
+            val conversation = EMClient.getInstance().chatManager().getConversation(userId, EMConversation.EMConversationType.Chat, true )
+            conversation.markAllMessagesAsRead()
+            conversation.allMessages
+        }.invoke()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getSoundChaceDirPath(context: Context): String {

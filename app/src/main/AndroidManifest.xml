@@ -31,6 +31,11 @@
         <activity
             android:name=".views.StartupActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".views.home.MainActivity"
@@ -70,13 +75,7 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".views.im.ChatActivity"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
 
         <!-- alipay -->
         <activity

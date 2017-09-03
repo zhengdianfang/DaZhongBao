@@ -9,4 +9,5 @@
     <dimen name="fragment_personal_user_info_header_height">250dp</dimen>
     <dimen name="fragment_personal_item_height">48dp</dimen>
     <dimen name="personal_header_size">72dp</dimen>
+    <dimen name="chat_avatar_default_size">56dp</dimen>
 </resources>

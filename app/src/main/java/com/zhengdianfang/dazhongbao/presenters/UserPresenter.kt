@@ -231,4 +231,5 @@ class UserPresenter: BasePresenter() {
     interface IUserInfo :IView{
         fun receiverUserInfo(user: User, userCount: UserCount)
     }
+
 }

@@ -24,6 +24,7 @@
         android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/imButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -44,6 +45,7 @@
             android:background="@color/bottom_bar_divider_color"
             android:layout_height="match_parent" />
         <FrameLayout
+            android:id="@+id/phoneButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
