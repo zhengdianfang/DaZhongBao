@@ -4,6 +4,8 @@ import android.app.Application
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.TextUtils
+import com.hyphenate.chat.EMClient
+import com.hyphenate.chat.EMOptions
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
@@ -54,9 +56,17 @@ class CApplication : Application(){
                 return BuildConfig.DEBUG
             }
         })
+        initEMChat()
     }
 
     fun isLogin(): Boolean {
        return loginUser != null
+    }
+
+    private fun initEMChat() {
+        val emOptions = EMOptions()
+        emOptions.acceptInvitationAlways = false
+        EMClient.getInstance().init(this, emOptions)
+        EMClient.getInstance().setDebugMode(BuildConfig.DEBUG)
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhengdianfang.dazhongbao.views.im.components.EmoticonsKeyBoardLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/fragment_background_color">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.zhengdianfang.dazhongbao.views.components.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:toolbar_theme="light"
+            app:enable_back="true" />
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/messageRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"/>
+    </LinearLayout>
+
+</com.zhengdianfang.dazhongbao.views.im.components.EmoticonsKeyBoardLayout>

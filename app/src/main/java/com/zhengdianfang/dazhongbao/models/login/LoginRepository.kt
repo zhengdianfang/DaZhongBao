@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.models.login
 
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.IMUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.api.UserApi
@@ -23,6 +24,7 @@ class LoginRepository(private val MOCK: Boolean = Constants.MOCK) {
         return API.appClient.create(UserApi::class.java).loginByPhone(phoneNumber, password, version, deviceId)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
+                .switchMap{user -> IMUtils.login(user)}
     }
 
     fun getSmsVerifyCode(phoneNumber: String, type: Int): Observable<String> {
@@ -47,6 +49,7 @@ class LoginRepository(private val MOCK: Boolean = Constants.MOCK) {
         return API.appClient.create(UserApi::class.java).register(phoneNumber, verifyCode, recommendPerson)
                      .map {response -> API.parseResponse(response) }
                      .map {data -> API.objectMapper.readValue(data, User::class.java) }
+                     .switchMap {user -> IMUtils.register(user) }
     }
 
 }
