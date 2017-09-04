@@ -12,5 +12,5 @@ data class User(var id: String?, var token: String?, var realname: String?, var 
                 var level: Int, var type: Int, var integrity: Int, var businessCard: String?, var contactCard: String?,
                 var contactCard2: String?, var contactCardStatus: String?,
                 var businessCardStatus: String?, var businessLicence: String?,
-                var businessLicenceStatus: String?, var im_id: String?)
+                var businessLicenceStatus: String?)
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:columnCount="2"
+    android:padding="16dp"
+    android:background="@drawable/fragment_setting_item_background">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_rowSpan="2"
+        android:src="@drawable/nofity_message_auction_start_icon"/>
+
+    <TextView
+        android:id="@+id/nofiyMessageTitleView"
+        android:text="@string/just_auction_start"
+        android:textColor="@color/c_3c3c3c"
+        android:textSize="16sp"
+        android:layout_marginLeft="16dp"/>
+
+    <TextView
+        android:id="@+id/nofityMessageDetailView"
+        tools:text="您关注的"
+        android:textColor="@color/c_3c3c3c"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"/>
+</GridLayout>

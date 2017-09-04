@@ -192,4 +192,8 @@
     <string name="confirm_label">确定</string>
     <string name="cancel_label">取消</string>
     <string name="please_input_legal_voice">请输入语音</string>
+    <string name="activity_notify_messages_title">消息提醒</string>
+    <string name="just_auction_start">即将开拍</string>
+    <string name="just_auction_success">竞拍成功</string>
+    <string name="voice_content_sample">[语音]</string>
 </resources>

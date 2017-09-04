@@ -18,7 +18,7 @@ import com.hyphenate.chat.EMVoiceMessageBody
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.IMUtils
-import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.views.im.components.EmojiUtil
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlin.properties.Delegates
@@ -26,7 +26,7 @@ import kotlin.properties.Delegates
 /**
  * Created by dfgzheng on 03/09/2017.
  */
-class ChatItemAdapter(private var context: Context, private var receiverUser: User, private var messages: MutableList<EMMessage>) :
+class ChatItemAdapter(private var context: Context, private var receiverUser: IMUser, private var messages: MutableList<EMMessage>) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>(), SensorEventListener {
 
     private val RECEIVER_TEXT_ITEM_TYPE = 0

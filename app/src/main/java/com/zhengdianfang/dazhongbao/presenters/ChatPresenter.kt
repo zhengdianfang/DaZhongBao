@@ -8,14 +8,12 @@ import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.IMUtils
-import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
 import com.zhengdianfang.dazhongbao.views.basic.IView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -37,33 +35,30 @@ class ChatPresenter: BasePresenter() , EMMessageListener {
     }
     fun fetchChatList(userId: String){
         val loginUser = CApplication.INSTANCE.loginUser
-        val observable = Observable.zip(userRepository.fetchIMUserInfo(loginUser?.token!!, userId).map { list -> list.first() },
-                IMUtils.getMessageList(userId), BiFunction<User, MutableList<EMMessage>, Pair<User, MutableList<EMMessage>>> { user, list-> Pair(user, list)})
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-        addSubscription(observable, Consumer { (first, second) ->
-            (mView as IMUserInfoAndMessages).receiverUserInfoAndMessages(first, second)
+        addSubscription(IMUtils.getMessageList(userId), Consumer {list ->
+            (mView as IMUserInfoAndMessages).receiverMessages(list)
         })
     }
 
-    fun sendTextMessage(userId: String, msg: String) {
+    fun sendTextMessage(user: IMUser, msg: String) {
         if (TextUtils.isEmpty(msg)){
             mView?.validateErrorUI(R.string.please_input_txt)
             return
         }
-        IMUtils.sendTxtMessage(userId, msg)
-        addSubscription(IMUtils.getMessageList(userId).delay(100, TimeUnit.MILLISECONDS), Consumer {messages ->
+        IMUtils.sendTxtMessage(user, msg)
+        addSubscription(IMUtils.getMessageList(user.id).delay(100, TimeUnit.MILLISECONDS), Consumer {messages ->
             (mView as IMUserInfoAndMessages).updateMessages(messages ?: mutableListOf())
         })
     }
 
-    fun sendVoiceMessage(userId: String, filePath: String, length: Int) {
+    fun sendVoiceMessage(user: IMUser, filePath: String, length: Int) {
         if (TextUtils.isEmpty(filePath) || !File(filePath).exists()){
             mView?.validateErrorUI(R.string.please_input_legal_voice)
             return
         }
-        IMUtils.sendVoiceMessage(filePath, length, userId)
-        addSubscription(IMUtils.getMessageList(userId).delay(100, TimeUnit.MILLISECONDS), Consumer { messages ->
+        IMUtils.sendVoiceMessage(filePath, length, user)
+        addSubscription(IMUtils.getMessageList(user.id).delay(100, TimeUnit.MILLISECONDS), Consumer { messages ->
             (mView as IMUserInfoAndMessages).updateMessages(messages ?: mutableListOf())
         })
     }
@@ -94,7 +89,7 @@ class ChatPresenter: BasePresenter() , EMMessageListener {
     }
 
     interface IMUserInfoAndMessages: IView{
-        fun receiverUserInfoAndMessages(user: User, allMessage: MutableList<EMMessage>)
+        fun receiverMessages(allMessage: MutableList<EMMessage>)
         fun updateMessages(messages: MutableList<EMMessage>)
         fun addMessages(messages: MutableList<EMMessage>)
     }

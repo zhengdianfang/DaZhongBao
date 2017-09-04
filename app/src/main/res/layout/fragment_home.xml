@@ -7,13 +7,30 @@
     android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.home.HomeFragment">
 
-    <com.zhengdianfang.dazhongbao.views.components.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/app_name"
-        app:toolbar_theme="dark"
-        app:enable_back="false"/>
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/toolbarTitleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name"
+            style="@style/AppTheme.ToolbarText"/>
+
+        <ImageButton
+            android:id="@+id/messageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:src="@drawable/topbar_message_icon"
+            android:textSize="14sp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/colorPrimary"
+            android:background="@android:color/transparent"/>
+    </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

@@ -38,7 +38,7 @@ class SettingActivity : BaseActivity() {
         }
 
         findViewById<TextView>(R.id.logoutButton).setOnClickListener {
-
+            logoutConfirmDialog.show()
         }
     }
 }

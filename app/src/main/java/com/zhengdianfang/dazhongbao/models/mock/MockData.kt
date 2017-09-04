@@ -27,8 +27,7 @@ val mockUser = User(id = "1",
         contactCardStatus = "0",
         businessCardStatus = "0",
         businessLicence = "http://",
-        businessLicenceStatus = "0",
-        im_id = ""
+        businessLicenceStatus = "0"
 )
 
 

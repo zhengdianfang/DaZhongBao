@@ -9,7 +9,9 @@
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
 
-
+    </style>
+    <style name="AppTheme.LoadingPage">
+       <item name="android:windowBackground">@mipmap/loading_background</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -6,7 +6,8 @@ import android.view.inputmethod.EditorInfo
 import com.hyphenate.chat.EMMessage
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.api.API
+import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.presenters.ChatPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -23,7 +24,7 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
     private val emoticonContainer by lazy { findViewById<EmoticonsKeyBoardLayout>(R.id.emoticonContainer) }
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val chatPresenter = ChatPresenter()
-    private val userId by lazy { intent.getStringExtra("userId") }
+    private val user by lazy { API.objectMapper.readValue(intent.getStringExtra("user"), IMUser::class.java) }
     private var chatItemAdapter: ChatItemAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
         chatPresenter.attachView(this)
 
         initViews()
-        chatPresenter.fetchChatList(userId)
+        chatPresenter.fetchChatList(user.id!!)
     }
 
     private fun initViews() {
@@ -41,7 +42,7 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
         }
         emoticonContainer.mChatEdit.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
-                chatPresenter.sendTextMessage(userId, textView.text.toString())
+                chatPresenter.sendTextMessage(user, textView.text.toString())
                 textView.text = ""
             }
             false
@@ -49,7 +50,7 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
 
         emoticonContainer.mVoiceBtn.setOnFinishedRecordListener(object : RecordButton.OnFinishedRecordListener {
             override fun onFinishedRecord(audioPath: String, time: Int) {
-                chatPresenter.sendVoiceMessage(userId, audioPath, time)
+                chatPresenter.sendVoiceMessage(user, audioPath, time)
             }
         })
     }
@@ -65,9 +66,9 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
     }
 
 
-    override fun receiverUserInfoAndMessages(user: User, allMessage: MutableList<EMMessage>) {
+    override fun receiverMessages(allMessage: MutableList<EMMessage>) {
         Logger.d("receiver all messages size : ${allMessage.count()}")
-        toolBar.setTitle(user.realname ?: "")
+        toolBar.setTitle(user.realname)
         chatItemAdapter = ChatItemAdapter(this, user, allMessage)
         messageRecyclerView.adapter = chatItemAdapter
         scrollToEnd()

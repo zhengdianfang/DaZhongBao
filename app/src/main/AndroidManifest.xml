@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -31,6 +31,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.StartupActivity"
+            android:theme="@style/AppTheme.LoadingPage"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -56,7 +57,6 @@
         <activity
             android:name=".views.product.ProductDetailActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".views.user.MyProductListActivity"
             android:screenOrientation="portrait" />
@@ -72,10 +72,11 @@
         <activity
             android:name=".views.basic.WebActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.user.MyDepositListActivity"
+        <activity
+            android:name=".views.user.MyDepositListActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".views.im.ChatActivity"
+        <activity
+            android:name=".views.im.ChatActivity"
             android:screenOrientation="portrait" />
 
         <!-- alipay -->
@@ -93,25 +94,32 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- 设置环信应用的AppKey -->
-    	<meta-data android:name="EASEMOB_APPKEY"  android:value="1166170725115487#dzb" />
-    	<!-- 声明SDK所需的service SDK核心功能-->
-    	<service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
-        <service android:name="com.hyphenate.chat.EMJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="1166170725115487#dzb" />
+        <!-- 声明SDK所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <service
+            android:name="com.hyphenate.chat.EMJobService"
             android:exported="true"
-            />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <!-- 声明SDK所需的receiver -->
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".views.setting.NotifyMessagesActivity"></activity>
     </application>
 
 </manifest>

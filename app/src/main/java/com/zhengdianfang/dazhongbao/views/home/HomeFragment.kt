@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.home
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
@@ -8,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
@@ -18,6 +20,7 @@ import com.zhengdianfang.dazhongbao.views.components.miraclePageView.MiracleView
 import com.zhengdianfang.dazhongbao.views.components.miraclePageView.transformer.MiracleScaleTransformer
 import com.zhengdianfang.dazhongbao.views.home.adapter.AdvertViewPagerAdapter
 import com.zhengdianfang.dazhongbao.views.home.adapter.TabViewPagerAdapter
+import com.zhengdianfang.dazhongbao.views.setting.NotifyMessagesActivity
 
 
 /**
@@ -34,6 +37,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     private val tabTwoView by lazy { view?.findViewById<TextView>(R.id.tabTwo)!! }
     private val dealCountView by lazy { view?.findViewById<TextView>(R.id.dealCountView)!! }
     private val advertPresenter by lazy { AdvertPresenter() }
+    private val messageButton by lazy { view?.findViewById<ImageButton>(R.id.messageButton)!! }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -46,6 +50,9 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         advertPresenter.attachView(this)
         setupViewPager()
         setupTabViewPager()
+        messageButton.setOnClickListener {
+            startActivity(Intent(activity, NotifyMessagesActivity::class.java))
+        }
         advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
         advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
 

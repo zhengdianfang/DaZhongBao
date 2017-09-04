@@ -10,7 +10,10 @@ import com.hyphenate.chat.EMConversation
 import com.hyphenate.chat.EMMessage
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.BuildConfig
+import com.zhengdianfang.dazhongbao.CApplication
+import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
+import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.models.login.User
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,6 +66,13 @@ object IMUtils {
         }
     }
 
+    fun getConversationList(): Observable<MutableList<EMConversation>>{
+        return Observable.just({
+            val conversations = EMClient.getInstance().chatManager().getConversationsByType(EMConversation.EMConversationType.Chat)
+            conversations
+        }.invoke()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun getMessageList(userId: String):Observable<MutableList<EMMessage>>{
         return Observable.just({
             val conversation = EMClient.getInstance().chatManager().getConversation(userId, EMConversation.EMConversationType.Chat, true )
@@ -97,13 +107,21 @@ object IMUtils {
             context.cacheDir.absolutePath + File.separator + "IM/Sound/" + uuid
     }
 
-    fun sendTxtMessage(userId: String, msg: String) {
-        val message = EMMessage.createTxtSendMessage(msg, userId)
+    fun sendTxtMessage(user: IMUser, msg: String) {
+        val message = EMMessage.createTxtSendMessage(msg, user.id)
+        message.setAttribute("toUser", API.objectMapper.writeValueAsString(user))
+        val loginUser = CApplication.INSTANCE.loginUser!!
+        message.setAttribute("fromUser",
+                API.objectMapper.writeValueAsString(IMUser(loginUser.id!!, loginUser.phonenumber!!, loginUser.id!!, loginUser.realname!!, loginUser.avatar!!)) )
         EMClient.getInstance().chatManager().sendMessage(message)
     }
 
-    fun sendVoiceMessage(filePath: String, length: Int, userId: String){
-        val message = EMMessage.createVoiceSendMessage(filePath, length, userId)
+    fun sendVoiceMessage(filePath: String, length: Int, user: IMUser){
+        val message = EMMessage.createVoiceSendMessage(filePath, length, user.id)
+        message.setAttribute("toUser", API.objectMapper.writeValueAsString(user))
+        val loginUser = CApplication.INSTANCE.loginUser!!
+        message.setAttribute("fromUser",
+                API.objectMapper.writeValueAsString(IMUser(loginUser.id!!, loginUser.phonenumber!!, loginUser.id!!, loginUser.realname!!, loginUser.avatar!!)) )
         EMClient.getInstance().chatManager().sendMessage(message)
     }
 
