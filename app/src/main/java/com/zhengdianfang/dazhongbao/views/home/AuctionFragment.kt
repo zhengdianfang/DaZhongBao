@@ -50,6 +50,7 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (adapter as AuctionItemAdapter).destory()
         auctionPresenter.detachView()
         followProductPresenter.detachView()
         RxBus.instance.unregister(followDisposable)
@@ -85,6 +86,7 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
     override fun requestList(pageNumber: Int) {
         auctionPresenter.fetchAuctionList(CApplication.INSTANCE.loginUser?.token!!, pageNumber)
     }
+
 
 
     override fun receiveAuctionProductList(list: MutableList<Product>) {

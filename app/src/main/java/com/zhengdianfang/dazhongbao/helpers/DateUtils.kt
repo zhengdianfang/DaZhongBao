@@ -106,9 +106,12 @@ object DateUtils {
         val startTime = changeTimeLenght(startTime)
         val endTime = changeTimeLenght(endTime)
         val delta = Math.abs(endTime - startTime)
-        val hour = delta / 24L
-        val min = delta % 24L / 60L
-        val sec = delta % 24L % 60L / 60L
-        return "$hour:$min:$sec"
+        val hour = toHours(delta)
+        val min = toMinutes(delta - hour * ONE_HOUR)
+        val sec = toSeconds(delta - hour * ONE_HOUR - min * ONE_MINUTE)
+        val hourString = if (hour < 10) "0$hour" else hour.toString()
+        val minString = if (min < 10) "0$min" else min.toString()
+        val secString = if (sec < 10) "0$sec" else sec.toString()
+        return "$hourString:$minString:$secString"
     }
 }

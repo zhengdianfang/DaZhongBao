@@ -14,8 +14,13 @@ import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.ProductDetailPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
+import com.zhengdianfang.dazhongbao.views.components.ColorArcProgressBar
 import com.zhengdianfang.dazhongbao.views.product.PayDepositFragment
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -23,9 +28,17 @@ import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
  */
 class AuctionItemAdapter(private val auctionProducts: MutableList<Product>, private val intentionOnClick: (productId: Long)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val timeObservable = Observable.interval(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread())
+    private var subscribe: Disposable? = null
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (getItemViewType(position) == 0){
-            (holder as AuctionFirstItemViewHolder).setData(auctionProducts[position])
+            val auctionFirstItemViewHolder = (holder as AuctionFirstItemViewHolder)
+            auctionFirstItemViewHolder.setData(auctionProducts[position])
+            auctionFirstItemViewHolder.timerTextView.text = DateUtils.calTimeDistanceByHH_MM_SS(System.currentTimeMillis(), auctionProducts[position].endDateTime)
+            subscribe = timeObservable.subscribe {
+                auctionFirstItemViewHolder.timerTextView.text = DateUtils.calTimeDistanceByHH_MM_SS(System.currentTimeMillis(), auctionProducts[position].endDateTime)
+            }
         }else{
             val auctionNormalViewHolder = holder as AuctionNormalItemViewHolder
             auctionNormalViewHolder.attentionButton.setOnClickListener {
@@ -57,6 +70,12 @@ class AuctionItemAdapter(private val auctionProducts: MutableList<Product>, priv
         }
         return 1
     }
+
+    fun destory() {
+        if (subscribe?.isDisposed!!) {
+            subscribe!!.dispose()
+        }
+    }
 }
 
 class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
@@ -69,12 +88,13 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
     private val endTimeView by lazy { itemView?.findViewById<TextView>(R.id.endTimeView)!! }
     private val nowUnitPriceView by lazy { itemView?.findViewById<TextView>(R.id.nowUnitPriceView)!! }
     private val limitTimeView by lazy { itemView?.findViewById<TextView>(R.id.limitTimeView)!! }
-    private val timerTextView by lazy { itemView?.findViewById<TextView>(R.id.timerTextView)!! }
+    val timerTextView by lazy { itemView?.findViewById<TextView>(R.id.timerTextView)!! }
+    private val timeProgressbar by lazy { itemView?.findViewById<ColorArcProgressBar>(R.id.timeProgressbar)!! }
 
     fun setData(product: Product){
         val context = itemView?.context!!
         shareCodeView.text = "[${product.sharesCode}]"
-        industryView.text = product.industry
+        industryView.text = product.sharesName
         basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.start_auction_price)
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
@@ -94,7 +114,11 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
             onClick?.invoke()
         }
         endTimeView.text = context.getString(R.string.finish_auction_time, DateUtils.formatTime(product.endDateTime))
-//        timerTextView.text = DateUtils.calTimeDistanceByHH_MM_SS(System.currentTimeMillis(), product.endDateTime)
+        timeProgressbar.max = 100
+        val startTime = DateUtils.changeTimeLenght(product.startDateTime)
+        val endTime = DateUtils.changeTimeLenght(product.endDateTime)
+        val nowTime = System.currentTimeMillis()
+        timeProgressbar.progress = (100 - Math.abs(endTime - nowTime) / Math.abs(endTime - startTime)  * 100).toInt()
     }
 
 }

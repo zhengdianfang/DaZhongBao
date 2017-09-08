@@ -13,9 +13,7 @@ class AuctionPresenter: BasePresenter() {
     private val productRepository by lazy { ProductRepository() }
 
     fun fetchAuctionList(token:String,number: Int) {
-        addSubscription(productRepository.getProductList(token, number,  "4, 5", "startDateTime"), Consumer {list->
-            list.sortBy { it.endDateTime}
-            list.reverse()
+        addSubscription(productRepository.getProductList(token, number,  "5", "-startDateTime"), Consumer {list->
             (mView as IAuctionListView).receiveAuctionProductList(list.filter { (it.check_status == 4 || it.check_status == 5) } as MutableList<Product>)
         })
     }
