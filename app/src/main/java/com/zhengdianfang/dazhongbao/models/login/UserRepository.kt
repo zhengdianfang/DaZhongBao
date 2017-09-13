@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
+import com.zhengdianfang.dazhongbao.models.api.Result
 import com.zhengdianfang.dazhongbao.models.api.UserApi
 import com.zhengdianfang.dazhongbao.models.mock.mockUser
 import com.zhengdianfang.dazhongbao.models.mock.mockUserProducts
@@ -116,13 +117,14 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
     }
 
-    fun fetchUserAttentionProducts(token: String): Observable<MutableList<Product>>{
+    fun fetchUserAttentionProducts(token: String): Observable<Result<MutableList<Product>>>{
         if (MOCK){
-            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS).map { list -> Result(list) }
         }
         return API.appClient.create(UserApi::class.java).fetchUserAttentionProducts(token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+                .map { list ->  Result(list)}
     }
 
     fun fetchUserAuctionProducts(token: String): Observable<MutableList<Product>>{

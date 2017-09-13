@@ -1,6 +1,5 @@
 package com.zhengdianfang.dazhongbao.views.setting
 
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -39,6 +38,7 @@ class ChatConversationItemAdapter(private val conversations:MutableList<EMConver
         private val userNameTextView by lazy { itemView?.findViewById<TextView>(R.id.userNameTextView)!! }
         private val contentView by lazy { itemView?.findViewById<TextView>(R.id.contentView)!! }
         fun setData(conversation: EMConversation){
+            val context = itemView?.context!!
             val lastMessage = conversation.lastMessage
             userNameTextView.text = lastMessage.from
             val body = lastMessage.body
@@ -54,19 +54,17 @@ class ChatConversationItemAdapter(private val conversations:MutableList<EMConver
             }
             if (!TextUtils.isEmpty(otherJson)){
                 val otherUser = API.objectMapper.readValue<IMUser>(otherJson, IMUser::class.java)
-                Glide.with(itemView?.context).load(otherUser.avatar)
+                Glide.with(context).load(otherUser.avatar)
                         .placeholder(R.mipmap.fragment_personal_default_header_image)
                         .error(R.mipmap.fragment_personal_default_header_image)
                         .into(headerImageView)
                 userNameTextView.text = otherUser.realname
                 itemView?.setOnClickListener {
                     val otherUser = API.objectMapper.readValue<IMUser>(otherJson, IMUser::class.java)
-                    itemView?.context
-                            .startActivity(Intent(itemView?.context, ChatActivity::class.java)
-                                    .putExtra("user", API.objectMapper.writeValueAsString(otherUser)))
+                    ChatActivity.startActivity(context, otherUser)
                 }
             }else{
-                Glide.with(itemView?.context).load(R.mipmap.fragment_personal_default_header_image).into(headerImageView)
+                Glide.with(context).load(R.mipmap.fragment_personal_default_header_image).into(headerImageView)
             }
         }
     }

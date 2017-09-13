@@ -1,8 +1,10 @@
 package com.zhengdianfang.dazhongbao.presenters
 
+import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.models.login.UserCacheRepository
 import com.zhengdianfang.dazhongbao.models.login.UserCount
 import com.zhengdianfang.dazhongbao.models.login.UserRepository
 import com.zhengdianfang.dazhongbao.models.product.Product
@@ -15,7 +17,9 @@ import com.zhengdianfang.dazhongbao.views.login.ISetPasswordView
 import com.zhengdianfang.dazhongbao.views.login.IUploadCard
 import com.zhengdianfang.dazhongbao.views.login.IVerifySmsCode
 import com.zhengdianfang.dazhongbao.views.user.IModifyPhoneNumberView
+import io.reactivex.Observable
 import io.reactivex.functions.Consumer
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by dfgzheng on 08/08/2017.
@@ -23,6 +27,7 @@ import io.reactivex.functions.Consumer
 class UserPresenter: BasePresenter() {
 
     private val mUserRepository by lazy { UserRepository(Constants.MOCK) }
+    private val mUserCacheRepository by lazy { UserCacheRepository(CApplication.INSTANCE.memoryCache, CApplication.INSTANCE.diskCahce) }
     private val passwordValidate by lazy { PasswordValidate(mView) }
     private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
     private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
@@ -134,8 +139,16 @@ class UserPresenter: BasePresenter() {
 
     fun fetchUserAttentionProducts(token: String){
         if (phoneNumberValidate.checkLogin()) {
-            addSubscription(mUserRepository.fetchUserAttentionProducts(token), Consumer { list ->
-                (mView as IUserAttentionListView).receiveUserAttentionList(list)
+            val observable = Observable.concat(
+                    mUserCacheRepository.loadUserAttentionProductsCache(),
+                    mUserRepository.fetchUserAttentionProducts(token).delay(300, TimeUnit.MILLISECONDS)
+            ).doOnNext { result ->
+                        if (!result.isCache){
+                           mUserCacheRepository.saveUserAttentionProductsCache(result.data)
+                        }
+                    }
+            addSubscription(observable, Consumer { result ->
+                (mView as IUserAttentionListView).receiveUserAttentionList(result.data, result.isCache)
             })
         }
     }
@@ -217,7 +230,7 @@ class UserPresenter: BasePresenter() {
     }
 
     interface IUserAttentionListView: IView {
-        fun receiveUserAttentionList(list: MutableList<Product>)
+        fun receiveUserAttentionList(list: MutableList<Product>, isCahce: Boolean)
     }
 
     interface IUserAuctionListView: IView {

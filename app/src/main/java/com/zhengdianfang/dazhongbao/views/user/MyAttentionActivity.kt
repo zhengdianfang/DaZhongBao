@@ -84,8 +84,8 @@ class MyAttentionActivity : BaseListActivity<Product>(), UserPresenter.IUserAtte
         })
     }
 
-    override fun receiveUserAttentionList(list: MutableList<Product>) {
-        reponseProcessor(list)
+    override fun receiveUserAttentionList(list: MutableList<Product> , isCache: Boolean) {
+        reponseProcessor(list, isCache)
     }
 
     override fun followSuccess(msg: String) {

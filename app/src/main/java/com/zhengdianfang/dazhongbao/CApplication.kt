@@ -11,6 +11,8 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
+import com.zhengdianfang.dazhongbao.models.cache.BaseMemoryCache
+import com.zhengdianfang.dazhongbao.models.cache.BasicDiskCache
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.product.SharesInfo
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
@@ -46,6 +48,9 @@ class CApplication : Application(){
         }
 
     val shareInfosCache = mutableListOf<SharesInfo>()
+
+    val diskCahce by lazy {  BasicDiskCache.fromCtx(this) }
+    val memoryCache by lazy {  BaseMemoryCache.fromCtx(this) }
 
     init {
         INSTANCE = this

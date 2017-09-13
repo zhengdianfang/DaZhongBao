@@ -1,5 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.im
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.inputmethod.EditorInfo
@@ -26,6 +28,12 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
     private val chatPresenter = ChatPresenter()
     private val user by lazy { API.objectMapper.readValue(intent.getStringExtra("user"), IMUser::class.java) }
     private var chatItemAdapter: ChatItemAdapter? = null
+
+    companion object {
+        fun startActivity(context: Context, imUser: IMUser?) {
+           context.startActivity(Intent(context, ChatActivity::class.java).putExtra("user", API.objectMapper.writeValueAsString(imUser)))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

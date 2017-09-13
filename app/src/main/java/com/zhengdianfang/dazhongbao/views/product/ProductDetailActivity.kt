@@ -14,7 +14,6 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.RxBus
-import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
@@ -190,7 +189,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
 
         imButton.setOnClickListener {
             if (product?.csm_user != null) {
-                startActivity(Intent(this, ChatActivity::class.java).putExtra("user", API.objectMapper.writeValueAsString(product?.csm_user)))
+                ChatActivity.startActivity(this, product?.csm_user)
             }
         }
 
