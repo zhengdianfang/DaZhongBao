@@ -81,7 +81,7 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
         toast(msg)
     }
 
-    override fun receiveUserAuctionList(list: MutableList<Product>) {
-        reponseProcessor(list)
+    override fun receiveUserAuctionList(list: MutableList<Product>, isCache: Boolean) {
+        reponseProcessor(list, isCache)
     }
 }// Required empty public constructor

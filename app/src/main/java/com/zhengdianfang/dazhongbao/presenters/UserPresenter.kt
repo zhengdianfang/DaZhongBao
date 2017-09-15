@@ -131,8 +131,16 @@ class UserPresenter: BasePresenter() {
 
     fun fetchUserPushedProducts(token: String){
        if (phoneNumberValidate.checkLogin()) {
-           addSubscription(mUserRepository.fetchUserPushedProduct(token), Consumer { list ->
-               (mView as IUserProductListView).receiveUserProductList(list)
+           val observable = Observable.concat(
+                   mUserCacheRepository.loadUserProductsCache(),
+                   mUserRepository.fetchUserPushedProduct(token).delay(300, TimeUnit.MILLISECONDS)
+           ).doOnNext { result ->
+               if (!result.isCache){
+                   mUserCacheRepository.saveUserProductsCache(result.data)
+               }
+           }
+           addSubscription(observable, Consumer { result ->
+               (mView as IUserProductListView).receiveUserProductList(result.data, result.isCache)
            })
        }
     }
@@ -155,8 +163,16 @@ class UserPresenter: BasePresenter() {
 
     fun fetchUserAuctionProducts(token: String){
         if (phoneNumberValidate.checkLogin()) {
-            addSubscription(mUserRepository.fetchUserAuctionProducts(token), Consumer { list ->
-                (mView as IUserAuctionListView).receiveUserAuctionList(list)
+            val observable = Observable.concat(
+                    mUserCacheRepository.loadUserAuctionProductsCache(),
+                    mUserRepository.fetchUserAuctionProducts(token).delay(300, TimeUnit.MILLISECONDS)
+            ).doOnNext { result ->
+                if (!result.isCache){
+                    mUserCacheRepository.saveUserAuctionProductsCache(result.data)
+                }
+            }
+            addSubscription(observable, Consumer { result ->
+                (mView as IUserAuctionListView).receiveUserAuctionList(result.data, result.isCache)
             })
         }
     }
@@ -226,7 +242,7 @@ class UserPresenter: BasePresenter() {
     }
 
     interface IUserProductListView: IView {
-       fun receiveUserProductList(list: MutableList<Product>)
+       fun receiveUserProductList(list: MutableList<Product>, isCahce: Boolean)
     }
 
     interface IUserAttentionListView: IView {
@@ -234,7 +250,7 @@ class UserPresenter: BasePresenter() {
     }
 
     interface IUserAuctionListView: IView {
-        fun receiveUserAuctionList(list: MutableList<Product>)
+        fun receiveUserAuctionList(list: MutableList<Product>, isCahce: Boolean)
     }
 
     interface IUserDepositListView: IView {

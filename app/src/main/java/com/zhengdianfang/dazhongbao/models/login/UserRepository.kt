@@ -108,13 +108,14 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 }
     }
 
-    fun fetchUserPushedProduct(token: String): Observable<MutableList<Product>> {
+    fun fetchUserPushedProduct(token: String): Observable<Result<MutableList<Product>>> {
         if (MOCK){
-            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS).map { list -> Result(list) }
         }
         return API.appClient.create(UserApi::class.java).fetchUserPushedProduct(token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+                .map { list ->  Result(list)}
     }
 
     fun fetchUserAttentionProducts(token: String): Observable<Result<MutableList<Product>>>{
@@ -127,13 +128,14 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map { list ->  Result(list)}
     }
 
-    fun fetchUserAuctionProducts(token: String): Observable<MutableList<Product>>{
+    fun fetchUserAuctionProducts(token: String): Observable<Result<MutableList<Product>>>{
         if (MOCK){
-            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS).map { list -> Result(list) }
         }
         return API.appClient.create(UserApi::class.java).fetchUserAuctionProducts(token)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){})}
+                .map { list ->  Result(list)}
     }
 
     fun fetchUserInfo(token: String): Observable<Pair<User, UserCount>>{

@@ -89,8 +89,8 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
 
 
 
-    override fun receiveAuctionProductList(list: MutableList<Product>) {
-        reponseProcessor(list)
+    override fun receiveAuctionProductList(list: MutableList<Product>, isCache: Boolean) {
+        reponseProcessor(list, isCache)
     }
 
     override fun followSuccess(msg: String) {

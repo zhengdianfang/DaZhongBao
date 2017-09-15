@@ -2,10 +2,7 @@ package com.zhengdianfang.dazhongbao.models.product
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zhengdianfang.dazhongbao.helpers.Constants
-import com.zhengdianfang.dazhongbao.models.api.API
-import com.zhengdianfang.dazhongbao.models.api.AdvertApi
-import com.zhengdianfang.dazhongbao.models.api.CException
-import com.zhengdianfang.dazhongbao.models.api.ProductApi
+import com.zhengdianfang.dazhongbao.models.api.*
 import com.zhengdianfang.dazhongbao.models.mock.mockBid
 import com.zhengdianfang.dazhongbao.models.mock.mockBidList
 import com.zhengdianfang.dazhongbao.models.mock.mockProduct
@@ -18,13 +15,14 @@ import java.util.concurrent.TimeUnit
  */
 class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
 
-    fun getProductList(token: String?, pageNumber: Int, checkStatus: String, order: String = ""): Observable<MutableList<Product>> {
+    fun getProductList(token: String?, pageNumber: Int, checkStatus: String, order: String = ""): Observable<Result<MutableList<Product>>> {
         if (MOCK){
-            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS)
+            return Observable.just(mockUserProducts).delay(2, TimeUnit.SECONDS).map { list -> Result(list) }
         }
         return API.appClient.create(ProductApi::class.java).getProductList(token, pageNumber, checkStatus, order)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<Product>>(data, object : TypeReference<MutableList<Product>>(){}) }
+                .map { list -> Result(list) }
     }
 
     fun pushProduct(token: String, sharesCodes: String, companyName: String,  basicUnitPrice: Double,

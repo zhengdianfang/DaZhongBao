@@ -5,7 +5,9 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.manager.SupportRequestManagerFragment
+import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
@@ -29,12 +31,20 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun toast(msg: Any, long: Boolean = false) {
-        val duration = if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-       if (msg is String) {
-           Toast.makeText(this, msg, duration).show()
-       }else if(msg is Int){
-           Toast.makeText(this, msg, duration).show()
-       }
+        if (BuildConfig.DEBUG){
+            if (msg is String) {
+                MaterialDialog.Builder(this).content(msg).show()
+            }else if(msg is Int){
+                MaterialDialog.Builder(this).content(msg).show()
+            }
+        }else{
+            val duration = if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+            if (msg is String) {
+                Toast.makeText(this, msg, duration).show()
+            }else if(msg is Int){
+                Toast.makeText(this, msg, duration).show()
+            }
+        }
     }
 
     override fun onBackPressed() {

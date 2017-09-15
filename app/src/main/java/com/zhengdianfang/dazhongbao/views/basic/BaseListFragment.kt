@@ -42,7 +42,18 @@ abstract class BaseListFragment<T> : BaseFragment(), XRecyclerView.LoadingListen
         recyclerView.refreshComplete()
         recyclerView.loadMoreComplete()
     }
-
+    protected fun reponseProcessor(list: MutableList<T>, isCache: Boolean){
+        if (isRefresh()){
+            datas.clear()
+        }
+        datas.addAll(list)
+        recyclerView.setLoadingMoreEnabled(datas.count() % Constants.PAGE_SIZE == 0)
+        adapter.notifyDataSetChanged()
+        if (isCache.not()) {
+            recyclerView.refreshComplete()
+            recyclerView.loadMoreComplete()
+        }
+    }
     protected fun isRefresh():Boolean{
         return pageNumber == 0
     }

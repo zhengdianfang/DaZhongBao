@@ -54,8 +54,8 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
         finish()
     }
 
-    override fun receiveUserProductList(list: MutableList<Product>) {
-        reponseProcessor(list)
+    override fun receiveUserProductList(list: MutableList<Product>, isCache: Boolean) {
+        reponseProcessor(list, isCache)
     }
 
     override fun requestList(pageNumber: Int) {

@@ -7,5 +7,5 @@ import com.zhengdianfang.dazhongbao.views.basic.IView
  * Created by dfgzheng on 10/08/2017.
  */
 interface IProductList: IView {
-   fun receiverProductList(list: List<Product>)
+   fun receiverProductList(list: List<Product>, isCache: Boolean)
 }

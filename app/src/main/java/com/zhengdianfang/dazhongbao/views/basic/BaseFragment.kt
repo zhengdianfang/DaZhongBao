@@ -3,10 +3,6 @@ package com.zhengdianfang.dazhongbao.views.basic
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
-import android.widget.Toast
-import com.afollestad.materialdialogs.MaterialDialog
-import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
@@ -42,12 +38,7 @@ abstract class BaseFragment: Fragment(), IView {
     }
 
     fun toast(msg: Any, long: Boolean = false) {
-        val duration = if(long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        if (msg is String) {
-            Toast.makeText(getParentActivity(), msg, duration).show()
-        }else if(msg is Int){
-            Toast.makeText(getParentActivity(), msg, duration).show()
-        }
+        getParentActivity().toast(msg, long)
     }
 
     fun startFragment(id: Int, nextFragment: Fragment, backStack: String? = null) {
@@ -64,17 +55,11 @@ abstract class BaseFragment: Fragment(), IView {
 
     override fun networkError(msg: String) {
         hideLoadingDialog()
-        Log.e("network error", msg)
-        if (BuildConfig.DEBUG) {
-            MaterialDialog.Builder(context).content(msg).onPositive { dialog, which -> dialog.cancel() }.show()
-
-        }else{
-            toast(msg)
-        }
+        getParentActivity().networkError(msg)
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {
-        toast(errorMsgResId)
+        getParentActivity().validateErrorUI(errorMsgResId)
     }
 
     override fun noLogin() {

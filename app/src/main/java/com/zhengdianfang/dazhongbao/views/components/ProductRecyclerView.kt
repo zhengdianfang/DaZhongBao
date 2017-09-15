@@ -2,7 +2,6 @@ package com.zhengdianfang.dazhongbao.views.components
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.RxBusUtils
@@ -66,22 +65,28 @@ class ProductRecyclerView(context: Context?, val status: String) : XRecyclerView
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {
-        Toast.makeText(context, errorMsgResId, Toast.LENGTH_SHORT).show()
+        if(context is BaseActivity){
+            (context as BaseActivity)?.toast(errorMsgResId)
+        }
     }
 
     override fun networkError(errorMsg: String) {
-        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        if(context is BaseActivity){
+            (context as BaseActivity)?.toast(errorMsg)
+        }
     }
 
-    override fun receiverProductList(list: List<Product>) {
+    override fun receiverProductList(list: List<Product>, isCache: Boolean) {
         if (pageNumber == 0){
             products.clear()
         }
         products.addAll(list)
         productAdapter.notifyDataSetChanged()
         this.setLoadingMoreEnabled(products.count() % com.zhengdianfang.dazhongbao.helpers.Constants.PAGE_SIZE == 0)
-        this.refreshComplete()
-        this.loadMoreComplete()
+        if (!isCache){
+            this.refreshComplete()
+            this.loadMoreComplete()
+        }
     }
     override fun noLogin() { }
 
