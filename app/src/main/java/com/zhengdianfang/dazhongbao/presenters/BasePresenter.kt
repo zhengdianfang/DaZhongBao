@@ -34,6 +34,12 @@ open class BasePresenter: IPresenter {
                          mView?.networkError(error.message ?: "")
             }))
     }
+    fun <T : Any?> addSubscription(observable: Observable<T>, consumer: Consumer<T>, errorConsumer: Consumer<in Throwable>){
+        mCompositeDisposable.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer, errorConsumer))
+    }
 
 
 

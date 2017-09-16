@@ -55,5 +55,7 @@ class VerfiyPasswordFragment : BaseFragment(), ILoginView {
             replaceFragment(android.R.id.content, ModifyPhoneNumberFragment(),"setting")
         }
     }
+    override fun thirdPartyNotBinded(openId: String) {
+    }
 
 }

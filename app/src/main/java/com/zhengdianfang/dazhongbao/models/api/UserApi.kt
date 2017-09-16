@@ -19,6 +19,10 @@ interface UserApi {
                      @Field("platform") platform: String = "Android"): Observable<JsonNode>
 
     @FormUrlEncoded
+    @POST("users/thridLogin")
+    fun loginByThridParty(@Field("openid") openid: String): Observable<JsonNode>
+
+    @FormUrlEncoded
     @POST("users/sendvno")
     fun getSmsVerifyCode(@Field("phonenumber") phoneNumber: String,
                      @Field("ac") type: Int): Observable<JsonNode>
@@ -28,6 +32,12 @@ interface UserApi {
     fun register(@Field("phonenumber") phoneNumber: String,
                  @Field("verifyCode") verifyCode: String,
                  @Field("recommendPerson") recommendPerson: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("users/thridRegistered")
+    fun registerByThrid(@Field("phonenumber") phoneNumber: String,
+                 @Field("openid") openid: String,
+                 @Field("verifyCode") verifyCode: String): Observable<JsonNode>
 
     @FormUrlEncoded
     @POST("users/resetpwd")

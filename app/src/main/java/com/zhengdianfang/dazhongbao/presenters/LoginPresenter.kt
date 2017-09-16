@@ -33,6 +33,17 @@ class LoginPresenter: BasePresenter() {
         }
     }
 
+    fun loginByThridParty(openId: String) {
+        mView?.showLoadingDialog()
+        addSubscription(mLoginRepository.loginByThridParty(openId), Consumer { user ->
+            (mView as ILoginView).userResponseProcessor(user)
+            mView?.hideLoadingDialog()
+        }, Consumer {
+            (mView as ILoginView).thirdPartyNotBinded(openId)
+            mView?.hideLoadingDialog()
+        })
+    }
+
     fun requestSmsVerifyCode(phoneNumber: String, type: Int) {
         if (phoneNumberValidate.validate(phoneNumber)){
             mView?.showLoadingDialog()
@@ -54,4 +65,14 @@ class LoginPresenter: BasePresenter() {
         }
     }
 
+    fun registerByThridParty(openId: String, phoneNumber: String, verifyCode: String) {
+        if (phoneNumberValidate.validate(phoneNumber)
+                && verifySmsCodeValidate.validate(verifyCode)){
+            mView?.showLoadingDialog()
+            addSubscription(mLoginRepository.registerByThridParty(phoneNumber, verifyCode, openId), Consumer { user->
+                (mView as IRegisterView).receiverUser(user)
+                mView?.hideLoadingDialog()
+            })
+        }
+    }
 }

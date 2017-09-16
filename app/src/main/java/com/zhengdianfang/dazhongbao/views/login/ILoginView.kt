@@ -9,5 +9,6 @@ import com.zhengdianfang.dazhongbao.views.basic.IView
  */
 interface ILoginView : IView{
     fun userResponseProcessor(user: User?)
+    fun thirdPartyNotBinded(openId: String)
 }
 

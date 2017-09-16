@@ -27,6 +27,16 @@ class LoginRepository(private val MOCK: Boolean = Constants.MOCK) {
                 .switchMap{user -> IMUtils.login(user)}
     }
 
+    fun loginByThridParty(openId: String): Observable<User> {
+        if (MOCK){
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(UserApi::class.java).loginByThridParty(openId)
+                .map {response -> API.parseResponse(response) }
+                .map {data -> API.objectMapper.readValue(data, User::class.java) }
+                .switchMap{user -> IMUtils.login(user)}
+    }
+
     fun getSmsVerifyCode(phoneNumber: String, type: Int): Observable<String> {
         if (MOCK){
             return Observable.just(mockSmsCode).delay(2, TimeUnit.SECONDS)
@@ -52,4 +62,13 @@ class LoginRepository(private val MOCK: Boolean = Constants.MOCK) {
                      .switchMap {user -> IMUtils.register(user) }
     }
 
+    fun registerByThridParty(phoneNumber: String, verifyCode: String, openId: String): Observable<User> {
+        if (MOCK) {
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
+        return API.appClient.create(UserApi::class.java).registerByThrid(phoneNumber, openId, verifyCode)
+                .map { response -> API.parseResponse(response) }
+                .map { data -> API.objectMapper.readValue(data, User::class.java) }
+                .switchMap { user -> IMUtils.register(user) }
+    }
 }

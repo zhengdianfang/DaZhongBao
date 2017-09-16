@@ -78,7 +78,10 @@
         <activity
             android:name=".views.im.ChatActivity"
             android:screenOrientation="portrait" />
-
+        <!--wechat-->
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
         <!-- alipay -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

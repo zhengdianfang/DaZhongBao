@@ -196,4 +196,6 @@
     <string name="just_auction_start">即将开拍</string>
     <string name="just_auction_success">竞拍成功</string>
     <string name="voice_content_sample">[语音]</string>
+    <string name="wechat_login_fail">微信登录失败</string>
+    <string name="fragment_thrid_bind_phone">绑定手机号</string>
 </resources>
