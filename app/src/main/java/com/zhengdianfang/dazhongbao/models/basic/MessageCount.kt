@@ -7,6 +7,3 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class MessageCount(var count: Int, var name: String, var message: String, var gcount: Int, var lastTime: Long)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class GMessageCount(var MessageCount: Int, var Message1: MessageCount, var Message2: MessageCount, var Message3: MessageCount, var Message4: MessageCount)

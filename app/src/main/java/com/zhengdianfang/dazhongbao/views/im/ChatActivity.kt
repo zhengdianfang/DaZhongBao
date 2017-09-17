@@ -76,7 +76,7 @@ class ChatActivity : BaseActivity(), ChatPresenter.IMUserInfoAndMessages{
 
     override fun receiverMessages(allMessage: MutableList<EMMessage>) {
         Logger.d("receiver all messages size : ${allMessage.count()}")
-        toolBar.setTitle(user.realname)
+        toolBar.setTitle(user.realname ?: "")
         chatItemAdapter = ChatItemAdapter(this, user, allMessage)
         messageRecyclerView.adapter = chatItemAdapter
         scrollToEnd()

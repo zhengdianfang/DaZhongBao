@@ -198,4 +198,5 @@
     <string name="voice_content_sample">[语音]</string>
     <string name="wechat_login_fail">微信登录失败</string>
     <string name="fragment_thrid_bind_phone">绑定手机号</string>
+    <string name="alipay_fail_toast">支付失败</string>
 </resources>

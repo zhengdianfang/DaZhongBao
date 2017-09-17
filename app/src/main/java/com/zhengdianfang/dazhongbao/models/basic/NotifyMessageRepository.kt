@@ -9,9 +9,19 @@ import io.reactivex.Observable
  */
 class NotifyMessageRepository {
 
-    fun fetchNotifyMessageCount(token: String): Observable<GMessageCount> {
+    fun fetchNotifyMessageCount(token: String): Observable<MutableList<MessageCount>> {
         return API.appClient.create(MessageApi::class.java).fetchNotifyMessageCount(token)
                 .map {response -> API.parseResponse(response) }
-                .map {data -> API.objectMapper.readValue<GMessageCount>(data, GMessageCount::class.java) }
+                .map {data ->
+                    val messages = mutableListOf<MessageCount>()
+                    val jsonNode = API.objectMapper.readTree(data)
+                    jsonNode.forEach {
+                        if (it.isObject) {
+                            val message = API.objectMapper.readValue(it.toString(), MessageCount::class.java)
+                            messages.add(message)
+                        }
+                    }
+                    messages
+                }
     }
 }

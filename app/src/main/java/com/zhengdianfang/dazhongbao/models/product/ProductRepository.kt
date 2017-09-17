@@ -111,6 +111,11 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
 
     fun payDeposit(token: String, productId: Long, money: Double): Observable<AlipayResult> {
         return API.appClient.create(ProductApi::class.java).payDeposit(token, productId, money)
-                .map {data -> API.objectMapper.readValue(data.toString(), AlipayResult::class.java) }
+                .map {response ->
+                    if (response.has("errCode") && response.get("errCode").asInt() != 0) {
+                        throw CException(response.get("msg").asText(), response.get("errCode").asInt())
+                    }
+                    API.objectMapper.readValue(response.toString(), AlipayResult::class.java)
+                }
     }
 }

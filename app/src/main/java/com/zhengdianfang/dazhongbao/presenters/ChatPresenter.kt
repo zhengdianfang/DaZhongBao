@@ -47,7 +47,7 @@ class ChatPresenter: BasePresenter() , EMMessageListener {
             return
         }
         IMUtils.sendTxtMessage(user, msg)
-        addSubscription(IMUtils.getMessageList(user.id).delay(100, TimeUnit.MILLISECONDS), Consumer {messages ->
+        addSubscription(IMUtils.getMessageList(user.id!!).delay(100, TimeUnit.MILLISECONDS), Consumer {messages ->
             (mView as IMUserInfoAndMessages).updateMessages(messages ?: mutableListOf())
         })
     }
@@ -58,7 +58,7 @@ class ChatPresenter: BasePresenter() , EMMessageListener {
             return
         }
         IMUtils.sendVoiceMessage(filePath, length, user)
-        addSubscription(IMUtils.getMessageList(user.id).delay(100, TimeUnit.MILLISECONDS), Consumer { messages ->
+        addSubscription(IMUtils.getMessageList(user.id!!).delay(100, TimeUnit.MILLISECONDS), Consumer { messages ->
             (mView as IMUserInfoAndMessages).updateMessages(messages ?: mutableListOf())
         })
     }

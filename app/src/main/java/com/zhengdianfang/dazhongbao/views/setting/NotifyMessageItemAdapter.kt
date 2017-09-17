@@ -14,23 +14,48 @@ import com.hyphenate.chat.EMVoiceMessageBody
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.basic.IMUser
+import com.zhengdianfang.dazhongbao.models.basic.MessageCount
 import com.zhengdianfang.dazhongbao.views.im.ChatActivity
 
 /**
  * Created by dfgzheng on 04/09/2017.
  */
-class ChatConversationItemAdapter(private val conversations:MutableList<EMConversation>): RecyclerView.Adapter<ChatConversationItemAdapter.ChatConversationItemViewHolder>() {
+class NotifyMessageItemAdapter(private val messages: MutableList<MessageCount>, private val conversations:MutableList<EMConversation>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val MESSAGE_ITEM = 0
+    private val CONVERSATION_ITEM = 1
 
     override fun getItemCount(): Int {
-        return conversations.count()
+        return messages.count() + conversations.count()
     }
 
-    override fun onBindViewHolder(holder: ChatConversationItemViewHolder?, position: Int) {
-        holder?.setData(conversations[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        when(getItemViewType(position)){
+            MESSAGE_ITEM -> { (holder as MessageItemViewHolder).setData(messages[position]) }
+            CONVERSATION_ITEM -> { (holder as ChatConversationItemViewHolder).setData(conversations[position]) }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ChatConversationItemViewHolder {
-        return ChatConversationItemViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.adapter_chat_conversation_item_layout, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder{
+        var  viewHolder: RecyclerView.ViewHolder? = null
+        when(viewType){
+            MESSAGE_ITEM -> {
+                viewHolder = MessageItemViewHolder(LayoutInflater.from(parent?.context)
+                        .inflate(R.layout.adapter_auction_start_header_layout, parent, false))
+            }
+            CONVERSATION_ITEM -> {
+                viewHolder = ChatConversationItemViewHolder(LayoutInflater.from(parent?.context)
+                        .inflate(R.layout.adapter_chat_conversation_item_layout, parent, false))
+            }
+        }
+        return viewHolder!!
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (position < messages.count()) {
+           return MESSAGE_ITEM
+        }
+        return CONVERSATION_ITEM
     }
 
     inner class ChatConversationItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
@@ -67,6 +92,18 @@ class ChatConversationItemAdapter(private val conversations:MutableList<EMConver
                 Glide.with(context).load(R.mipmap.fragment_personal_default_header_image).into(headerImageView)
             }
         }
+    }
+
+    inner class MessageItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        fun setData(messageCount: MessageCount){
+            val notifyMessageTitleView = itemView?.findViewById<TextView>(R.id.nofiyMessageTitleView)!!
+            val notifyMessageDetailView = itemView?.findViewById<TextView>(R.id.nofityMessageDetailView)!!
+            val badgeView = itemView?.findViewById<View>(R.id.badgeView)
+            badgeView.visibility = if (messageCount.gcount == 0)  View.GONE else View.VISIBLE
+            notifyMessageTitleView.text = messageCount.name
+            notifyMessageDetailView.text = messageCount.message
+        }
+
     }
 }
 

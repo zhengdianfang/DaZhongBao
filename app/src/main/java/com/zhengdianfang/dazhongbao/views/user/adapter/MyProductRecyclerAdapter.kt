@@ -120,11 +120,11 @@ class MyProductRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
         dealSoldCountView.text = context.getString(R.string.auction_success_total_count, (soldTotalCount / Constants.SOLD_COUNT_BASE_UNIT).toString())
         totalSoldPriceView.text = context.getString(R.string.my_product_item_total_price_label, (totalSoldPrice / Constants.SOLD_COUNT_BASE_UNIT).toString())
         bidListView.removeAllViews()
-        if(product.deal.isEmpty()) {
+        if(product.deal?.isEmpty()!!) {
             bidListView.visibility = View.GONE
         }else {
             bidListView.visibility = View.VISIBLE
-            product.deal.forEach {
+            product.deal?.forEach {
                 soldTotalCount += it.count
                 totalSoldPrice += (it.count * it.price)
                 val itemView =  LayoutInflater.from(context).inflate(R.layout.my_product_bid_list_item_layout, null, false)

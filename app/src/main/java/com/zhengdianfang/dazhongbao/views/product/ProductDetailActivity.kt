@@ -195,7 +195,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
 
         phoneButton.setOnClickListener {
             if (product?.csm_user != null) {
-                DeviceUtils.callPhone(this, product?.csm_user!!.mobile)
+                DeviceUtils.callPhone(this, product?.csm_user!!.mobile ?: "")
             }
         }
 

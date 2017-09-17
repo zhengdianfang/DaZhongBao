@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/fragment_background_color"
     android:clickable="true"
+    android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.product.PayDepositFragment">
 
 
@@ -13,55 +13,61 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/confirm_pay_title"
         app:enable_back="true"
+        app:title="@string/confirm_pay_title"
         app:toolbar_theme="dark" />
+
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"
-        android:columnCount="2">
+        android:columnCount="2"
+        android:padding="16dp">
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:text="@string/bond_confirm_label"/>
+            android:text="@string/bond_confirm_label" />
 
         <LinearLayout
             android:layout_gravity="right"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/subTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="—"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textSize="20sp"/>
+
+            <ImageButton
+                android:id="@+id/subButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/deposite_add_button_background"
+                android:padding="8dp"
+                android:src="@drawable/less_icon"
+                android:textSize="20sp" />
+
             <EditText
                 android:id="@+id/depositEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:textSize="14sp"
+                android:background="@android:color/transparent"
                 android:inputType="numberSigned"
                 android:textColor="@color/c_f43d3d"
-                android:background="@android:color/transparent"
-                tools:text="1891111"/>
+                android:textSize="14sp"
+                tools:text="1891111" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/c_f43d3d"
                 android:layout_marginLeft="8dp"
-                android:text="元"/>
-            <TextView
-                android:id="@+id/addTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textSize="20sp"/>
+                android:text="元"
+                android:textColor="@color/c_f43d3d" />
+
+            <ImageButton
+                android:id="@+id/addButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/deposite_add_button_background"
+                android:padding="8dp"
+                android:src="@drawable/add_icon"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -71,39 +77,40 @@
             android:layout_height="1px"
             android:layout_column="0"
             android:layout_columnSpan="2"
-            android:background="@drawable/activity_login_fast_login_dirver_line"
+            android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:background="@drawable/activity_login_fast_login_dirver_line" />
 
         <TextView
             android:id="@+id/maxAuctionCountView"
-            android:layout_gravity="right"
             android:layout_columnSpan="2"
+            android:layout_gravity="right"
             android:paddingBottom="16dp"
-            tools:text="最多可竞拍2000万股"/>
-        <TextView
-            android:text="@string/pay_funcation"/>
+            tools:text="最多可竞拍2000万股" />
+
+        <TextView android:text="@string/pay_funcation" />
 
         <TextView
             android:layout_gravity="right"
-            android:text="@string/alipay_label"/>
+            android:text="@string/alipay_label" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_column="0"
             android:layout_columnSpan="2"
-            android:background="@drawable/activity_login_fast_login_dirver_line"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:background="@drawable/activity_login_fast_login_dirver_line" />
 
         <TextView
-            android:text="@string/likely_tips"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:text="@string/likely_tips" />
+
         <TextView
-            android:text="@string/likely_tips_info"
             android:layout_columnSpan="2"
+            android:layout_marginTop="16dp"
             android:lineSpacingExtra="4dp"
-            android:layout_marginTop="16dp"/>
+            android:text="@string/likely_tips_info" />
 
 
         <Button
@@ -114,6 +121,6 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="40dp"
-            android:text="@string/confirm_pay"/>
+            android:text="@string/confirm_pay" />
     </GridLayout>
 </LinearLayout>

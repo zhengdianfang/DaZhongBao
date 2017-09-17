@@ -2,7 +2,7 @@ package com.zhengdianfang.dazhongbao.presenters
 
 import com.hyphenate.chat.EMConversation
 import com.zhengdianfang.dazhongbao.helpers.IMUtils
-import com.zhengdianfang.dazhongbao.models.basic.GMessageCount
+import com.zhengdianfang.dazhongbao.models.basic.MessageCount
 import com.zhengdianfang.dazhongbao.models.basic.NotifyMessageRepository
 import com.zhengdianfang.dazhongbao.views.basic.IView
 import io.reactivex.Observable
@@ -19,8 +19,8 @@ class NotifyMessagePresenter: BasePresenter() {
 
     fun fetchNotifyMessageCount(token: String){
         val observable = Observable.zip(messageRepository.fetchNotifyMessageCount(token),
-                IMUtils.getConversationList(), BiFunction<GMessageCount, MutableList<EMConversation>,
-                           Pair<GMessageCount, MutableList<EMConversation>>> { messageCounts, list-> Pair(messageCounts, list)})
+                IMUtils.getConversationList(), BiFunction<MutableList<MessageCount>, MutableList<EMConversation>,
+                           Pair<MutableList<MessageCount>, MutableList<EMConversation>>> { messageCounts, list-> Pair(messageCounts, list)})
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
        addSubscription(observable, Consumer {(first, second) ->
            (mView as INofiyMessageCountAndConversatonsList).receiverList(first, second)
@@ -28,6 +28,6 @@ class NotifyMessagePresenter: BasePresenter() {
     }
 
     interface INofiyMessageCountAndConversatonsList: IView{
-        fun receiverList(gMessageCount: GMessageCount, conversations: MutableList<EMConversation>)
+        fun receiverList(messageCounts: MutableList<MessageCount>, conversations: MutableList<EMConversation>)
     }
 }

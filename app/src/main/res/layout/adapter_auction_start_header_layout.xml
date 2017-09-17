@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:columnCount="2"
+    android:columnCount="3"
     android:padding="16dp"
     android:background="@drawable/fragment_setting_item_background">
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_rowSpan="2"
-        android:src="@drawable/nofity_message_auction_start_icon"/>
+    <FrameLayout>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_rowSpan="2"
+            android:src="@drawable/nofity_message_auction_start_icon"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/nofiyMessageTitleView"
@@ -20,6 +22,15 @@
         android:textSize="16sp"
         android:layout_marginLeft="16dp"/>
 
+    <TextView
+        android:id="@+id/badgeView"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:padding="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/badge_red_background"/>
     <TextView
         android:id="@+id/nofityMessageDetailView"
         tools:text="您关注的"
