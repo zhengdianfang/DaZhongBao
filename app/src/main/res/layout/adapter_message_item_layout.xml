@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:padding="16dp"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/messageTitleView"
+        tools:text="开拍提醒"
+        android:textColor="@color/bottom_bar_tab_text_color"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/messageTimeView"
+        tools:text="3天前"
+        android:layout_marginRight="8dp"
+        android:layout_gravity="right|center_vertical"/>
+
+    <ImageView
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/right_arrow_icon"/>
+
+    <View
+        android:layout_height="1dp"
+        android:background="@color/bottom_bar_divider_color"
+        android:layout_marginTop="16dp"
+        android:layout_columnSpan="3"
+        android:layout_marginBottom="16dp"/>
+
+    <ImageView
+        android:id="@+id/messageImageView"
+        android:layout_columnSpan="3"
+        android:layout_width="match_parent"
+        tools:src="@mipmap/fragment_personal_default_header_image"
+        android:layout_marginBottom="16dp"
+        />
+
+    <TextView
+        android:id="@+id/messageContentView"
+        android:layout_columnSpan="3"
+        android:layout_width="match_parent"
+        tools:text="1111"/>
+</GridLayout>

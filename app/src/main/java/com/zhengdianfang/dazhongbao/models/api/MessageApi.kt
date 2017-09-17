@@ -14,4 +14,8 @@ interface MessageApi {
     @FormUrlEncoded
     @POST("index/getMessageCount")
     fun fetchNotifyMessageCount(@Field("token") token: String): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("index/messages")
+    fun fetchMessageListByType(@Field("token") token: String, @Field("icon_type")icon_type: Int, @Field("pageNumber")pageNumber: Int = 0): Observable<JsonNode>
 }

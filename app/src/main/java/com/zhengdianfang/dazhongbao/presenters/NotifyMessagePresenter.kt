@@ -2,6 +2,7 @@ package com.zhengdianfang.dazhongbao.presenters
 
 import com.hyphenate.chat.EMConversation
 import com.zhengdianfang.dazhongbao.helpers.IMUtils
+import com.zhengdianfang.dazhongbao.models.basic.Message
 import com.zhengdianfang.dazhongbao.models.basic.MessageCount
 import com.zhengdianfang.dazhongbao.models.basic.NotifyMessageRepository
 import com.zhengdianfang.dazhongbao.views.basic.IView
@@ -27,7 +28,17 @@ class NotifyMessagePresenter: BasePresenter() {
        })
     }
 
+    fun fetchMessagerListByType(token: String, icon_type: Int){
+        addSubscription(messageRepository.fetchMessagerListByType(token, icon_type), Consumer {list ->
+            (mView as IMessageList).receiverList(list)
+        })
+    }
+
     interface INofiyMessageCountAndConversatonsList: IView{
         fun receiverList(messageCounts: MutableList<MessageCount>, conversations: MutableList<EMConversation>)
+    }
+
+    interface IMessageList: IView{
+        fun receiverList(messages: MutableList<Message>)
     }
 }

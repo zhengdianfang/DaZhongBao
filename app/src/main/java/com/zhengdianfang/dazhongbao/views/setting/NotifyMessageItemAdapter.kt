@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.setting
 
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.models.basic.MessageCount
+import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.im.ChatActivity
 
 /**
@@ -102,6 +104,16 @@ class NotifyMessageItemAdapter(private val messages: MutableList<MessageCount>, 
             badgeView.visibility = if (messageCount.gcount == 0)  View.GONE else View.VISIBLE
             notifyMessageTitleView.text = messageCount.name
             notifyMessageDetailView.text = messageCount.message
+            itemView?.setOnClickListener {
+                if(itemView?.context is BaseActivity) {
+                    val fragment = MessageListByTypeFragment()
+                    val bundle = Bundle()
+                    bundle.putInt("iconType", messageCount.iconType)
+                    bundle.putString("title", messageCount.name)
+                    fragment.arguments = bundle
+                    (itemView?.context as BaseActivity).startFragment(android.R.id.content, fragment, "message")
+                }
+            }
         }
 
     }
