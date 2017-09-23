@@ -173,7 +173,7 @@
     <string name="my_auction_title">我的竞拍</string>
     <string name="starting_price_label">起拍价: %s</string>
     <string name="intention_price_label">意向价格: %s</string>
-    <string name="to_pay_the_deposit">支付保证金</string>
+    <string name="to_pay_the_deposit">待支付保证金</string>
     <string name="now_top_price">当前最高价 %s</string>
     <string name="auction_fail_label">竞拍失败</string>
     <string name="auction_success_label">竞拍成功</string>
@@ -204,4 +204,8 @@
     <string name="upload_card_label">上传名片</string>
     <string name="update_contact_card_bottom_tips">请保证名片的完整性，方便系统或人工识别</string>
     <string name="bid_count_label">%d次叫价</string>
+    <string name="partner_plan_title">合伙人计划</string>
+    <string name="no_auction_message_tip">您还没有开拍提醒</string>
+    <string name="no_auction_success_message_tip">您还没有参与竞拍</string>
+    <string name="message_empty_tips">您还没有新的消息哦</string>
 </resources>

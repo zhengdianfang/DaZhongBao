@@ -9,6 +9,10 @@ import com.hyphenate.chat.EMClient
 import com.hyphenate.chat.EMOptions
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.cache.BaseMemoryCache
@@ -18,6 +22,7 @@ import com.zhengdianfang.dazhongbao.models.product.SharesInfo
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 import java.io.File
 import kotlin.properties.Delegates
+
 
 /**
  * Created by dfgzheng on 30/07/2017.
@@ -68,6 +73,18 @@ class CApplication : Application(){
             }
         })
         initEMChat()
+        initSmartLayoutConfiguration()
+    }
+
+    private fun initSmartLayoutConfiguration() {
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater { context, layout ->
+            layout.setPrimaryColorsId(R.color.white, android.R.color.black)
+            ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate)
+        }
+        SmartRefreshLayout.setDefaultRefreshFooterCreater { context, layout ->
+            //指定为经典Footer，默认是 BallPulseFooter
+            ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate)
+        }
     }
 
     fun isLogin(): Boolean {

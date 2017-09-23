@@ -19,6 +19,7 @@ import com.zhengdianfang.dazhongbao.views.login.IVerifySmsCode
 import com.zhengdianfang.dazhongbao.views.user.IModifyPhoneNumberView
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
@@ -76,7 +77,7 @@ class UserPresenter: BasePresenter() {
     fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, filePath: String) {
         if (validateBusinessLincenceCardUploadParams(contactName, companyName, filePath)) {
             mView?.showLoadingDialog()
-            addSubscription(mUserRepository.uploadBusinessLicenceCard(token, contactName, companyName, filePath), Consumer<User> { user->
+            addSubscription(mUserRepository.uploadBusinessLicenceCard(token, contactName, companyName, File(filePath)), Consumer<User> { user->
                 (mView as IUploadCard).uploadSuccess(user)
                 mView?.hideLoadingDialog()
             })
@@ -96,7 +97,7 @@ class UserPresenter: BasePresenter() {
     fun uploadBusinessCard(token: String, content: String, filePath: String) {
         if (validateBusinessCardUploadParams(filePath)){
             mView?.showLoadingDialog()
-            addSubscription(mUserRepository.uploadBusinessCard(token, content , filePath), Consumer<User> { user ->
+            addSubscription(mUserRepository.uploadBusinessCard(token, content , File(filePath)), Consumer<User> { user ->
                 (mView as IUploadCard).uploadSuccess(user)
                 mView?.hideLoadingDialog()
             })
@@ -106,7 +107,7 @@ class UserPresenter: BasePresenter() {
     fun uploadContactCard(token: String, cardFrontFilePath: String, cardBackEndFilePath: String){
        if(validateContactCardUploadParams(cardFrontFilePath, cardBackEndFilePath)) {
           mView?.showLoadingDialog()
-           addSubscription(mUserRepository.uploadContactCard(token, cardFrontFilePath, cardBackEndFilePath), Consumer<User> { user ->
+           addSubscription(mUserRepository.uploadContactCard(token, File(cardFrontFilePath), File(cardBackEndFilePath)), Consumer<User> { user ->
                (mView as IUploadCard).uploadSuccess(user)
                mView?.hideLoadingDialog()
            })
@@ -193,9 +194,9 @@ class UserPresenter: BasePresenter() {
         }
     }
 
-    fun uploadUserAvatar(token: String, avatarFilePath: String){
+    fun uploadUserAvatar(token: String, avatarFile: File){
         mView?.showLoadingDialog()
-        addSubscription(mUserRepository.uploadUserAvatar(token, avatarFilePath), Consumer<User> { user ->
+        addSubscription(mUserRepository.uploadUserAvatar(token, avatarFile), Consumer<User> { user ->
             (mView as IUploadCard).uploadSuccess(user)
             mView?.hideLoadingDialog()
         })

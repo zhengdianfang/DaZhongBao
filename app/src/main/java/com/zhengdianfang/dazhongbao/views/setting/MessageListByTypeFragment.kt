@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
@@ -40,14 +39,14 @@ class MessageListByTypeFragment : BaseListFragment<Message>(), NotifyMessagePres
             onBackPressed()
         }
         setupRecyclerView()
-        recyclerView.refresh()
+        autoRefresh()
     }
 
     override fun requestList(pageNumber: Int) {
         notifyMessagePresenter.fetchMessagerListByType(CApplication.INSTANCE.loginUser?.token!!, iconType)
     }
 
-    override fun createRecyclerView(): XRecyclerView {
+    override fun createRecyclerView(): RecyclerView {
         return view?.findViewById(R.id.messageRecyclerView)!!
     }
 
@@ -67,5 +66,10 @@ class MessageListByTypeFragment : BaseListFragment<Message>(), NotifyMessagePres
 
             }
         })
+    }
+
+    override fun onBackPressed(): Boolean {
+        getParentActivity().supportFragmentManager.popBackStack()
+        return true
     }
 }

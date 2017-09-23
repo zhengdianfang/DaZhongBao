@@ -2,13 +2,16 @@ package com.zhengdianfang.dazhongbao.views.product
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.jcodecraeer.xrecyclerview.XRecyclerView
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Action
@@ -40,8 +43,8 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
 
     private var product: Product? = null
     private val bidList = arrayListOf<Bid>()
-    private val productRecyclerViewAdapter by lazy { ProductRecyclerViewAdapter(bidList, productNotesFooterViewHolder.itemView) }
-    private val productRecyclerView by lazy { findViewById<XRecyclerView>(R.id.productRecyclerView) }
+    private val productRecyclerViewAdapter by lazy { ProductRecyclerViewAdapter(bidList, productDetailHeaderViewHolder.itemView, productNotesFooterViewHolder.itemView) }
+    private val productRecyclerView by lazy { findViewById<RecyclerView>(R.id.productRecyclerView) }
     private val productDetailPresenter by lazy { ProductDetailPresenter() }
     private val followProductPresenter by lazy { FollowProductPresenter() }
 
@@ -51,6 +54,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     private val phoneButton by lazy { findViewById<View>(R.id.phoneButton) }
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val loadingView by lazy { findViewById<View>(R.id.loadingView) }
+    private val refreshLayout by lazy { findViewById<SmartRefreshLayout>(R.id.refreshLayout) }
     private val productId by lazy { intent.getLongExtra("productId", -1L) }
 
     private val productDetailHeaderViewHolder by lazy { ProductDetailHeaderViewHolder(LayoutInflater.from(this).inflate(R.layout.product_detail_header, productRecyclerView, false),{productId -> intentionOnClick(productId)} )}
@@ -59,8 +63,10 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     private var timerDisposable: Disposable? = null
     private var disposable: Disposable? = null
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
         setContentView(R.layout.activity_product_detail)
 
         productDetailPresenter.attachView(this)
@@ -77,11 +83,11 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
                     this.product?.attention = 0
                 }
                 Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION  -> {
-                    productRecyclerView.refresh()
+                    refreshLayout.autoRefresh()
                 }
             }
         })
-        productRecyclerView.refresh()
+        productDetailPresenter.fetchProductInfoAndBidList(productId)
     }
 
     override fun onDestroy() {
@@ -92,17 +98,9 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
     }
 
     private fun setupRecyclerView() {
-        productRecyclerView.addHeaderView(productDetailHeaderViewHolder.itemView)
-        productRecyclerView.setLoadingListener(object : XRecyclerView.LoadingListener {
-            override fun onLoadMore() {
-            }
-
-            override fun onRefresh() {
-                productDetailPresenter.fetchProductInfoAndBidList(productId)
-            }
-
-        })
-        productRecyclerView.setLoadingMoreEnabled(false)
+        refreshLayout.setOnRefreshListener {
+            productDetailPresenter.fetchProductInfoAndBidList(productId)
+        }
         productRecyclerView.adapter = productRecyclerViewAdapter
     }
 
@@ -129,7 +127,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         renderActionBar(backgroundColorId, textResId, notesString, productDetailPresenter.getStatusViewType(product))
         renderList()
         renderNotesFooter(product)
-        productRecyclerView.refreshComplete()
+        refreshLayout.finishRefresh()
         loadingView.visibility = View.GONE
     }
 

@@ -30,6 +30,8 @@
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:gravity="center"
+            android:drawableLeft="@drawable/postal_icon"
+            android:drawablePadding="8dp"
             android:layout_marginStart="32dp"
             android:background="@drawable/activity_login_input_default_background"
             android:text="@string/phone_china_code" />
@@ -75,13 +77,12 @@
 
             <Button
                 android:id="@+id/getSmsCodeButton"
+                style="@style/AppTheme.Login.VerifyCodeButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="@string/get_verify_sms_code"
-                android:textColor="@color/fragment_verify_sms_code_color"
-                android:background="@drawable/fragment_verify_sms_code_button_background"/>
+                android:layout_gravity="center_vertical"
+                android:text="@string/get_verify_sms_code" />
         </FrameLayout>
 
     </LinearLayout>

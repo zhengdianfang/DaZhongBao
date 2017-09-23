@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
@@ -38,10 +37,7 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
 
             }
         })
-
-
-        recyclerView.refresh()
-
+        autoRefresh()
     }
 
 
@@ -62,7 +58,7 @@ class MyProductListActivity : BaseListActivity<Product>(), UserPresenter.IUserPr
         userPresenter.fetchUserPushedProducts(CApplication.INSTANCE.loginUser?.token!!)
     }
 
-    override fun createRecyclerView(): XRecyclerView {
+    override fun createRecyclerView(): RecyclerView {
         return  findViewById(R.id.myProductRecyclerView)
     }
 

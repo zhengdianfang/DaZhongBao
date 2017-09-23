@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.RxBusUtils
@@ -45,7 +44,7 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
         setupRecyclerView()
 
         followDisposable = RxBusUtils.registerFollowAndUnFollowProductActionsForRecyclerView(datas, { pos -> adapter.notifyItemChanged(pos + 1)})
-        recyclerView.refresh()
+        refreshLayout.autoRefresh()
     }
 
     override fun onDestroyView() {
@@ -61,7 +60,7 @@ class AuctionFragment : BaseListFragment<Product>(), AuctionPresenter.IAuctionLi
         return true
     }
 
-    override fun createRecyclerView(): XRecyclerView {
+    override fun createRecyclerView(): RecyclerView {
         return view?.findViewById(R.id.auctionRecyclerView)!!
     }
 

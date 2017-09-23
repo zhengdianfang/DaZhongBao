@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.bumptech.glide.Glide
+import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
@@ -20,6 +21,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
 import com.zhengdianfang.dazhongbao.views.login.IUploadCard
 import jp.wasabeef.glide.transformations.CropCircleTransformation
+import java.io.File
 
 class PersonalInfoActivity : BaseActivity(), IUploadCard {
 
@@ -47,6 +49,7 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
         toolBar.backListener = {
             onBackPressed()
         }
+        initViews()
     }
 
     override fun onDestroy() {
@@ -54,20 +57,22 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
         userPresenter.detachView()
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun initViews() {
         val loginUser = CApplication.INSTANCE.loginUser
-        if (null != loginUser){
-            findViewById<TextView>(R.id.userNameTextView)!!.text = loginUser.realname
-            if (!TextUtils.isEmpty(loginUser.avatar)){
-                Glide.with(this).load(loginUser.avatar).into(headerImageView)
-            }
+        if (null != loginUser) {
+            findViewById<TextView>(R.id.userNameTextView)!!.text = if (TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
+            Logger.d("user avatar : ${loginUser.avatar}")
+            Glide.with(this).load(loginUser.avatar)
+                    .bitmapTransform(CropCircleTransformation(this.applicationContext))
+                    .placeholder(R.mipmap.fragment_personal_default_header_image)
+                    .error(R.mipmap.fragment_personal_default_header_image)
+                    .into(headerImageView)
             findViewById<TextView>(R.id.companyNameTextView)!!.text = loginUser.companyName
             findViewById<TextView>(R.id.companyPositonTextView)!!.text = loginUser.position
             findViewById<TextView>(R.id.companyLocationTextView)!!.text = loginUser.companyAddress
             findViewById<TextView>(R.id.emailTextView)!!.text = loginUser.email
             findViewById<View>(R.id.headerViewGroup).setOnClickListener {
-               mediaDialog.show()
+                mediaDialog.show()
             }
         }
     }
@@ -83,7 +88,7 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
                             .placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image)
                             .into(headerImageView)
                     headerImageView.postDelayed({
-                        userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, takePhotoImagePath)
+                        userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, File(takePhotoImagePath))
                     }, 1000)
                 }
             }else if (requestCode == DeviceUtils.PICK_PHOTO){
@@ -94,8 +99,9 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
                                 .bitmapTransform(CropCircleTransformation(this.applicationContext))
                                 .placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image)
                                 .into(headerImageView)
+                        Logger.d("upload user avatar file: $takePhotoImagePath")
                         headerImageView.postDelayed({
-                            userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, takePhotoImagePath)
+                            userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, File(takePhotoImagePath))
                         }, 1000)
                     })
                 }
@@ -109,6 +115,7 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
 
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
+        initViews()
         toast(R.string.upload_business_card_success)
     }
 }

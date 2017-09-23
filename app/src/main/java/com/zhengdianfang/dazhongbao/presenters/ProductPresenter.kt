@@ -21,14 +21,16 @@ class ProductPresenter: BasePresenter() {
         if (pageNumber < 2){
             observable = Observable.concat(
                     productCacheRepository.loadHomeProductsCache(checkStatus),
-                    productRepository.getProductList(token, pageNumber, checkStatus, order).delay(300, TimeUnit.MILLISECONDS))
+                    productRepository.getProductList(token, pageNumber, checkStatus, order)
+                            .delay(1000, TimeUnit.MILLISECONDS)
+                            .doOnNext { result ->
+                                if (!result.isCache && pageNumber < 2){
+                                    productCacheRepository.saveHomeProductsCache(checkStatus, result.data)
+                                }
+                            }
+            )
         }
-        observable.doOnNext { result ->
-            if (!result.isCache && pageNumber < 2){
-                productCacheRepository.saveHomeProductsCache(checkStatus, result.data)
-            }
-        }
-        addSubscription(productRepository.getProductList(token, pageNumber, checkStatus, order), Consumer{result ->
+        addSubscription(observable, Consumer{result ->
             (mView as IProductList).receiverProductList(result.data, result.isCache)
         })
     }

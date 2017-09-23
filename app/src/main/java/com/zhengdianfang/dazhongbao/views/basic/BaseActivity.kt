@@ -2,10 +2,13 @@ package com.zhengdianfang.dazhongbao.views.basic
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
@@ -19,6 +22,12 @@ import com.zhengdianfang.dazhongbao.views.login.LoginActivity
  */
 @SuppressLint("RestrictedApi")
 abstract class BaseActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
+        }
+    }
     private val mDialogFragment by lazy {
         val dialogFragment = AppDialogFragment()
         dialogFragment

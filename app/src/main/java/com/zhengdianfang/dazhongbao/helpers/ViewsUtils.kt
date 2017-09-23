@@ -87,6 +87,11 @@ object ViewsUtils {
                 callback(false, false)
                 resultSpannableString = SpannableStringUtils.addColorSpan(context.getString(R.string.status_label, statusString), statusString, highlightColor, textSize.toInt())
             }
+            7 -> {
+                val statusString = context.getString(R.string.auction_fail_label)
+                callback(false, false)
+                resultSpannableString = SpannableStringUtils.addColorSpan(context.getString(R.string.status_label, statusString), statusString, highlightColor, textSize.toInt())
+            }
         }
         return resultSpannableString
     }

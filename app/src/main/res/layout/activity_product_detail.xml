@@ -78,13 +78,19 @@
         android:gravity="center_vertical"
         android:background="@color/product_detail_info_background"
         android:layout_above="@id/actionBar"/>
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/productRecyclerView"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/statusInfoView"/>
+        android:layout_above="@+id/statusInfoView"
+        android:layout_weight="1">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/productRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <FrameLayout
         android:id="@+id/loadingView"

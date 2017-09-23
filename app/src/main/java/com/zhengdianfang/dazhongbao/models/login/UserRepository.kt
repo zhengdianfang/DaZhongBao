@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.models.login
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.hyphenate.util.FileUtils
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
@@ -62,29 +63,29 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 }
     }
 
-    fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, filePath: String): Observable<User> {
-        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), filePath)
-        val body =  MultipartBody.Part.createFormData("fileName", File(filePath).name, requestBody)
+    fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, file: File): Observable<User> {
+        val requestBody = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(file)), file)
+        val body =  MultipartBody.Part.createFormData("fileName", file.name, requestBody)
         return API.appClient.create(UserApi::class.java)
                 .uploadBusinessLicenceCard(token, contactName, companyName, body)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }
 
-    fun uploadBusinessCard(token: String, content: String, filePath: String): Observable<User> {
-        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), filePath)
-        val body =  MultipartBody.Part.createFormData("fileName", File(filePath).name, requestBody)
+    fun uploadBusinessCard(token: String, content: String, file: File): Observable<User> {
+        val requestBody = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(file)), file)
+        val body =  MultipartBody.Part.createFormData("fileName", file.name, requestBody)
         return API.appClient.create(UserApi::class.java)
                 .uploadBusinessCard(token, content, body)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
     }
 
-    fun uploadContactCard(token: String, cardFrontFilePath: String, cardBackEndFilePath: String): Observable<User> {
-        val requestBody1 = RequestBody.create(MediaType.parse("image/jpeg"), cardFrontFilePath)
-        val requestBody2 = RequestBody.create(MediaType.parse("image/jpeg"), cardBackEndFilePath)
-        val body1 =  MultipartBody.Part.createFormData("fileName", File(cardFrontFilePath).name, requestBody1)
-        val body2 =  MultipartBody.Part.createFormData("fileName2", File(cardBackEndFilePath).name, requestBody2)
+    fun uploadContactCard(token: String, cardFrontFile: File, cardBackEndFile: File): Observable<User> {
+        val requestBody1 = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(cardFrontFile)), cardFrontFile)
+        val requestBody2 = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(cardBackEndFile)), cardBackEndFile)
+        val body1 =  MultipartBody.Part.createFormData("fileName", cardFrontFile.name, requestBody1)
+        val body2 =  MultipartBody.Part.createFormData("fileName2", cardBackEndFile.name, requestBody2)
         return API.appClient.create(UserApi::class.java)
                 .uploadContactCard(token, body1, body2)
                 .map {response -> API.parseResponse(response) }
@@ -154,9 +155,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
 
     }
 
-    fun uploadUserAvatar(token: String, avatarFilePath: String): Observable<User>{
-        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), avatarFilePath)
-        val body =  MultipartBody.Part.createFormData("avatar", File(avatarFilePath).name, requestBody)
+    fun uploadUserAvatar(token: String, avatarFile: File): Observable<User>{
+        val requestBody = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(avatarFile)), avatarFile)
+        val body =  MultipartBody.Part.createFormData("avatar", avatarFile.name, requestBody)
         return API.appClient.create(UserApi::class.java)
                 .uploadUserAvatar(token, body)
                 .map {response -> API.parseResponse(response) }

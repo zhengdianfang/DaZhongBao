@@ -7,19 +7,18 @@
     android:padding="16dp"
     android:background="@drawable/fragment_setting_item_background">
 
-    <FrameLayout>
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_rowSpan="2"
-            android:src="@drawable/nofity_message_auction_start_icon"/>
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/messageIconView"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_rowSpan="2"
+        android:src="@drawable/notify_message_auction_start_icon"/>
 
     <TextView
         android:id="@+id/nofiyMessageTitleView"
         android:text="@string/just_auction_start"
         android:textColor="@color/c_3c3c3c"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:layout_marginLeft="16dp"/>
 
     <TextView
@@ -27,15 +26,15 @@
         android:layout_width="8dp"
         android:layout_height="8dp"
         android:padding="8dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
         android:textColor="@android:color/white"
         android:background="@drawable/badge_red_background"/>
     <TextView
         android:id="@+id/nofityMessageDetailView"
         tools:text="您关注的"
-        android:textColor="@color/c_3c3c3c"
-        android:textSize="14sp"
+        android:textColor="@color/c_787878"
+        android:textSize="13sp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"/>
 </GridLayout>

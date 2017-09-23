@@ -11,8 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Advert
 import com.zhengdianfang.dazhongbao.presenters.AdvertPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
@@ -21,6 +24,8 @@ import com.zhengdianfang.dazhongbao.views.components.miraclePageView.transformer
 import com.zhengdianfang.dazhongbao.views.home.adapter.AdvertViewPagerAdapter
 import com.zhengdianfang.dazhongbao.views.home.adapter.TabViewPagerAdapter
 import com.zhengdianfang.dazhongbao.views.setting.NotifyMessagesActivity
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 
 
 /**
@@ -30,7 +35,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
 
     private val tabs = arrayOf("3,4,5", "0")
 
-    private val tabViewPagerAdapter by lazy { TabViewPagerAdapter(tabs) }
+    private val tabViewPagerAdapter by lazy { TabViewPagerAdapter(context, tabs, childFragmentManager) }
     private val mAdvertViewPager by lazy { view?.findViewById<MiracleViewPager>(R.id.advertViewPager)!! }
     private val mTabViewPager by lazy { view?.findViewById<MiracleViewPager>(R.id.tabViewPager)!! }
     private val tabOneView by lazy { view?.findViewById<TextView>(R.id.tabOne)!! }
@@ -38,6 +43,8 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     private val dealCountView by lazy { view?.findViewById<TextView>(R.id.dealCountView)!! }
     private val advertPresenter by lazy { AdvertPresenter() }
     private val messageButton by lazy { view?.findViewById<ImageButton>(R.id.messageButton)!! }
+    private val refreshLayout by lazy { view?.findViewById<SmartRefreshLayout>(R.id.refreshLayout)!! }
+    private var refreshDisposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,12 +57,23 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
         advertPresenter.attachView(this)
         setupViewPager()
         setupTabViewPager()
+        setupRefreshLayout()
         messageButton.setOnClickListener {
             startActivity(Intent(activity, NotifyMessagesActivity::class.java))
         }
-        advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
-        advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
+        refreshLayout.autoRefresh()
 
+    }
+
+    private fun setupRefreshLayout() {
+        refreshLayout.setOnRefreshListener {
+            advertPresenter.fetchAdvertBanner(CApplication.INSTANCE.loginUser?.token!!)
+            advertPresenter.fetchIndexCount(CApplication.INSTANCE.loginUser?.token!!)
+            RxBus.instance.post(Action(Action.HOME_PAGE_REFRESH_START_ACTION, ""))
+        }
+        refreshDisposable = RxBus.instance.register(Action.HOME_PAGE_REFRESH_END_ACTION, Consumer {
+            refreshLayout.finishRefresh()
+        })
     }
 
     private fun setupViewPager() {
@@ -73,6 +91,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     }
 
     private fun setupTabViewPager() {
+        mTabViewPager.setOffscreenPageLimit(2)
         mTabViewPager.adapter = tabViewPagerAdapter
         tabOneView.setOnClickListener {
             mTabViewPager.currentItem = 0
@@ -109,6 +128,7 @@ class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPr
     override fun onDestroyView() {
         super.onDestroyView()
         advertPresenter.detachView()
+        RxBus.instance.unregister(refreshDisposable)
     }
 
     override fun onBackPressed(): Boolean {

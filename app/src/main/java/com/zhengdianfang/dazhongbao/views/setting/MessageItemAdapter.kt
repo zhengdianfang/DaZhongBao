@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.setting
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,9 @@ import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DateUtils
 import com.zhengdianfang.dazhongbao.models.basic.Message
+import com.zhengdianfang.dazhongbao.views.basic.WebActivity
+import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
+import com.zhengdianfang.dazhongbao.views.user.MyAuctionListActivity
 
 /**
  * Created by dfgzheng on 17/09/2017.
@@ -29,6 +33,7 @@ class MessageItemAdapter(private val messages: MutableList<Message>) : RecyclerV
 
     inner class MessageItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         fun setData(message: Message) {
+            val context = itemView?.context!!
             val messageTitleView = itemView?.findViewById<TextView>(R.id.messageTitleView)!!
             val messageContentView = itemView?.findViewById<TextView>(R.id.messageContentView)!!
             val messageTimeView = itemView?.findViewById<TextView>(R.id.messageTimeView)!!
@@ -41,6 +46,13 @@ class MessageItemAdapter(private val messages: MutableList<Message>) : RecyclerV
             }else{
                 messageImageView.visibility = View.VISIBLE
                 Glide.with(itemView?.context).load(message.banner).into(messageImageView)
+            }
+            itemView?.setOnClickListener {
+                when(message.op_type){
+                    1 -> WebActivity.startActivity(context, message.name, message.url ?: "")
+                    2 -> ProductDetailActivity.startActivity(context, message.cid)
+                    3 -> context.startActivity(Intent(context, MyAuctionListActivity::class.java))
+                }
             }
         }
 

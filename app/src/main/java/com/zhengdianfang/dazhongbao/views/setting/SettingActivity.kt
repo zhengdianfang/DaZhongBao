@@ -1,6 +1,8 @@
 package com.zhengdianfang.dazhongbao.views.setting
 
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.view.ViewGroup
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -24,6 +26,7 @@ class SettingActivity : BaseActivity() {
                 .build()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)

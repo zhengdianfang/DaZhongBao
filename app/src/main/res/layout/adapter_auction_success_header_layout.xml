@@ -11,7 +11,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_rowSpan="2"
-        android:src="@drawable/notify_message_auction_succes_icon"/>
+        android:src="@drawable/notify_message_auction_success_icon"/>
 
     <TextView
         android:id="@+id/nofiyMessageTitleView"

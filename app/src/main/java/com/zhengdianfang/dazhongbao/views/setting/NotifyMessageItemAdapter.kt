@@ -98,12 +98,23 @@ class NotifyMessageItemAdapter(private val messages: MutableList<MessageCount>, 
 
     inner class MessageItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         fun setData(messageCount: MessageCount){
+            val context = itemView?.context!!
             val notifyMessageTitleView = itemView?.findViewById<TextView>(R.id.nofiyMessageTitleView)!!
             val notifyMessageDetailView = itemView?.findViewById<TextView>(R.id.nofityMessageDetailView)!!
+            val messageIconView = itemView?.findViewById<ImageView>(R.id.messageIconView)!!
             val badgeView = itemView?.findViewById<View>(R.id.badgeView)
-            badgeView.visibility = if (messageCount.gcount == 0)  View.GONE else View.VISIBLE
+            badgeView.visibility = if (messageCount.count == 0)  View.GONE else View.VISIBLE
             notifyMessageTitleView.text = messageCount.name
-            notifyMessageDetailView.text = messageCount.message
+            when(messageCount.iconType){
+                1-> {
+                    messageIconView.setImageResource(R.drawable.notify_message_auction_start_icon)
+                    notifyMessageDetailView.text = if (TextUtils.isEmpty(messageCount.message)) context.getString(R.string.no_auction_message_tip) else messageCount.message
+                }
+                2-> {
+                    messageIconView.setImageResource(R.drawable.notify_message_auction_success_icon)
+                    notifyMessageDetailView.text = if (TextUtils.isEmpty(messageCount.message)) context.getString(R.string.no_auction_success_message_tip) else messageCount.message
+                }
+            }
             itemView?.setOnClickListener {
                 if(itemView?.context is BaseActivity) {
                     val fragment = MessageListByTypeFragment()

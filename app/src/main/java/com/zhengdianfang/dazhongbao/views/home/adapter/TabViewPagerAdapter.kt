@@ -1,29 +1,23 @@
 package com.zhengdianfang.dazhongbao.views.home.adapter
 
-import android.support.v4.view.PagerAdapter
-import android.view.View
-import android.view.ViewGroup
-import com.zhengdianfang.dazhongbao.views.components.ProductRecyclerView
+import android.content.Context
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
+import com.zhengdianfang.dazhongbao.views.home.HomeProductListFragment
 
 /**
  * Created by dfgzheng on 05/08/2017.
  */
-class TabViewPagerAdapter(val tabs: Array<String>) : PagerAdapter() {
-    override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
-        return view == `object`
+class TabViewPagerAdapter(private val context: Context, val tabs: Array<String>, fm: FragmentManager?) : FragmentPagerAdapter(fm) {
+    override fun getItem(position: Int): Fragment {
+        val bundle = Bundle()
+        bundle.putString("status", tabs[position])
+        return Fragment.instantiate(context, HomeProductListFragment::class.java.name, bundle)
     }
 
     override fun getCount(): Int {
         return tabs.size
-    }
-
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
-        val recyclerView = ProductRecyclerView(container?.context, tabs[position])
-        container?.addView(recyclerView)
-        return recyclerView
-    }
-
-    override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
-        container?.removeView(`object` as View)
     }
 }

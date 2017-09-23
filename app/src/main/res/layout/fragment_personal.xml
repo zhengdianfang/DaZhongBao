@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/fragment_background_color"
+    android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.home.PersonalFragment">
 
     <com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -14,104 +14,124 @@
         app:enable_back="false"
         app:toolbar_theme="light" />
 
-    <include layout="@layout/fragment_personal_user_info" />
-    <LinearLayout
-        android:id="@+id/myDepositViewGroup"
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/fragment_setting_item_background">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/fragment_personal_margin_icon"
-            android:drawablePadding="16dp"
-            android:layout_weight="1"
-            android:text="@string/fragment_personal_margin" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/bondCountView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            tools:text="3" />
+            <include layout="@layout/fragment_personal_user_info" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/right_arrow_icon"
-            tools:ignore="ContentDescription" />
+            <LinearLayout
+                android:id="@+id/myDepositViewGroup"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fragment_personal_item_height"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/fragment_setting_item_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/fragment_personal_margin_icon"
+                    android:drawablePadding="16dp"
+                    android:text="@string/fragment_personal_margin"
+                    android:textColor="@color/c_787878" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/partnerViewGroup"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="@drawable/fragment_setting_item_background">
+                <TextView
+                    android:id="@+id/bondCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    tools:text="3" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/fragment_personal_parter_icon"
-            android:drawablePadding="8dp"
-            android:text="@string/fragment_personal_pater" />
-
-        <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="1"
-            android:progress="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            style="@style/AppTheme.RatingBarSmall"/>
-
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/right_arrow_icon"
-            tools:ignore="ContentDescription" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/right_arrow_icon"
+                    tools:ignore="ContentDescription" />
 
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/settingViewGroup"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_personal_item_height"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/fragment_setting_item_background">
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/fragment_personal_setting_icon"
-            android:drawablePadding="12dp"
-            android:layout_weight="1"
-            android:text="@string/fragment_personal_setting" />
+            <LinearLayout
+                android:id="@+id/partnerViewGroup"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fragment_personal_item_height"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/fragment_setting_item_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/right_arrow_icon"
-            tools:ignore="ContentDescription" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/fragment_personal_parter_icon"
+                    android:drawablePadding="8dp"
+                    android:text="@string/fragment_personal_pater" />
+
+                <RatingBar
+                    style="@style/AppTheme.RatingBarSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:numStars="5"
+                    android:progress="1"
+                    android:stepSize="1" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/right_arrow_icon"
+                    tools:ignore="ContentDescription" />
 
 
-    </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settingViewGroup"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fragment_personal_item_height"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/fragment_setting_item_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/fragment_personal_setting_icon"
+                    android:drawablePadding="12dp"
+                    android:text="@string/fragment_personal_setting" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/right_arrow_icon"
+                    tools:ignore="ContentDescription" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
 </LinearLayout>

@@ -66,6 +66,7 @@
         <item name="android:text">@string/get_verify_sms_code</item>
         <item name="android:textColor">@color/fragment_verify_sms_code_color</item>
         <item name="android:background">@drawable/fragment_verify_sms_code_button_background</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="AppTheme.RatingBarSmall" parent="@android:style/Widget.RatingBar">
@@ -155,6 +156,19 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_height">32dp</item>
         <item name="android:background">@drawable/my_product_item_pay_button_background</item>
+    </style>
+    <style name="AppTheme.Personal"/>
+    <style name="AppTheme.Personal.CountText">
+        <item name="android:textColor">@color/c_3c3c3c</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+    <style name="AppTheme.Personal.CountLabel">
+        <item name="android:textColor">@color/c_a0a0a0</item>
+        <item name="android:textSize">12sp</item>
     </style>
     <style name="VoiceDialog" parent="android:style/Theme.Dialog">
         <!--背景颜色及透明程度-->

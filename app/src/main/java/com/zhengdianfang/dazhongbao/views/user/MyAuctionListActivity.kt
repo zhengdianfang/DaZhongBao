@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Action
@@ -52,9 +51,9 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
             }
         })
         removeBidDisposable = RxBus.instance.register(Action.REMOVE_BID_ACTION, Consumer { (type, data) ->
-            recyclerView.refresh()
+            autoRefresh()
         })
-        recyclerView.refresh()
+        autoRefresh()
     }
 
 
@@ -69,7 +68,7 @@ class MyAuctionListActivity : BaseListActivity<Product>(), PushBidPresenter.IRem
         userPresenter.fetchUserAuctionProducts(CApplication.INSTANCE.loginUser?.token!!)
     }
 
-    override fun createRecyclerView(): XRecyclerView {
+    override fun createRecyclerView(): RecyclerView {
         return findViewById(R.id.productRecyclerView)!!
     }
 

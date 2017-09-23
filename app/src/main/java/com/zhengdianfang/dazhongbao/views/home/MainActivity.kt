@@ -1,16 +1,16 @@
 package com.zhengdianfang.dazhongbao.views.home
 
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import com.zhengdianfang.dazhongbao.CApplication
+import android.view.View
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.BottomBar
-import com.zhengdianfang.dazhongbao.views.login.LoginActivity
 
 class MainActivity : BaseActivity() {
 
@@ -20,23 +20,20 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
         setContentView(R.layout.activity_main)
 
         bottomBar.changeTabListener =  { tabIndex ->
-            if (isLogin(tabIndex)) {
-                viewPage.currentItem = tabIndex
-            }else {
-                startActivity(Intent(MainActivity@this, LoginActivity::class.java))
-                resetCurrentTab()
+            viewPage.currentItem = tabIndex
+            if (tabIndex == 0){
+                setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
+            }else{
+                setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
             }
         }
 
         viewPage.offscreenPageLimit = fragments.size
         viewPage.adapter = MainFragmentAdapter(supportFragmentManager)
-    }
-
-    private  fun isLogin(index: Int): Boolean {
-       return index <= 1 || CApplication.INSTANCE.isLogin()
     }
 
     fun resetCurrentTab() {

@@ -3,7 +3,6 @@ package com.zhengdianfang.dazhongbao.views.setting
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import com.hyphenate.chat.EMConversation
-import com.jcodecraeer.xrecyclerview.XRecyclerView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.basic.MessageCount
@@ -14,7 +13,7 @@ import com.zhengdianfang.dazhongbao.views.components.Toolbar
 class NotifyMessagesActivity : BaseListActivity<EMConversation>(), NotifyMessagePresenter.INofiyMessageCountAndConversatonsList{
 
     private val toolBar by lazy { findViewById<Toolbar>(R.id.toolbar) }
-    private val notifyMessageRecyclerView by lazy { findViewById<XRecyclerView>(R.id.notifyMessageRecyclerView) }
+    private val notifyMessageRecyclerView by lazy { findViewById<RecyclerView>(R.id.notifyMessageRecyclerView) }
     private val notifyMessagePresenter = NotifyMessagePresenter()
     private val messages = mutableListOf<MessageCount>()
     private val conversations = mutableListOf<EMConversation>()
@@ -27,7 +26,7 @@ class NotifyMessagesActivity : BaseListActivity<EMConversation>(), NotifyMessage
         toolBar.backListener = {
            onBackPressed()
         }
-        recyclerView.refresh()
+        autoRefresh()
     }
 
     override fun onDestroy() {
@@ -36,14 +35,14 @@ class NotifyMessagesActivity : BaseListActivity<EMConversation>(), NotifyMessage
     }
 
     override fun onBackPressed() {
-        finish()
+        super.onBackPressed()
     }
 
     override fun requestList(pageNumber: Int) {
         notifyMessagePresenter.fetchNotifyMessageCount(CApplication.INSTANCE.loginUser?.token!!)
     }
 
-    override fun createRecyclerView(): XRecyclerView {
+    override fun createRecyclerView(): RecyclerView {
        return notifyMessageRecyclerView
     }
 
@@ -57,8 +56,8 @@ class NotifyMessagesActivity : BaseListActivity<EMConversation>(), NotifyMessage
         conversations.clear()
         this.conversations.addAll(conversations)
         adapter.notifyDataSetChanged()
-        recyclerView.refreshComplete()
-        recyclerView.loadMoreComplete()
+        refreshLayout.finishRefresh()
+        refreshLayout.finishLoadmore()
     }
 
 }

@@ -34,7 +34,7 @@ class AdvertViewPagerAdapter(private val adverts: MutableList<Advert>) : PagerAd
             if (advert.mod  == 1){
                 context.startActivity(Intent(context, ProductDetailActivity::class.java).putExtra("productId", advert.productId))
             }else if(advert.mod == 2) {
-                WebActivity.startActivity(context, advert.link)
+                WebActivity.startActivity(context, advert.name, advert.link)
             }
         }
         return imageView

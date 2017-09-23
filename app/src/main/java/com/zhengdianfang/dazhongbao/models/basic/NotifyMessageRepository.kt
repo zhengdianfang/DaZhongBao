@@ -18,9 +18,11 @@ class NotifyMessageRepository {
                     val jsonNode = API.objectMapper.readTree(data)
                     jsonNode.forEachIndexed { index, jsonNode  ->
                         if (jsonNode.isObject) {
-                            val message = API.objectMapper.readValue(jsonNode.toString(), MessageCount::class.java)
-                            message.iconType = index
-                            messages.add(message)
+                            if (index == 1 || index == 2) {
+                                val message = API.objectMapper.readValue(jsonNode.toString(), MessageCount::class.java)
+                                message.iconType = index
+                                messages.add(message)
+                            }
                         }
                     }
                     messages

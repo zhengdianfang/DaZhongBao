@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
@@ -38,13 +39,14 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
     private val userPhoneNumberTextView by lazy { view?.findViewById<TextView>(R.id.phoneNumberTextView)!! }
     private val levelTextView by lazy { view?.findViewById<TextView>(R.id.levelTextView)!! }
     private val upgradeVIPView by lazy { view?.findViewById<TextView>(R.id.upgradeVIPView)!! }
-    private val myStartProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myStartProductCountTextView)!! }
+    private val myAttentionProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myAttentionProductCountTextView)!! }
     private val myProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myProductCountTextView)!! }
-    private val myAucationProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myAucationProductCountTextView)!! }
+    private val myAuctionProductCountTextView by lazy { view?.findViewById<TextView>(R.id.myAuctionProductCountTextView)!! }
     private val bondCountView by lazy { view?.findViewById<TextView>(R.id.bondCountView)!! }
     private val settingViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.settingViewGroup)!! }
     private val partnerViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.partnerViewGroup)!! }
     private val myDepositViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.myDepositViewGroup)!! }
+    private val refreshLayout by lazy { view?.findViewById<SmartRefreshLayout>(R.id.refreshLayout)!! }
     private val userPersenter = UserPresenter()
 
 
@@ -62,9 +64,13 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
             startActivity(Intent(getParentActivity(), SettingActivity::class.java))
         }
         partnerViewGroup.setOnClickListener {
-           WebActivity.startActivity(context, String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
+           WebActivity.startActivity(context, getString(R.string.partner_plan_title), String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
         }
-        userPersenter.fetchUserInfo(CApplication.INSTANCE.loginUser?.token!!)
+        refreshLayout.setOnRefreshListener {
+            userPersenter.fetchUserInfo(CApplication.INSTANCE.loginUser?.token!!)
+        }
+        refreshLayout.autoRefresh()
+
     }
 
     private fun setupUserInfo(loginUser: User, userCount: UserCount) {
@@ -88,18 +94,18 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
             }
         }
 
-        myStartProductCountTextView.text = userCount.myAttention.toString()
+        myAttentionProductCountTextView.text = userCount.myAttention.toString()
         myProductCountTextView.text = userCount.myDazhongbao.toString()
-        myAucationProductCountTextView.text = userCount.myAuction.toString()
+        myAuctionProductCountTextView.text = userCount.myAuction.toString()
         bondCountView.text = userCount.myDeposit.toString()
 
-        view?.findViewById<TextView>(R.id.textView9)!!.setOnClickListener {
+        view?.findViewById<View>(R.id.linearLayout7)!!.setOnClickListener {
            startActivity(Intent(getParentActivity(), MyProductListActivity::class.java))
         }
-        view?.findViewById<TextView>(R.id.textView10)!!.setOnClickListener {
+        view?.findViewById<View>(R.id.linearLayout5)!!.setOnClickListener {
             startActivity(Intent(getParentActivity(), MyAttentionActivity::class.java))
         }
-        view?.findViewById<TextView>(R.id.textView11)!!.setOnClickListener {
+        view?.findViewById<View>(R.id.linearLayout6)!!.setOnClickListener {
             startActivity(Intent(getParentActivity(), MyAuctionListActivity::class.java))
         }
 
@@ -118,6 +124,7 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
     }
 
     override fun receiverUserInfo(user: User, userCount: UserCount) {
+        refreshLayout.finishRefresh()
         setupUserInfo(user, userCount)
     }
 

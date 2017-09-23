@@ -142,6 +142,7 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
+        toolbarBackButtonClick()
     }
 
 }// Required empty public constructor

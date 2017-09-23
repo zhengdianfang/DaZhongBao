@@ -52,6 +52,8 @@ data class Action(var type: String, var data: Any){
         val ADD_BID_ACTION = "add_bid_action"
         val WEIXIN_OUTH_RESULT_ACTION = "weixin_outh_result_action"
         val WEIXIN_OUTH_RESULT_FAIL_ACTION = "WEIXIN_OUTH_RESULT_FAIL_ACTION"
+        val HOME_PAGE_REFRESH_START_ACTION = "home_page_refresh_start_action"
+        val HOME_PAGE_REFRESH_END_ACTION = "home_page_refresh_end_action"
     }
 }
 
