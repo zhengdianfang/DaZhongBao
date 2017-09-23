@@ -16,7 +16,10 @@
 
         <attr name="arc_bottom_text_color" format="color"/>
         <attr name="arc_bottom_text" format="string"/>
-        <attr name="arc_bottom_text_size" format="dimension"/>k
+        <attr name="arc_bottom_text_size" format="dimension"/>
+        <attr name="arc_start_color" format="color"/>
+        <attr name="arc_end_color" format="color"/>
+
     </declare-styleable>
 
 </resources>

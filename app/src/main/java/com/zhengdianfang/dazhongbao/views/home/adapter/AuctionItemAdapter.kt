@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.DateUtils
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
@@ -90,6 +91,7 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
     private val limitTimeView by lazy { itemView?.findViewById<TextView>(R.id.limitTimeView)!! }
     val timerTextView by lazy { itemView?.findViewById<TextView>(R.id.timerTextView)!! }
     private val timeProgressbar by lazy { itemView?.findViewById<ColorArcProgressBar>(R.id.timeProgressbar)!! }
+    private val bidCountView by lazy { itemView?.findViewById<TextView>(R.id.bidCountView)!! }
 
     fun setData(product: Product){
         val context = itemView?.context!!
@@ -97,28 +99,33 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
         industryView.text = product.sharesName
         basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.start_auction_price)
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
-        nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
+        nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.nowUnitPrice, R.string.now_price)
         if (product.limitTime == 0){
             limitTimeView.text = context.getString(R.string.fragment_push_limit_label)
             limitTimeView.visibility = View.VISIBLE
         }else {
             limitTimeView.visibility = View.GONE
         }
-        val (textResId, backgroundColorId, onClick) = productDetailPresenter.getStatusViewStyle(context as BaseActivity, product)
+        val (textResId, _, onClick) = productDetailPresenter.getStatusViewStyle(context as BaseActivity, product)
         val drawable = ContextCompat.getDrawable(context, R.drawable.status_button_background)
         val wrappedDrawable = DrawableCompat.wrap(drawable)
-        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(context, backgroundColorId))
+        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(context, R.color.colorPrimary))
         statusButton.background = drawable
         statusButton.setText(textResId)
         statusButton.setOnClickListener {
             onClick?.invoke()
         }
+        bidCountView.text = context.getString(R.string.bid_count_label, product.bidCount)
         endTimeView.text = context.getString(R.string.finish_auction_time, DateUtils.formatTime(product.endDateTime))
         timeProgressbar.max = 100
         val startTime = DateUtils.changeTimeLenght(product.startDateTime)
         val endTime = DateUtils.changeTimeLenght(product.endDateTime)
         val nowTime = System.currentTimeMillis()
-        timeProgressbar.progress = (100 - Math.abs(endTime - nowTime) / Math.abs(endTime - startTime)  * 100).toInt()
+        Logger.d("now : ${Math.abs(endTime - nowTime)}, total: ${Math.abs(endTime - startTime)}")
+        val totalTime = Math.abs(endTime - startTime)
+        val goingTime = totalTime -  Math.abs(endTime - nowTime).toDouble()
+        Logger.d("cal present: ${(goingTime / totalTime  * 100).toInt()}")
+        timeProgressbar.progress =  (goingTime / totalTime  * 100).toInt()
     }
 
 }
@@ -133,7 +140,7 @@ class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
 
     fun setData(product: Product){
         val context = itemView?.context!!
-        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(product.sharesName, product.sharesCode)
+        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
 
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = product.industry

@@ -38,15 +38,12 @@
 
     <Button
         android:id="@+id/attentionButton"
+        style="@style/AppTheme.ProductItem.IntentionButton"
         android:text="@string/un_attention"
-        android:layout_height="24dp"
-        android:layout_width="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="12sp"
         android:layout_column="2"
         android:layout_row="2"
-        android:layout_gravity="right"
-        android:background="@drawable/product_item_attentioned_button_background"/>
+        android:layout_gravity="right" />
     <View
         style="@style/AppTheme.ProductItem.Divider"
         android:layout_column="0"

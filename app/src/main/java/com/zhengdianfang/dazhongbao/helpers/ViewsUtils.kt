@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
+import java.text.DecimalFormat
 
 /**
  * Created by dfgzheng on 22/08/2017.
@@ -25,24 +26,23 @@ object ViewsUtils {
                 soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
     }
 
-    fun renderSharesNameAndCode(sharesName: String, sharesCode: String): String {
-        return "$sharesName [$sharesCode]"
+    fun renderSharesNameAndCode(context: Context, sharesName: String, sharesCode: String): SpannableString{
+        val highlightColor = ContextCompat.getColor(context, R.color.c_1e1e1e)
+        return SpannableStringUtils.addColorSpan("$sharesName [$sharesCode]",
+                "$sharesName [$sharesCode]", highlightColor, PixelUtils.sp2px(context, 16f).toInt())
     }
 
     fun renderSharesPrice(context: Context, price: Double, labelResId: Int): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
-        val priceString = context.getString(R.string.price_unit_value, price.toString())
-        return SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString),
-                priceString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
+        val df = DecimalFormat("#.00")
+        val priceString = context.getString(R.string.price_unit_value, df.format(price))
+        val colorSpannableString = SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString), priceString, highlightColor)
+        return SpannableStringUtils.addSizeSpan(colorSpannableString, df.format(price), PixelUtils.sp2px(context, 16f).toInt())
 
     }
 
     fun renderSharesPrice(context: Context, price: Long, labelResId: Int): SpannableString {
-        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
-        val priceString = context.getString(R.string.price_unit_value, price.toString())
-        return SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString),
-                priceString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
-
+        return renderSharesPrice(context, price.toDouble(), labelResId)
     }
 
     fun renderStatusView(context: Context, product: Product, callback: (canPay: Boolean, dealSuccess: Boolean)-> Unit): SpannableString {

@@ -4,14 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/fragment_background_color"
-    android:columnCount="2"
+    android:columnCount="3"
     android:padding="16dp">
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_columnSpan="2"
-        android:layout_columnWeight="1"
+        android:layout_columnSpan="3"
         android:layout_gravity="center_horizontal">
 
         <com.zhengdianfang.dazhongbao.views.components.ColorArcProgressBar
@@ -19,9 +18,10 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            app:arc_finished_color="@color/colorPrimary"
+            app:arc_unfinished_color="@color/c_d8d8d8"
             app:arc_progress="50"
-            app:arc_unfinished_color="@color/bottom_bar_divider_color" />
+            app:arc_start_color="@color/colorPrimary"
+            app:arc_end_color="@color/c_fa64dc"/>
 
         <TextView
             android:id="@+id/timerTextView"
@@ -58,7 +58,7 @@
         android:id="@+id/statusButton"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_columnSpan="2"
+        android:layout_columnSpan="3"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:background="@drawable/product_item_attentioned_button_background"
@@ -68,6 +68,7 @@
     <TextView
         android:id="@+id/basicPriceView"
         android:layout_marginTop="32dp"
+        android:layout_columnSpan="2"
         tools:text="@string/start_auction_price" />
 
     <TextView
@@ -81,22 +82,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_columnSpan="2"
-        android:layout_columnWeight="1"
+        android:layout_columnSpan="3"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/bottom_bar_divider_color" />
 
     <TextView
         android:id="@+id/endTimeView"
-        android:layout_marginTop="8dp"
+        android:layout_columnSpan="3"
         tools:text="@string/finish_auction_time" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_columnSpan="2"
-        android:layout_columnWeight="1"
+        android:layout_columnSpan="3"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/bottom_bar_divider_color" />
@@ -104,6 +103,11 @@
     <TextView
         android:id="@+id/nowUnitPriceView"
         tools:text="@string/now_price" />
+
+    <TextView
+        android:id="@+id/bidCountView"
+        android:layout_marginLeft="16dp"
+        tools:text="4次叫价" />
 
     <TextView
         android:id="@+id/limitTimeView"

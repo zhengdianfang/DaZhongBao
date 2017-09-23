@@ -48,7 +48,7 @@ class MyAttentionRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(i
 
     fun setData(product: Product) {
         val context = itemView?.context!!
-        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(product.sharesName, product.sharesCode)
+        sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = product.industry
 

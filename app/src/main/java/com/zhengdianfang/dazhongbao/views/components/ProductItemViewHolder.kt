@@ -11,8 +11,7 @@ import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
-import com.zhengdianfang.dazhongbao.helpers.PixelUtils
-import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
+import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
@@ -30,20 +29,11 @@ class ProductItemViewHolder(itemView: View?, private val followProductPresenter:
     fun setData(product: Product){
         Log.d("ProductItemViewHolder", product.toString())
         val context = itemView?.context!!
-        stockNameView.text = "${product.sharesName} [${product.sharesCode}]"
-        val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
-
-        val soldCount = product.soldCount.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
-        val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!
-        val soldCountSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_to_sell,soldCountString)!!,
-                soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
-        soldCountView.text = soldCountSpannedString
+        stockNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
+        val soldCount = product.soldCount / Constants.SOLD_COUNT_BASE_UNIT
+        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, soldCount)
         industryNameView.text = product.industry
-
-        val wantPriceString = context.getString(R.string.price_unit_value, product.nowUnitPrice.toString())!!
-        val wantPriceSpannedString = SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_will_pay_price, wantPriceString)!!,
-                wantPriceString, highlightColor, PixelUtils.sp2px(context, 14f).toInt())
-        nowUnitPriceView?.text = wantPriceSpannedString
+        nowUnitPriceView?.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
         if (product.attention == 0){
             attentionButton.setText(R.string.un_attention)
             attentionButton.setTextColor(Color.WHITE)
@@ -61,7 +51,11 @@ class ProductItemViewHolder(itemView: View?, private val followProductPresenter:
         attentionButton.setOnClickListener {
             val token = CApplication.INSTANCE.loginUser?.token
             if (null != token){
-                followProductPresenter.followProduct(token, product.id)
+                if (product.attention == 0){
+                    followProductPresenter.followProduct(token, product.id)
+                }else{
+                    followProductPresenter.unfollowProduct(token, product.id)
+                }
             }
         }
     }

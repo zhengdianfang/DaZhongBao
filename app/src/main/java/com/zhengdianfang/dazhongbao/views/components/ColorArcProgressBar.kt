@@ -2,18 +2,17 @@ package com.zhengdianfang.dazhongbao.views.components
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.content.ContextCompat
 import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
+
 
 /**
  * Created by bruce on 11/6/14.
@@ -25,12 +24,15 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
 
     private val rectF = RectF()
 
+    private var startColor: Int = Color.WHITE
+    private var endColor: Int = Color.WHITE
     private var strokeWidth: Float = 0.toFloat()
     private var suffixTextSize: Float = 0.toFloat()
     private var bottomTextSize: Float = 0.toFloat()
     private var bottomText: String? = null
     private var suffixTextColor: Int = 0
     private var bottomTextColor: Int = 0
+    private var shader: LinearGradient? = null
 
     var progress = 0
         set(progress) {
@@ -47,7 +49,6 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
                 invalidate()
             }
         }
-    private var finishedStrokeColor: Int = 0
     private var unfinishedStrokeColor: Int = 0
     private var arcAngle: Float = 0.toFloat()
     private var suffixText = ""
@@ -88,7 +89,6 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
 
 
     protected fun initByAttributes(attributes: TypedArray) {
-        finishedStrokeColor = attributes.getColor(R.styleable.ArcProgress_arc_finished_color, default_finished_color)
         unfinishedStrokeColor = attributes.getColor(R.styleable.ArcProgress_arc_unfinished_color, default_unfinished_color)
         arcAngle = attributes.getFloat(R.styleable.ArcProgress_arc_angle, default_arc_angle)
         max = attributes.getInt(R.styleable.ArcProgress_arc_max, default_max)
@@ -101,7 +101,11 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         bottomTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_bottom_text_size, default_bottom_text_size)
         bottomText = attributes.getString(R.styleable.ArcProgress_arc_bottom_text)
         bottomTextColor = attributes.getInt(R.styleable.ArcProgress_arc_bottom_text_color, default_text_color)
+        startColor = attributes.getColor(R.styleable.ArcProgress_arc_start_color, Color.WHITE)
+        endColor = attributes.getColor(R.styleable.ArcProgress_arc_end_color, Color.WHITE)
     }
+
+
 
     protected fun initPainters() {
         suffixTextPaint = TextPaint()
@@ -115,11 +119,14 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         bottomTextPaint.isAntiAlias = true
 
         paint = Paint()
-        paint!!.color = default_unfinished_color
         paint!!.isAntiAlias = true
         paint!!.strokeWidth = strokeWidth
         paint!!.style = Paint.Style.STROKE
         paint!!.strokeCap = Paint.Cap.ROUND
+        paint!!.color = unfinishedStrokeColor
+        startColor = ContextCompat.getColor(context, R.color.colorPrimary)
+        endColor = ContextCompat.getColor(context, R.color.c_fa64dc)
+
     }
 
     override fun invalidate() {
@@ -163,14 +170,6 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         this.invalidate()
     }
 
-    fun getFinishedStrokeColor(): Int {
-        return finishedStrokeColor
-    }
-
-    fun setFinishedStrokeColor(finishedStrokeColor: Int) {
-        this.finishedStrokeColor = finishedStrokeColor
-        this.invalidate()
-    }
 
     fun getUnfinishedStrokeColor(): Int {
         return unfinishedStrokeColor
@@ -216,6 +215,7 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         return min_size
     }
 
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
         val width = View.MeasureSpec.getSize(widthMeasureSpec)
@@ -223,6 +223,10 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         val radius = width / 2f
         val angle = (360 - arcAngle) / 2f
         arcBottomHeight = radius * (1 - Math.cos(angle / 180 * Math.PI)).toFloat()
+
+        shader = LinearGradient(rectF.left, rectF.top,
+                rectF.right, rectF.top,
+                startColor, endColor, Shader.TileMode.CLAMP)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -231,9 +235,11 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         val finishedSweepAngle = this.progress / max.toFloat() * arcAngle
         var finishedStartAngle = startAngle
         if (this.progress == 0) finishedStartAngle = 0.01f
+
+        paint!!.shader = null
         paint!!.color = unfinishedStrokeColor
         canvas.drawArc(rectF, startAngle, arcAngle, false, paint!!)
-        paint!!.color = finishedStrokeColor
+        paint!!.shader = shader
         canvas.drawArc(rectF, finishedStartAngle, finishedSweepAngle, false, paint!!)
 
         val text = progress.toString()
@@ -263,7 +269,6 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
         bundle.putString(INSTANCE_BOTTOM_TEXT, getBottomText())
         bundle.putInt(INSTANCE_PROGRESS, progress)
         bundle.putInt(INSTANCE_MAX, max)
-        bundle.putInt(INSTANCE_FINISHED_STROKE_COLOR, getFinishedStrokeColor())
         bundle.putInt(INSTANCE_UNFINISHED_STROKE_COLOR, getUnfinishedStrokeColor())
         bundle.putFloat(INSTANCE_ARC_ANGLE, getArcAngle())
         bundle.putString(INSTANCE_SUFFIX, getSuffixText())
@@ -280,7 +285,6 @@ class ColorArcProgressBar @JvmOverloads constructor(context: Context, attrs: Att
             bottomText = bundle.getString(INSTANCE_BOTTOM_TEXT)
             max = bundle.getInt(INSTANCE_MAX)
             progress = bundle.getInt(INSTANCE_PROGRESS)
-            finishedStrokeColor = bundle.getInt(INSTANCE_FINISHED_STROKE_COLOR)
             unfinishedStrokeColor = bundle.getInt(INSTANCE_UNFINISHED_STROKE_COLOR)
             suffixText = bundle.getString(INSTANCE_SUFFIX)
             initPainters()

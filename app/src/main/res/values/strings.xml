@@ -31,7 +31,7 @@
     <string name="toast_input_confirm_password_not_equal">密码不一致</string>
     <string name="toast_set_password_successful">设置成功</string>
     <string name="bottom_bar_home_title">首页</string>
-    <string name="bottom_bar_auction_title">拍卖</string>
+    <string name="bottom_bar_auction_title">竞拍</string>
     <string name="bottom_bar_push_title"><![CDATA[ 发布]]></string>
     <string name="bottom_bar_personal_title">我的</string>
     <string name="fragment_personal_may_product">我的大宗</string>
@@ -132,7 +132,7 @@
     <string name="product_status_auctioning">正在竞拍中</string>
     <string name="start_auction_price">起拍价：%s 元</string>
     <string name="finish_auction_time">截拍：%s</string>
-    <string name="now_price">当前价：</string>
+    <string name="now_price">当前价：%s</string>
     <string name="now_price_label">当前叫价：%s 元</string>
     <string name="product_status_intention_info">项目已完成核调，正在排期</string>
     <string name="product_status_auctioning_no_bid">您未支付保证金，无法查看出价过程 ...</string>
@@ -203,4 +203,5 @@
     <string name="scan_card_label">扫码识别</string>
     <string name="upload_card_label">上传名片</string>
     <string name="update_contact_card_bottom_tips">请保证名片的完整性，方便系统或人工识别</string>
+    <string name="bid_count_label">%d次叫价</string>
 </resources>

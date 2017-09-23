@@ -22,12 +22,12 @@ class AuctionPresenter: BasePresenter() {
         if (number < 2){
             observable = Observable.concat(
                     productCacheRepository.loadAuctionProductsCache(),
-                    productRepository.getProductList(token, number,  "5", "-startDateTime").delay(300, TimeUnit.MILLISECONDS))
-        }
-        observable.doOnNext { result ->
-            if (!result.isCache && number < 2){
-                productCacheRepository.saveAuctionProductsCache(result.data)
-            }
+                    productRepository.getProductList(token, number,  "5", "-startDateTime").delay(300, TimeUnit.MILLISECONDS)
+                            .doOnNext { result ->
+                                if (!result.isCache && number < 2){
+                                    productCacheRepository.saveAuctionProductsCache(result.data)
+                                }
+                            })
         }
         addSubscription(observable, Consumer {result->
             (mView as IAuctionListView).receiveAuctionProductList(

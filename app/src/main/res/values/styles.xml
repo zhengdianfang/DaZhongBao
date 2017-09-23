@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
@@ -126,8 +126,6 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     <style name="AppTheme.ProductItem.SharesName">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/c_3c3c3c</item>
     </style>
     <style name="AppTheme.ProductItem.Industry">
         <item name="android:textSize">14sp</item>
@@ -148,7 +146,8 @@
     <style name="AppTheme.ProductItem.IntentionButton">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_height">33dp</item>
+        <item name="android:layout_width">94dp</item>
         <item name="android:background">@drawable/product_item_attentioned_button_background</item>
     </style>
     <style name="AppTheme.ProductItem.PayButton">
