@@ -20,9 +20,9 @@ abstract  class TakePhotoFragment : BaseFragment(){
               .items(R.array.media_list)
               .itemsCallback({ dialog, itemView, position, text ->
                if(position == 0){
-                   takePhotoImagePath = DeviceUtils.takePhoto(this)
+                   takePhoto()
                }else {
-                   DeviceUtils.pickPhoto(this)
+                   pickPhoto()
                }
               }).build()
      }
@@ -36,11 +36,21 @@ abstract  class TakePhotoFragment : BaseFragment(){
         }
        }else if (requestCode == DeviceUtils.PICK_PHOTO){
         if (data?.data != null){
-            takePhotoImagePath = FileUtils.getPathFromUri(this.context.applicationContext, data.data!!) ?: ""
-            pickPhotoCallback(takePhotoImagePath)
+            FileUtils.getPathFromUri(activity, data.data!!, {path ->
+                this.takePhotoImagePath = path ?: ""
+                pickPhotoCallback(path ?: "")
+            })
         }
        }
       }
+     }
+
+     protected fun takePhoto() {
+         takePhotoImagePath = DeviceUtils.takePhoto(this)
+     }
+
+     protected fun pickPhoto() {
+         DeviceUtils.pickPhoto(this)
      }
 
      abstract fun getPhotoWidth(): Int

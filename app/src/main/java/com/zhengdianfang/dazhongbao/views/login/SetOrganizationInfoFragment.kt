@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
@@ -27,6 +28,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
     private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
     private val licenceCardImageView by lazy { view?.findViewById<ImageView>(R.id.licenceCardImageView)!! }
+    private val licenceTextView by lazy { view?.findViewById<TextView>(R.id.licenceTextView)!! }
     private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -85,9 +87,11 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
     override fun takePhotoCallback(bitmap: Bitmap) {
         Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(licenceCardImageView)
+        licenceTextView.visibility = View.INVISIBLE
     }
 
     override fun pickPhotoCallback(imagePath: String) {
         Glide.with(this).load(imagePath).into(licenceCardImageView)
+        licenceTextView.visibility = View.INVISIBLE
     }
 }

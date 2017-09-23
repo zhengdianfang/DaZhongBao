@@ -2,8 +2,11 @@ package com.zhengdianfang.dazhongbao.views.basic
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.manager.SupportRequestManagerFragment
@@ -26,7 +29,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun hideLoadingDialog() {
         if (mDialogFragment.isAdded){
-            mDialogFragment.dismiss()
+            mDialogFragment.dismissAllowingStateLoss()
         }
     }
 
@@ -86,5 +89,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 .replace(id, nextFragment)
                 .addToBackStack(backStack)
                 .commitAllowingStateLoss()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setStatusBarTheme(theme: Int, backgroundColor: Int) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.decorView.systemUiVisibility = theme
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = backgroundColor
     }
 }

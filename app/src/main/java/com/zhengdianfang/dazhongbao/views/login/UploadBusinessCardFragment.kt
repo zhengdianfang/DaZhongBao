@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
@@ -22,7 +23,10 @@ import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
  */
 class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
-    val businessCardImageView by lazy { view?.findViewById<ImageView>(R.id.businessCardImageView)!! }
+    private val businessCardImageView by lazy { view?.findViewById<ImageView>(R.id.businessCardImageView)!! }
+    private val maskTextView by lazy { view?.findViewById<TextView>(R.id.maskTextView)!! }
+    private val uploadCardView by lazy { view?.findViewById<TextView>(R.id.uploadCardView)!! }
+    private val scanTextView by lazy { view?.findViewById<TextView>(R.id.scanTextView)!! }
     private val mUserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -34,8 +38,11 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mUserPresenter.attachView(this)
-        businessCardImageView.setOnClickListener {
-           mediaDialog.show()
+        uploadCardView.setOnClickListener {
+            pickPhoto()
+        }
+        scanTextView.setOnClickListener {
+            takePhoto()
         }
     }
 
@@ -76,9 +83,11 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
     override fun takePhotoCallback(bitmap: Bitmap) {
         Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(businessCardImageView)
+        maskTextView.visibility = View.INVISIBLE
     }
 
     override fun pickPhotoCallback(imagePath: String) {
         Glide.with(this).load(imagePath).into(businessCardImageView)
+        maskTextView.visibility = View.INVISIBLE
     }
 }// Required empty public constructor

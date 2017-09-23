@@ -88,14 +88,16 @@ class PersonalInfoActivity : BaseActivity(), IUploadCard {
                 }
             }else if (requestCode == DeviceUtils.PICK_PHOTO){
                 if (data?.data != null){
-                    takePhotoImagePath = FileUtils.getPathFromUri(this.applicationContext, data.data!!) ?: ""
-                    Glide.with(this).load(takePhotoImagePath)
-                            .bitmapTransform(CropCircleTransformation(this.applicationContext))
-                            .placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image)
-                            .into(headerImageView)
-                    headerImageView.postDelayed({
-                        userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, takePhotoImagePath)
-                    }, 1000)
+                    FileUtils.getPathFromUri(this, data.data!!, {path ->
+                        this.takePhotoImagePath = path ?: ""
+                        Glide.with(this).load(takePhotoImagePath)
+                                .bitmapTransform(CropCircleTransformation(this.applicationContext))
+                                .placeholder(R.mipmap.fragment_personal_default_header_image).error(R.mipmap.fragment_personal_default_header_image)
+                                .into(headerImageView)
+                        headerImageView.postDelayed({
+                            userPresenter.uploadUserAvatar(CApplication.INSTANCE.loginUser?.token!!, takePhotoImagePath)
+                        }, 1000)
+                    })
                 }
             }
         }

@@ -21,4 +21,8 @@
     <color name="c_3c3c3c">#3c3c3c</color>
     <color name="voice_background_color">#bb000000</color>
     <color name="c_f2f4f8">#f2f4f8</color>
+    <color name="c_a0a0a0">#a0a0a0</color>
+    <color name="c_dcdcdc">#dcdcdc</color>
+    <color name="c_fafafa">#fafafa</color>
+    <color name="c_c8c8c8">#c8c8c8</color>
 </resources>

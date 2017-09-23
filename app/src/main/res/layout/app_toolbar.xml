@@ -3,32 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="0dp"
-    android:minHeight="?attr/actionBarSize">
+    android:layout_height="44dp"
+    android:minHeight="44dp">
 
     <ImageButton
         android:id="@+id/toolbarBackButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingRight="32dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/toolbar_light_back"/>
+        android:src="@drawable/toolbar_light_back" />
 
 
     <TextView
         android:id="@+id/toolbarTitleView"
+        style="@style/AppTheme.ToolbarText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        style="@style/AppTheme.ToolbarText"/>
+        android:layout_gravity="center" />
 
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        tools:text="提交"
-        android:textSize="14sp"
+        android:background="@android:color/transparent"
         android:textColor="@color/colorPrimary"
-        android:background="@android:color/transparent"/>
+        android:textSize="14sp"
+        tools:text="提交" />
 </android.support.v7.widget.Toolbar>

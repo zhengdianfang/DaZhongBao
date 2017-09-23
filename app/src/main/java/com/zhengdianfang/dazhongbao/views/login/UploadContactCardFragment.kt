@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.bumptech.glide.Glide
@@ -29,6 +30,10 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
     private val mUserPresenter by lazy { UserPresenter() }
     private val idCardFrontEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardFrontEndImageView)!! }
     private val idCardBackEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardBackEndImageView)!! }
+    private val frontTextView1 by lazy { view?.findViewById<TextView>(R.id.frontTextView1)!! }
+    private val frontTextView2 by lazy { view?.findViewById<TextView>(R.id.frontTextView2)!! }
+    private val backendTextView1 by lazy { view?.findViewById<TextView>(R.id.backendTextView1)!! }
+    private val backendTextView2 by lazy { view?.findViewById<TextView>(R.id.backendTextView2)!! }
     private var type = 0
     private var idCardFrontEndImagePath = ""
     private var idCardBackEndImagePath = ""
@@ -80,12 +85,16 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
                         val bitmap = FileUtils.decodeBitmapFromFile(idCardFrontEndImagePath, idCardFrontEndImageView.width, idCardFrontEndImageView.height)
                         if (null != bitmap){
                             Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(idCardFrontEndImageView)
+                            frontTextView1.visibility = View.INVISIBLE
+                            frontTextView2.visibility = View.INVISIBLE
                         }
                     }
                     1-> {
                         val bitmap = FileUtils.decodeBitmapFromFile(idCardBackEndImagePath, idCardBackEndImageView.width, idCardBackEndImageView.height)
                         if (null != bitmap){
                             Glide.with(this).load(FileUtils.bitmapToByte(bitmap)).into(idCardBackEndImageView)
+                            backendTextView1.visibility = View.INVISIBLE
+                            backendTextView2.visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -93,12 +102,20 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
                 if (data?.data != null){
                     when(type){
                         0 -> {
-                            idCardFrontEndImagePath = FileUtils.getPathFromUri(this.context.applicationContext, data.data!!) ?: ""
-                            Glide.with(this).load(idCardFrontEndImagePath).into(idCardFrontEndImageView)
+                            FileUtils.getPathFromUri(activity, data.data!!, {path ->
+                                this.idCardFrontEndImagePath = path ?: ""
+                                Glide.with(this).load(idCardFrontEndImagePath).into(idCardFrontEndImageView)
+                                frontTextView1.visibility = View.INVISIBLE
+                                frontTextView2.visibility = View.INVISIBLE
+                            })
                         }
                         1 -> {
-                            idCardBackEndImagePath = FileUtils.getPathFromUri(this.context.applicationContext, data.data!!) ?: ""
-                            Glide.with(this).load(idCardBackEndImagePath).into(idCardBackEndImageView)
+                            FileUtils.getPathFromUri(activity, data.data!!, {path ->
+                                this.idCardBackEndImagePath  = path ?: ""
+                                Glide.with(this).load(idCardBackEndImagePath).into(idCardBackEndImageView)
+                            })
+                            backendTextView1.visibility = View.INVISIBLE
+                            backendTextView2.visibility = View.INVISIBLE
                         }
                     }
                 }

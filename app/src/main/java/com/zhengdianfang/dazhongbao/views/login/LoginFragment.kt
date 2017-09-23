@@ -42,13 +42,19 @@ class LoginFragment : BaseFragment(),ILoginView{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mLoginPresenter.attachView(this)
-        weChatDisposable = RxBus.instance.register(Action.WEIXIN_OUTH_RESULT_ACTION, Consumer { action->
-            weChatUtils.getWeiXinAccessToken(action.data as String, {accessToken, openId ->
-                Logger.d("wechat login success : accessToken : $accessToken , openId : $openId")
-                mLoginPresenter.loginByThridParty(openId)
-            }, {
+        weChatDisposable = RxBus.instance.register(arrayOf(Action.WEIXIN_OUTH_RESULT_ACTION, Action.WEIXIN_OUTH_RESULT_FAIL_ACTION), Consumer { action->
+            if (action.type == Action.WEIXIN_OUTH_RESULT_ACTION){
+                weChatUtils.getWeiXinAccessToken(action.data as String, {accessToken, openId ->
+                    Logger.d("wechat login success : accessToken : $accessToken , openId : $openId")
+                    mLoginPresenter.loginByThridParty(openId)
+                }, {
+                    hideLoadingDialog()
+                    toast(R.string.wechat_login_fail)
+                })
+            }else if (action.type == Action.WEIXIN_OUTH_RESULT_FAIL_ACTION){
+                hideLoadingDialog()
                 toast(R.string.wechat_login_fail)
-            })
+            }
         })
         initViews()
     }
@@ -69,6 +75,7 @@ class LoginFragment : BaseFragment(),ILoginView{
         }
 
         view?.findViewById<Button>(R.id.weixinButton)?.setOnClickListener {
+            showLoadingDialog()
             weChatUtils.getWeiXinToken()
         }
 

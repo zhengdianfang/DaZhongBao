@@ -41,6 +41,8 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
                     RxBus.instance.post(Action(Action.WEIXIN_OUTH_RESULT_ACTION, baseResp.code))
                 }
 
+            }else{
+                RxBus.instance.post(Action(Action.WEIXIN_OUTH_RESULT_FAIL_ACTION, ""))
             }
         }
         finish()

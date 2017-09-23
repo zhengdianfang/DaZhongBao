@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/fragment_background_color"
     android:clickable="true"
+    android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.login.ModifyPasswordFragment">
 
 
@@ -14,28 +14,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:title="@string/contact_info_title"
+        app:confirm_label="@string/submit_button_text"
         app:enable_confirm="true"
-        app:confirm_label="@string/submit_button_text"/>
+        app:title="@string/contact_info_title" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:layout_margin="32dp"
-        android:background="@drawable/lisence_card_background">
+        android:background="@drawable/lisence_card_background"
+        android:padding="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20sp"
-            android:text="@string/upload_business_card"/>
 
         <ImageView
             android:id="@+id/businessCardImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter"/>
+            android:background="@color/c_fafafa"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/maskTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/upload_business_card"
+            android:textColor="@color/c_c8c8c8"
+            android:textSize="18sp" />
 
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/scanTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_scan_qa_icon"
+            android:gravity="center"
+            android:text="@string/scan_card_label"
+            android:textColor="@color/c_a0a0a0"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="@color/c_ebebeb" />
+
+        <TextView
+            android:id="@+id/uploadCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_pic_icon"
+            android:gravity="center"
+            android:text="@string/upload_card_label"
+            android:textColor="@color/c_a0a0a0"
+            android:textSize="14sp" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/c_c8c8c8"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/update_contact_card_bottom_tips"/>
 </LinearLayout>

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/fragment_background_color"
     android:clickable="true"
+    android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.login.ModifyPasswordFragment">
 
 
@@ -14,48 +14,81 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:title="@string/contact_verify_info"
+        app:confirm_label="@string/submit_button_text"
         app:enable_confirm="true"
-        app:confirm_label="@string/submit_button_text"/>
+        app:title="@string/contact_verify_info" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:layout_margin="32dp"
-        android:background="@drawable/lisence_card_background">
+        android:background="@drawable/lisence_card_background"
+        android:padding="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20sp"
-            android:text="@string/id_card_front"/>
 
         <ImageView
             android:id="@+id/idCardFrontEndImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter"/>
+            android:background="@color/c_fafafa"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/frontTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/id_card_front"
+            android:textColor="@color/c_c8c8c8"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/frontTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/click_add_photo"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="16dp"
+            android:drawableLeft="@drawable/ic_add_circle_icon"
+            android:textColor="@color/c_c8c8c8"
+            android:textSize="13sp" />
 
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:layout_margin="32dp"
-        android:background="@drawable/lisence_card_background">
+        android:background="@drawable/lisence_card_background"
+        android:padding="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20sp"
-            android:text="@string/id_card_backend"/>
 
         <ImageView
             android:id="@+id/idCardBackEndImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter"/>
+            android:background="@color/c_fafafa"
+            android:scaleType="fitCenter" />
 
+        <TextView
+            android:id="@+id/backendTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/id_card_backend"
+            android:textColor="@color/c_c8c8c8"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/backendTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/click_add_photo"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="16dp"
+            android:drawableLeft="@drawable/ic_add_circle_icon"
+            android:textColor="@color/c_c8c8c8"
+            android:textSize="13sp" />
     </FrameLayout>
 </LinearLayout>

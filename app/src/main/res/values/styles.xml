@@ -23,7 +23,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/activity_login_button_background</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/buttonTextSize</item>
@@ -31,7 +31,7 @@
 
     <style name="AppTheme.ToolbarText">
         <item name="android:textColor">@color/toolbar_title_light_color</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
     <style name="AppTheme.EditText">
@@ -51,7 +51,22 @@
         <item name="android:layout_marginStart">32dp</item>
         <item name="android:layout_marginEnd">32dp</item>
     </style>
-
+    <style name="AppTheme.Login"></style>
+    <style name="AppTheme.Login.ThirdButton">
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/activity_login_weixin_button_text_color</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="AppTheme.Login.VerifyCodeButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:text">@string/get_verify_sms_code</item>
+        <item name="android:textColor">@color/fragment_verify_sms_code_color</item>
+        <item name="android:background">@drawable/fragment_verify_sms_code_button_background</item>
+    </style>
 
     <style name="AppTheme.RatingBarSmall" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/fragment_personal_partner_star_ratingbar</item>

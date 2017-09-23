@@ -15,4 +15,11 @@
         <item name="android:elevation">0dp</item>
         <item name="android:background">@drawable/product_item_attentioned_button_background</item>
     </style>
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/activity_login_button_background</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/buttonTextSize</item>
+        <item name="android:elevation">0dp</item>
+    </style>
 </resources>

@@ -51,6 +51,7 @@ data class Action(var type: String, var data: Any){
         val REMOVE_BID_ACTION = "remove_bid_action"
         val ADD_BID_ACTION = "add_bid_action"
         val WEIXIN_OUTH_RESULT_ACTION = "weixin_outh_result_action"
+        val WEIXIN_OUTH_RESULT_FAIL_ACTION = "WEIXIN_OUTH_RESULT_FAIL_ACTION"
     }
 }
 
