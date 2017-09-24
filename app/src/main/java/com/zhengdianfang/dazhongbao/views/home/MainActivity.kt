@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -10,17 +11,23 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.AppUtils
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
+import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.BottomBar
+import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), BasePresenter.ICheckUserIntegrityView {
 
     private val bottomBar by lazy { findViewById<BottomBar>(R.id.bottomBar) }
     private val viewPage by lazy { findViewById<ViewPager>(R.id.homeViewPager) }
     private val fragments = arrayOf(HomeFragment(), AuctionFragment(), PushFragment(), PersonalFragment())
+    private val userPresenter = UserPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        userPresenter.attachView(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
         }
@@ -39,6 +46,17 @@ class MainActivity : BaseActivity() {
 
         viewPage.offscreenPageLimit = fragments.size
         viewPage.adapter = MainFragmentAdapter(supportFragmentManager)
+        startCertActivity()
+    }
+
+    private fun startCertActivity() {
+        startActivity(Intent(this, SetUserCertificationActivity::class.java))
+        overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userPresenter.detachView()
     }
 
     fun resetCurrentTab() {
@@ -55,5 +73,9 @@ class MainActivity : BaseActivity() {
             return fragments.size
         }
 
+    }
+
+    override fun notIntegrity(type: Int) {
+        AppUtils.interityUserInfo(this, type)
     }
 }

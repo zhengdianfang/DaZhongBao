@@ -17,12 +17,10 @@ import android.widget.TextView
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Action
-import com.zhengdianfang.dazhongbao.helpers.AliPayUtils
-import com.zhengdianfang.dazhongbao.helpers.Constants
-import com.zhengdianfang.dazhongbao.helpers.RxBus
+import com.zhengdianfang.dazhongbao.helpers.*
 import com.zhengdianfang.dazhongbao.models.product.AlipayResult
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.PayDepositPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
@@ -30,7 +28,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 /**
  * A simple [Fragment] subclass.
  */
-class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResultView {
+class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResultView , BasePresenter.ICheckUserIntegrityView{
 
     private val subButton by lazy { view?.findViewById<ImageButton>(R.id.subButton)!! }
     private val addButton by lazy { view?.findViewById<ImageButton>(R.id.addButton)!! }
@@ -116,6 +114,9 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
         RxBus.instance.post(Action(Action.PAY_BOND_SUCCESS_ACTION, ""))
         toast(result)
         toolbarBackButtonClick()
+    }
+    override fun notIntegrity(type: Int) {
+        AppUtils.interityUserInfo(getParentActivity(), type)
     }
 
 }// Required empty public constructor

@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.basic
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.zhengdianfang.dazhongbao.R
@@ -76,6 +77,8 @@ abstract class BaseFragment: Fragment(), IView {
     }
 
     fun setStatusBarTheme(theme: Int, backgroundColor: Int) {
-        getParentActivity().setStatusBarTheme(theme, backgroundColor)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getParentActivity().setStatusBarTheme(theme, backgroundColor)
+        }
     }
 }

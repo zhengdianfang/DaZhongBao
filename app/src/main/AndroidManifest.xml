@@ -79,7 +79,10 @@
         <activity
             android:name=".views.im.ChatActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.setting.NotifyMessagesActivity"></activity>
+        <activity android:name=".views.setting.NotifyMessagesActivity"
+            android:screenOrientation="portrait"  />
+        <activity android:name=".views.login.SetUserCertificationActivity"
+            android:screenOrientation="portrait"  />
         <!--wechat-->
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"

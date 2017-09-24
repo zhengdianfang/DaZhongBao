@@ -9,8 +9,8 @@ import com.zhengdianfang.dazhongbao.models.basic.IMUser
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Product(var id: Long, var sharesCode: String, var sharesName: String, var yestodayClosePrice: Double,
                    var companyName: String?, var lastUnitPrice: Double, var nowUnitPrice: Double, var basicUnitPrice: Double,
-                   var soldCount: Long, var limitTime: Int, var description: String?, var bidCount: Int, var check_status: Int,
-                    var industry: String?, var attention: Int, var bond: Double, var bond_status: Int, var deal: MutableList<Deal>?,
+                   var soldCount: Long, var limitTime: Int, var description: String?, var bidcount: Int, var check_status: Int,
+                   var industry: String?, var attention: Int, var bond: String?, var bond_status: Int, var deal: MutableList<Deal>?,
                    var startDateTime: Long, var endDateTime: Long, var mybids: MutableList<Bid>?, var csm_user: IMUser?) {
 
     override fun equals(other: Any?): Boolean {

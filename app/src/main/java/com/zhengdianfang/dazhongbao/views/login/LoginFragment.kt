@@ -101,6 +101,7 @@ class LoginFragment : BaseFragment(),ILoginView{
             toast(R.string.toast_login_success)
             CApplication.INSTANCE.loginUser = user
             startActivity(Intent(getParentActivity(), MainActivity::class.java))
+            getParentActivity().finish()
         }
     }
 

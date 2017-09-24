@@ -47,4 +47,7 @@ open class BasePresenter: IPresenter {
         mCompositeDisposable.clear()
     }
 
+    interface ICheckUserIntegrityView : IView{
+        fun notIntegrity(type: Int)
+    }
 }

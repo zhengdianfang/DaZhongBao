@@ -8,6 +8,7 @@ import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
+import com.zhengdianfang.dazhongbao.presenters.validates.UserInfoInterityValidate
 import com.zhengdianfang.dazhongbao.views.basic.IView
 import io.reactivex.functions.Consumer
 
@@ -17,15 +18,19 @@ import io.reactivex.functions.Consumer
 class PushBidPresenter: BasePresenter() {
 
     private val productRepository  = ProductRepository()
+    private val validate  by lazy { UserInfoInterityValidate(mView) }
+
 
     fun pushBid(token: String, product: Product, price: Double, count: Long){
-        mView?.showLoadingDialog()
-        addSubscription(productRepository.pushBid(token, product.id, price, count), Consumer {newBid->
-            mView?.hideLoadingDialog()
-            (mView as IPushBidView).pushBidSuccess(newBid)
-            RxBus.instance.post(Action(Action.ADD_BID_ACTION, newBid))
+        if (validate.validate()){
+            mView?.showLoadingDialog()
+            addSubscription(productRepository.pushBid(token, product.id, price, count), Consumer {newBid->
+                mView?.hideLoadingDialog()
+                (mView as IPushBidView).pushBidSuccess(newBid)
+                RxBus.instance.post(Action(Action.ADD_BID_ACTION, newBid))
 
-        })
+            })
+        }
     }
 
     fun removeBid(token: String, bid: Bid){

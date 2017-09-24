@@ -4,4 +4,8 @@
         <item>拍照</item>
         <item>相册</item>
     </string-array>
+    <string-array name="share_list">
+        <item>朋友圈</item>
+        <item>好友</item>
+    </string-array>
 </resources>

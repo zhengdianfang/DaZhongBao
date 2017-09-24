@@ -115,7 +115,7 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
         statusButton.setOnClickListener {
             onClick?.invoke()
         }
-        bidCountView.text = context.getString(R.string.bid_count_label, product.bidCount)
+        bidCountView.text = context.getString(R.string.bid_count_label, product.bidcount)
         endTimeView.text = context.getString(R.string.finish_auction_time, DateUtils.formatTime(product.endDateTime))
         timeProgressbar.max = 100
         val startTime = DateUtils.changeTimeLenght(product.startDateTime)
@@ -143,7 +143,7 @@ class AuctionNormalItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(ite
         sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
 
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
-        industryNameView.text = product.industry
+        industryNameView.text = ViewsUtils.renderIndustryView(context, product.industry)
 
         basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.intention_price_label)
         ViewsUtils.renderAttentionView(context, product.attention, {textResId, color, backgroundResId ->

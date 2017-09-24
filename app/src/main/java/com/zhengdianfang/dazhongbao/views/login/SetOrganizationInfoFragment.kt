@@ -13,9 +13,10 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.models.mock.mockToken
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
@@ -23,7 +24,7 @@ import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 /**
  * A simple [Fragment] subclass.
  */
-class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
+class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard, BasePresenter.ICheckUserIntegrityView {
 
     private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
     private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
@@ -52,7 +53,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
     override fun toolbarConfirmButtonClick() {
         mUserPresenter.uploadBusinessLicenceCard(
-                mockToken,
+                CApplication.INSTANCE.loginUser?.token!!,
                 organizationContactEditText.text.toString(),
                 organizationNameEditText.text.toString(),
                 takePhotoImagePath)
@@ -64,8 +65,14 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
 
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
-        replaceFragment(android.R.id.content, UploadBusinessCardFragment(), "login")
         toast(R.string.upload_business_card_success)
+        if (mUserPresenter.checkUserInterity()){
+            toolbarBackButtonClick()
+        }
+    }
+
+    override fun toolbarBackButtonClick() {
+        getParentActivity().finish()
     }
 
     override fun getPhotoWidth(): Int {
@@ -84,5 +91,8 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
     override fun pickPhotoCallback(imagePath: String) {
         Glide.with(this).load(imagePath).into(licenceCardImageView)
         licenceTextView.visibility = View.INVISIBLE
+    }
+    override fun notIntegrity(type: Int) {
+        AppUtils.interityUserInfo(getParentActivity(), type)
     }
 }

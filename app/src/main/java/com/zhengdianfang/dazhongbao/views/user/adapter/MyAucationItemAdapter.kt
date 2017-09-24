@@ -50,7 +50,7 @@ class MyAuctionItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemVie
         val context = itemView?.context!!
         sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
         statusView.text = ViewsUtils.renderStatusView(context, product , { _, _ ->})
-        industryNameView.text = product.industry
+        industryNameView.text = ViewsUtils.renderIndustryView(context, product.industry)
         basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.start_auction_price)
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         nowUnitPriceView.text = ViewsUtils.renderSharesPrice(context, product.nowUnitPrice, R.string.now_price_label)

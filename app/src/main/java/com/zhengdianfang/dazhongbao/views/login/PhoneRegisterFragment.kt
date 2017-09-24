@@ -1,8 +1,8 @@
 package com.zhengdianfang.dazhongbao.views.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +14,7 @@ import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.presenters.LoginPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.home.MainActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -81,8 +82,7 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView , ISendSmsCode{
         CApplication.INSTANCE.loginUser = user
         toast(R.string.toast_register_successful)
         timerSub?.dispose()
-        getParentActivity().supportFragmentManager.popBackStack("login", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        startFragment(android.R.id.content, SetPasswordFragment(), "login")
+        startActivity(Intent(getParentActivity(), MainActivity::class.java))
     }
     override fun verifySmsCodeResult(success: Boolean) {
     }

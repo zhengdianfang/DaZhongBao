@@ -85,10 +85,14 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
                 2-> markImageView.setImageResource(R.drawable.fragment_personal_company_icon)
             }
             userRealNameTextView.text = if(TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
-            userPhoneNumberTextView.text = loginUser.phonenumber
+            userPhoneNumberTextView.text = loginUser.phonenumber?.replaceRange(3, 7,"****")
             levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
             upgradeVIPView.visibility = if (loginUser.integrity!! == 0) View.GONE else View.VISIBLE
             upgradeVIPView.setOnClickListener {
+                val fragment = UploadContactCardFragment()
+                startFragment(android.R.id.content,fragment , "personal")
+            }
+            userPhoneNumberTextView.setOnClickListener {
                 val fragment = UploadContactCardFragment()
                 startFragment(android.R.id.content,fragment , "personal")
             }

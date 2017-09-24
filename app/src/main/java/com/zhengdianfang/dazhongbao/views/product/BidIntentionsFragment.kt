@@ -14,12 +14,10 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.FileUtils
-import com.zhengdianfang.dazhongbao.helpers.PixelUtils
-import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
-import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
+import com.zhengdianfang.dazhongbao.helpers.*
 import com.zhengdianfang.dazhongbao.models.product.Bid
 import com.zhengdianfang.dazhongbao.models.product.Product
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.PushBidPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import io.reactivex.Observable
@@ -29,7 +27,7 @@ import java.util.concurrent.TimeUnit
 /**
  * A simple [Fragment] subclass.
  */
-class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView {
+class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView , BasePresenter.ICheckUserIntegrityView{
 
     private val basicPriceView by lazy { view?.findViewById<TextView>(R.id.basicPriceView)!! }
     private val soldCountView by lazy { view?.findViewById<TextView>(R.id.soldCountView)!! }
@@ -78,5 +76,8 @@ class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView {
         successDialog.show()
         Observable.just(1).delay(3, TimeUnit.SECONDS).subscribe { successDialog.cancel() }
         getParentActivity().supportFragmentManager.popBackStack("bid", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+    override fun notIntegrity(type: Int) {
+       AppUtils.interityUserInfo(getParentActivity(), type)
     }
 }// Required empty public constructor

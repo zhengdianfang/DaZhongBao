@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.text.SpannableString
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -143,5 +144,9 @@ object ViewsUtils {
             itemViews.add(itemView)
         }
         return itemViews
+    }
+
+    fun renderIndustryView(context: Context, industry: String?): String? {
+       return if (TextUtils.isEmpty(industry)) context.getString(R.string.unknow_industry) else industry
     }
 }

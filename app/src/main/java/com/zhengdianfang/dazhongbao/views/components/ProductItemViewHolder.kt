@@ -32,7 +32,7 @@ class ProductItemViewHolder(itemView: View?, private val followProductPresenter:
         stockNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
         val soldCount = product.soldCount / Constants.SOLD_COUNT_BASE_UNIT
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, soldCount)
-        industryNameView.text = product.industry
+        industryNameView.text = ViewsUtils.renderIndustryView(context, product.industry)
         nowUnitPriceView?.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
         if (product.attention == 0){
             attentionButton.setText(R.string.un_attention)

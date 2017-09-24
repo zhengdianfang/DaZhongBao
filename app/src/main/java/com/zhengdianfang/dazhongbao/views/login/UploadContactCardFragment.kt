@@ -15,9 +15,11 @@ import com.afollestad.materialdialogs.Theme
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.helpers.DeviceUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 
@@ -25,7 +27,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 /**
  * A simple [Fragment] subclass.
  */
-class UploadContactCardFragment : BaseFragment() , IUploadCard{
+class UploadContactCardFragment : BaseFragment() , IUploadCard, BasePresenter.ICheckUserIntegrityView{
 
     private val mUserPresenter by lazy { UserPresenter() }
     private val idCardFrontEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardFrontEndImageView)!! }
@@ -137,7 +139,16 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
-        toolbarBackButtonClick()
+        if (mUserPresenter.checkUserInterity()){
+            toolbarBackButtonClick()
+        }
+    }
+
+    override fun toolbarBackButtonClick() {
+        getParentActivity().finish()
+    }
+    override fun notIntegrity(type: Int) {
+        AppUtils.interityUserInfo(getParentActivity(), type)
     }
 
 }// Required empty public constructor

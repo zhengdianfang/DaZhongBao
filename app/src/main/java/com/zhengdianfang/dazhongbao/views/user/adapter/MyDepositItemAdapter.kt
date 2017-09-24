@@ -43,7 +43,7 @@ class MyDepositItemViewHodler(itemView: View?) : RecyclerView.ViewHolder(itemVie
         val context = itemView?.context!!
         sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
         statusView.text = ViewsUtils.renderStatusView(context, product , { _, _ ->})
-        industryNameView.text = product.industry
+        industryNameView.text = ViewsUtils.renderIndustryView(context, ViewsUtils.renderIndustryView(context, product.industry))
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         when(product.bond_status){
             1 -> {
@@ -57,9 +57,9 @@ class MyDepositItemViewHodler(itemView: View?) : RecyclerView.ViewHolder(itemVie
             2 -> {
                 val statusString = context.getString(R.string.paied_label)
                 val depositPrice = product.bond.toString()
-                val showString = context.getString(R.string.my_deposit_price_status_label, depositPrice, statusString)
+                val showString = "${context.getString(R.string.my_deposit_price_status_label)} $depositPrice ($statusString)"
                 var spanableString =  SpannableStringUtils.addColorSpan(showString, depositPrice, ContextCompat.getColor(context, R.color.c_3c3c3c))
-                spanableString =  SpannableStringUtils.addColorSpan(spanableString, statusString, ContextCompat.getColor(context, R.color.c_f9b416))
+                spanableString =  SpannableStringUtils.addColorSpan(spanableString, "($statusString)", ContextCompat.getColor(context, R.color.c_f9b416))
                 depositPriceView.text = spanableString
             }
         }

@@ -36,9 +36,9 @@ class CApplication : Application(){
         set(value) {
             val preference = PreferenceManager.getDefaultSharedPreferences(this)
             if (value == null){
-                preference.edit().putString("login_user", "").apply()
+                preference.edit().putString("login_user", "").commit()
             }else{
-                preference.edit().putString("login_user", API.objectMapper.writeValueAsString(value)).apply()
+                preference.edit().putString("login_user", API.objectMapper.writeValueAsString(value)).commit()
             }
         }
         get() {

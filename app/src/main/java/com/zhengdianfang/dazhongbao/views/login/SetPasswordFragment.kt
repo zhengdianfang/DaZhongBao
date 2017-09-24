@@ -11,7 +11,9 @@ import android.widget.Button
 import android.widget.EditText
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.models.login.User
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.home.MainActivity
@@ -20,7 +22,7 @@ import com.zhengdianfang.dazhongbao.views.home.MainActivity
 /**
  * A simple [Fragment] subclass.
  */
-class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView{
+class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView, BasePresenter.ICheckUserIntegrityView{
 
     private val passwordEditText by lazy { view?.findViewById<EditText>(R.id.passwordEditText)!! }
     private val submitButton by lazy { view?.findViewById<Button>(R.id.submitButton)!! }
@@ -61,10 +63,16 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
     override fun setPasswordSuccess(user: User) {
         toast(R.string.toast_set_password_successful)
         CApplication.INSTANCE.loginUser = user
-        replaceFragment(android.R.id.content, SetOrganizationInfoFragment(), "login")
+        if (mUserPresenter.checkUserInterity()){
+            toolbarBackButtonClick()
+        }
     }
     override fun findPasswordSuccess(msg: String) {
         toast(msg)
         startActivity(Intent(getParentActivity(), MainActivity::class.java))
+    }
+
+    override fun notIntegrity(type: Int) {
+        AppUtils.interityUserInfo(getParentActivity(), type)
     }
 }// Required empty public constructor

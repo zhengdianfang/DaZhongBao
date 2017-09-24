@@ -5,7 +5,6 @@ import com.hyphenate.EMMessageListener
 import com.hyphenate.chat.EMClient
 import com.hyphenate.chat.EMMessage
 import com.orhanobut.logger.Logger
-import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.IMUtils
 import com.zhengdianfang.dazhongbao.models.basic.IMUser
@@ -34,8 +33,6 @@ class ChatPresenter: BasePresenter() , EMMessageListener {
         EMClient.getInstance().chatManager().removeMessageListener(this)
     }
     fun fetchChatList(userId: String){
-        val loginUser = CApplication.INSTANCE.loginUser
-
         addSubscription(IMUtils.getMessageList(userId), Consumer {list ->
             (mView as IMUserInfoAndMessages).receiverMessages(list)
         })

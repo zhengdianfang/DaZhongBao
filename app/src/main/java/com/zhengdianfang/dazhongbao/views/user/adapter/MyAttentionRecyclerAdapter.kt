@@ -50,7 +50,7 @@ class MyAttentionRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(i
         val context = itemView?.context!!
         sharesNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
         soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
-        industryNameView.text = product.industry
+        industryNameView.text = ViewsUtils.renderIndustryView(context, product.industry)
 
         basicPriceView.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.starting_price_label)
         statusView.text = ViewsUtils.renderStatusView(context, product, {canPay, _ ->

@@ -178,7 +178,7 @@
     <string name="auction_fail_label">竞拍失败</string>
     <string name="auction_success_label">竞拍成功</string>
     <string name="sold_price_secret">卖出价格: 保密</string>
-    <string name="my_deposit_price_status_label">保证金 %1$s (%2$s)</string>
+    <string name="my_deposit_price_status_label">保证金</string>
     <string name="paied_label">已支付</string>
     <string name="no_pay_label">未支付</string>
     <string name="chat_up_finger">手指上滑，取消发送</string>
@@ -212,4 +212,5 @@
     <string name="attention_title">感兴趣</string>
     <string name="no_bid_wait_for_auction_start">当前还没开始出价，请等待开拍</string>
     <string name="new_bid_label">最新出价(%s)</string>
+    <string name="unknow_industry">未知行业</string>
 </resources>
