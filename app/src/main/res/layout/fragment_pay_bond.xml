@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:enable_back="true"
-        app:title="@string/confirm_pay_title"
-        app:toolbar_theme="dark" />
+        app:title="@string/confirm_pay_title"/>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -30,12 +29,13 @@
 
         <LinearLayout
             android:layout_gravity="right"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/subButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/deposite_add_button_background"
                 android:padding="8dp"
@@ -61,8 +61,8 @@
 
             <ImageButton
                 android:id="@+id/addButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/deposite_add_button_background"
                 android:padding="8dp"

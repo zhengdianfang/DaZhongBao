@@ -58,4 +58,12 @@ interface ProductApi {
     @FormUrlEncoded
     @POST("products/addbond")
     fun payDeposit(@Field("token") token: String, @Field("productId")productId: Long, @Field("money") money: Double): Observable<JsonNode>
+
+    @FormUrlEncoded
+    @POST("products/bond_payed")
+    fun bondPayed(@Field("token") token: String, @Field("productId")productId: Long,
+                  @Field("paykey") paykey: String,
+                  @Field("trade_no") trade_no: String,
+                  @Field("out_trade_no") out_trade_no: String
+                  ): Observable<JsonNode>
 }

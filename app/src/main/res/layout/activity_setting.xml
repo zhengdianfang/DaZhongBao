@@ -14,9 +14,7 @@
         android:layout_height="wrap_content"
         app:title="@string/activity_setting_title"
         app:toolbar_theme="light"
-        app:enable_back="true"
-        app:enable_confirm="true"
-        app:confirm_label="@string/share_title"/>
+        app:enable_back="true" />
     <LinearLayout
         android:id="@+id/accountViewGroup"
         android:layout_width="match_parent"

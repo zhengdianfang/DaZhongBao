@@ -47,6 +47,7 @@
             android:name=".views.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.setting.SettingActivity"

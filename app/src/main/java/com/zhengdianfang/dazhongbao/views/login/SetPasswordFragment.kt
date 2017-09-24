@@ -47,8 +47,7 @@ class SetPasswordFragment : BaseFragment() , ISetPasswordView, IFindPasswordView
     }
 
     override fun onBackPressed(): Boolean {
-        toolbarBackButtonClick()
-        return true
+        return false
     }
 
     override fun toolbarBackButtonClick() {

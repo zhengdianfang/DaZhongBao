@@ -50,7 +50,8 @@ abstract class BaseFragment: Fragment(), IView {
     }
 
     open fun onBackPressed(): Boolean {
-        return false
+        toolbarBackButtonClick()
+        return true
     }
 
     override fun networkError(msg: String) {
@@ -72,5 +73,9 @@ abstract class BaseFragment: Fragment(), IView {
 
     open fun toolbarConfirmButtonClick() {
 
+    }
+
+    fun setStatusBarTheme(theme: Int, backgroundColor: Int) {
+        getParentActivity().setStatusBarTheme(theme, backgroundColor)
     }
 }

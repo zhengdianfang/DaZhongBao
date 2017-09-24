@@ -58,10 +58,6 @@ class PhoneRegisterFragment : BaseFragment(), IRegisterView , ISendSmsCode{
         timerSub?.dispose()
     }
 
-    override fun onBackPressed(): Boolean {
-        toolbarBackButtonClick()
-        return true
-    }
     override fun validateErrorUI(errorMsgResId: Int) {
         toast(errorMsgResId)
     }

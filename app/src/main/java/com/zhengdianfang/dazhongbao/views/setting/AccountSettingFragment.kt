@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import com.zhengdianfang.dazhongbao.CApplication
 
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
@@ -39,6 +41,8 @@ class AccountSettingFragment : BaseFragment() {
 
             startFragment(android.R.id.content, VerfiyPasswordFragment(),"setting")
         }
+        val loginUser = CApplication.INSTANCE.loginUser
+        view?.findViewById<TextView>(R.id.phoneNumberTextView)!!.text = loginUser?.phonenumber?.replaceRange(3, 7, "****")
     }
 
 }// Required empty public constructor

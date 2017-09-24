@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.helpers.PixelUtils
 import com.zhengdianfang.dazhongbao.helpers.SpannableStringUtils
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
@@ -32,6 +34,7 @@ class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView {
     private val basicPriceView by lazy { view?.findViewById<TextView>(R.id.basicPriceView)!! }
     private val soldCountView by lazy { view?.findViewById<TextView>(R.id.soldCountView)!! }
     private val totalPriceView by lazy { view?.findViewById<TextView>(R.id.totalPriceView)!! }
+    private val licenseTextView by lazy { view?.findViewById<TextView>(R.id.licenseTextView)!! }
     private val submitButton by lazy { view?.findViewById<Button>(R.id.submitButton)!! }
     private val pushBidPresenter = PushBidPresenter()
     private val successDialog by lazy { MaterialDialog.Builder(context).customView(R.layout.dialog_create_bid_success_layout, false).build() }
@@ -52,9 +55,10 @@ class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView {
         super.onActivityCreated(savedInstanceState)
         pushBidPresenter.attachView(this)
         if (null != product){
-            basicPriceView.text = ViewsUtils.renderSharesPrice(context, payPrice, R.string.starting_price_label)
-            soldCountView.text = ViewsUtils.renderSharesSoldCount(context, payCount)
-            totalPriceView.text = ViewsUtils.renderSharesPrice(context, (payCount * payPrice).toLong(), R.string.total_price_label)
+            basicPriceView.text = ViewsUtils.renderSharesPrice(context, payPrice, R.string.starting_price_label, 20f)
+            soldCountView.text = ViewsUtils.renderSharesSoldCount(context, payCount, 20f)
+            totalPriceView.text = ViewsUtils.renderSharesPrice(context, payCount * payPrice, R.string.total_price_label, 20f)
+            licenseTextView.text = Html.fromHtml(FileUtils.readRawFile(context, R.raw.bid_license))
 
             submitButton.setOnClickListener {
                 pushBidPresenter.pushBid(CApplication.INSTANCE.loginUser?.token!!, product!!,  payPrice, payCount)
@@ -65,11 +69,6 @@ class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView {
     override fun onDestroyView() {
         super.onDestroyView()
         pushBidPresenter.detachView()
-    }
-
-    override fun onBackPressed(): Boolean {
-        getParentActivity().supportFragmentManager.popBackStack("bid", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        return true
     }
 
     override fun pushBidSuccess(bid: Bid) {

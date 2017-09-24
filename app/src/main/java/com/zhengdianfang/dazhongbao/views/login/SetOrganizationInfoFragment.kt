@@ -50,15 +50,6 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard {
         mUserPresenter.detachView()
     }
 
-    override fun onBackPressed(): Boolean {
-        toolbarBackButtonClick()
-        return true
-    }
-
-    override fun toolbarBackButtonClick() {
-       getParentActivity().finish()
-    }
-
     override fun toolbarConfirmButtonClick() {
         mUserPresenter.uploadBusinessLicenceCard(
                 mockToken,

@@ -33,8 +33,7 @@ object FileUtils{
 
     fun readRawFile(context: Context?, rawId: Int): String? {
         val inputStream = context?.resources?.openRawResource(rawId)
-        val inputString = inputStream?.bufferedReader().use { it?.readText() }
-        return inputString
+        return inputStream?.bufferedReader().use { it?.readText() }
     }
 
     fun getBitmapDegree(imagePath: String): Float{

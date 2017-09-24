@@ -72,7 +72,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
         productDetailPresenter.attachView(this)
         followProductPresenter.attachView(this)
         setupRecyclerView()
-        disposable = RxBus.instance.register(arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION, Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION), Consumer { (type, data)->
+        disposable = RxBus.instance.register(arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION, Action.PAY_BOND_SUCCESS_ACTION,  Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION), Consumer { (type, data)->
             when(type){
                 Action.FOLLOW_PRODUCT_ACTION -> {
                     productDetailHeaderViewHolder.attention(this.applicationContext, true, productId)
@@ -82,7 +82,7 @@ class ProductDetailActivity : BaseActivity() , ProductDetailPresenter.IProductIn
                     productDetailHeaderViewHolder.attention(this.applicationContext, false, productId)
                     this.product?.attention = 0
                 }
-                Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION  -> {
+                Action.REMOVE_BID_ACTION, Action.ADD_BID_ACTION, Action.PAY_BOND_SUCCESS_ACTION -> {
                     refreshLayout.autoRefresh()
                 }
             }

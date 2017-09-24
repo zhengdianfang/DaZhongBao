@@ -1,5 +1,6 @@
 package com.zhengdianfang.dazhongbao.views.login
 
+import android.app.FragmentManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,7 @@ class FindPasswordFragment : BaseFragment() , IFindPasswordView {
     }
 
     override fun toolbarBackButtonClick() {
-        getParentActivity().finish()
+        getParentActivity().supportFragmentManager.popBackStack("login", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     override fun validateErrorUI(errorMsgResId: Int) {

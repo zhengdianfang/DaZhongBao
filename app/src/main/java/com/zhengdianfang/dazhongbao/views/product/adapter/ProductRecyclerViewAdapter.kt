@@ -43,7 +43,7 @@ class ProductRecyclerViewAdapter(private val bidList: MutableList<Bid>, private 
     }
 
     override fun getItemCount(): Int {
-       return bidList.count() + 1
+       return bidList.count() + 2
     }
 
 }

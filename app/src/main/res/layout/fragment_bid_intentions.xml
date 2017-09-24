@@ -28,12 +28,17 @@
 
             <TextView
                 android:id="@+id/basicPriceView"
+                android:textSize="13sp"
+                android:textColor="@color/c_a0a0a0"
                 tools:text="起拍价: " />
 
             <TextView
                 android:id="@+id/soldCountView"
                 android:layout_gravity="right"
                 android:drawableLeft="@drawable/stock_sale_count_icon"
+                android:textSize="13sp"
+                android:textColor="@color/c_a0a0a0"
+                android:gravity="center_vertical"
                 android:drawablePadding="8dp"
                 tools:text="出让股数: " />
 
@@ -48,9 +53,12 @@
 
             <TextView
                 android:id="@+id/totalPriceView"
+                android:textSize="13sp"
+                android:textColor="@color/c_a0a0a0"
                 tools:text="合计: " />
 
             <TextView
+                android:id="@+id/licenseTextView"
                 android:layout_column="0"
                 android:layout_columnSpan="2"
                 android:layout_columnWeight="1"

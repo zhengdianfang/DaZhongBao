@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.views.home
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -20,15 +21,19 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
+        }
         setContentView(R.layout.activity_main)
 
         bottomBar.changeTabListener =  { tabIndex ->
             viewPage.currentItem = tabIndex
-            if (tabIndex == 0){
-                setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
-            }else{
-                setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (tabIndex == 0){
+                    setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(this.applicationContext, R.color.colorPrimary))
+                }else{
+                    setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
+                }
             }
         }
 

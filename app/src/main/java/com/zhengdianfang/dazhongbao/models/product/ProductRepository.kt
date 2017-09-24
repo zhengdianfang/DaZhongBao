@@ -118,4 +118,15 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
                     API.objectMapper.readValue(response.toString(), AlipayResult::class.java)
                 }
     }
+
+
+    fun bondPayed(token: String, productId: Long, paykey: String, trade_no: String, out_trade_no: String ): Observable<String> {
+        return API.appClient.create(ProductApi::class.java).bondPayed(token, productId, paykey, trade_no, out_trade_no)
+                .map {json ->
+                    if(json.get("errCode").asInt() == 0){
+                        return@map json.get("msg").asText()
+                    }
+                    throw CException(json.get("msg").asText(), json.get("errCode").asInt())
+                }
+    }
 }

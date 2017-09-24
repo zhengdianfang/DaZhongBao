@@ -1,8 +1,10 @@
 package com.zhengdianfang.dazhongbao.views.product
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -12,14 +14,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import com.alipay.sdk.app.EnvUtils
 import com.orhanobut.logger.Logger
-import com.zhengdianfang.dazhongbao.BuildConfig
 import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.AliPayUtils
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.AlipayResult
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.PayDepositPresenter
@@ -48,6 +49,7 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
         payDepositPresenter.attachView(this)
         setupBondViews()
     }
@@ -57,9 +59,9 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
         payDepositPresenter.detachView()
     }
 
-    override fun onBackPressed(): Boolean {
+    override fun toolbarBackButtonClick() {
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(context, R.color.colorPrimary))
         getParentActivity().supportFragmentManager.popBackStack()
-        return true
     }
 
     private fun setupBondViews() {
@@ -105,12 +107,15 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
     }
 
     override fun payResult(alipayResult: AlipayResult) {
-        if (BuildConfig.DEBUG){
-            EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-        }
         alipayUtils.pay(alipayResult.alipay_url).subscribe ({ result ->
             Logger.d("alipay success: $result")
+            payDepositPresenter.bondPayed(CApplication.INSTANCE.loginUser?.token!!, product?.id!!, alipayResult.paykey, result)
         }, {e -> toast(R.string.alipay_fail_toast)})
+    }
+    override fun notifyBackendResult(result: String) {
+        RxBus.instance.post(Action(Action.PAY_BOND_SUCCESS_ACTION, ""))
+        toast(result)
+        toolbarBackButtonClick()
     }
 
 }// Required empty public constructor

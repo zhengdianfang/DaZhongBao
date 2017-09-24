@@ -160,7 +160,7 @@
     <string name="likely_tips">温馨提示</string>
     <string name="likely_tips_info">保证金在竞拍结束之后，自动原路退回支付宝账户，请放心支付</string>
     <string name="confirm_pay">确认支付</string>
-    <string name="max_auction_shares_count">最多可竞拍%d万股</string>
+    <string name="max_auction_shares_count">最多可竞拍: %d 万股</string>
     <string name="bid_history_title">出价记录</string>
     <string name="cancel_bond_price">取消报价</string>
     <string name="now_top_price_label">当前最高价</string>
@@ -204,8 +204,12 @@
     <string name="upload_card_label">上传名片</string>
     <string name="update_contact_card_bottom_tips">请保证名片的完整性，方便系统或人工识别</string>
     <string name="bid_count_label">%d次叫价</string>
+    <string name="bid_count_label1">叫价%d次</string>
     <string name="partner_plan_title">合伙人计划</string>
     <string name="no_auction_message_tip">您还没有开拍提醒</string>
     <string name="no_auction_success_message_tip">您还没有参与竞拍</string>
     <string name="message_empty_tips">您还没有新的消息哦</string>
+    <string name="attention_title">感兴趣</string>
+    <string name="no_bid_wait_for_auction_start">当前还没开始出价，请等待开拍</string>
+    <string name="new_bid_label">最新出价(%s)</string>
 </resources>

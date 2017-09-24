@@ -18,6 +18,8 @@ object Constants {
 
     val MIN_BID_PRICE = 3000000
 
-    val PARTNER_URL: String = "http://47.92.128.105/partner/index/index?token=%s"
+    val PARTNER_URL = "http://47.92.128.105/partner/index/index?token=%s"
 
+    val ABOUT_ME = "http://47.92.128.105/index/index?aid=22"
+    val USER_LINCENCE = "http://47.92.128.105/index/index?aid=23"
 }

@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/un_attention"
+        app:title="@string/attention_title"
         app:enable_back="true"/>
 
 

@@ -18,12 +18,16 @@ import java.text.DecimalFormat
  */
 object ViewsUtils {
 
-    fun renderSharesSoldCount(context: Context, count: Long): SpannableString {
+    fun renderSharesSoldCount(context: Context, count: Long, fontSize: Float): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
         val soldCount = count.toDouble() / Constants.SOLD_COUNT_BASE_UNIT.toDouble()
         val soldCountString = context.getString(R.string.sold_count_value, soldCount.toString())!!
         return  SpannableStringUtils.addColorSpan(context.getString(R.string.product_item_to_sell, soldCountString)!!,
-                soldCountString, highlightColor, PixelUtils.sp2px(context, 16f).toInt())
+                soldCountString, highlightColor, PixelUtils.sp2px(context, fontSize).toInt())
+    }
+
+    fun renderSharesSoldCount(context: Context, count: Long ): SpannableString {
+       return renderSharesSoldCount(context, count, 16f)
     }
 
     fun renderSharesNameAndCode(context: Context, sharesName: String, sharesCode: String): SpannableString{
@@ -32,17 +36,17 @@ object ViewsUtils {
                 "$sharesName [$sharesCode]", highlightColor, PixelUtils.sp2px(context, 16f).toInt())
     }
 
-    fun renderSharesPrice(context: Context, price: Double, labelResId: Int): SpannableString {
+    fun renderSharesPrice(context: Context, price: Double, labelResId: Int,fontSize: Float): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
         val df = DecimalFormat("#.00")
         val priceString = context.getString(R.string.price_unit_value, df.format(price))
         val colorSpannableString = SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString), priceString, highlightColor)
-        return SpannableStringUtils.addSizeSpan(colorSpannableString, df.format(price), PixelUtils.sp2px(context, 16f).toInt())
+        return SpannableStringUtils.addSizeSpan(colorSpannableString, df.format(price), PixelUtils.sp2px(context, fontSize).toInt())
 
     }
+    fun renderSharesPrice(context: Context, price: Double, labelResId: Int): SpannableString {
+        return renderSharesPrice(context, price, labelResId, 16f)
 
-    fun renderSharesPrice(context: Context, price: Long, labelResId: Int): SpannableString {
-        return renderSharesPrice(context, price.toDouble(), labelResId)
     }
 
     fun renderStatusView(context: Context, product: Product, callback: (canPay: Boolean, dealSuccess: Boolean)-> Unit): SpannableString {

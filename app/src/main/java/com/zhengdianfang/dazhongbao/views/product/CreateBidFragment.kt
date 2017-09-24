@@ -1,8 +1,10 @@
 package com.zhengdianfang.dazhongbao.views.product
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -14,10 +16,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Action
-import com.zhengdianfang.dazhongbao.helpers.RemoveBidResult
-import com.zhengdianfang.dazhongbao.helpers.RxBus
-import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
+import com.zhengdianfang.dazhongbao.helpers.*
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.PushBidPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
@@ -50,6 +49,7 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IRemoveBidView{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
         pushBidPresenter.attachView(this)
         renderViews()
         renderMyBidList()
@@ -79,14 +79,16 @@ class CreateBidFragment : BaseFragment(), PushBidPresenter.IRemoveBidView{
         RxBus.instance.unregister(removeBidDisposable)
     }
 
-    override fun onBackPressed(): Boolean {
-        getParentActivity().supportFragmentManager.popBackStack()
-        return true
+    override fun toolbarBackButtonClick() {
+        setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, ContextCompat.getColor(context, R.color.colorPrimary))
+        super.toolbarBackButtonClick()
+
     }
 
     private fun renderViews() {
        if (product != null) {
-           nowTopPriceView.text = "￥${product?.nowUnitPrice}"
+           nowTopPriceView.text = SpannableStringUtils.addSizeSpan("￥${product!!.nowUnitPrice}",
+                   product!!.nowUnitPrice.toString(), PixelUtils.sp2px(context, 24f).toInt())
            bidPriceView.addTextChangedListener(object: TextWatcher{
                override fun afterTextChanged(editable: Editable?) {
                    val price = if(TextUtils.isEmpty(editable.toString())) 0 else editable.toString().toInt()

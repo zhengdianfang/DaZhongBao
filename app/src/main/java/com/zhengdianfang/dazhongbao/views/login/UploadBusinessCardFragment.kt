@@ -51,11 +51,6 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
         mUserPresenter.detachView()
     }
 
-    override fun onBackPressed(): Boolean {
-        toolbarBackButtonClick()
-        return true
-    }
-
     override fun toolbarConfirmButtonClick() {
         val token = CApplication.INSTANCE.loginUser?.token
         if (token != null){

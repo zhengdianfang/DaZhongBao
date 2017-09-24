@@ -10,7 +10,7 @@ class LoginActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
                 .add(android.R.id.content, LoginFragment())
-                .addToBackStack("login")
+                .addToBackStack("main")
                 .commitAllowingStateLoss()
     }
 

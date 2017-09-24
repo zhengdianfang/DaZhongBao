@@ -54,6 +54,7 @@ data class Action(var type: String, var data: Any){
         val WEIXIN_OUTH_RESULT_FAIL_ACTION = "WEIXIN_OUTH_RESULT_FAIL_ACTION"
         val HOME_PAGE_REFRESH_START_ACTION = "home_page_refresh_start_action"
         val HOME_PAGE_REFRESH_END_ACTION = "home_page_refresh_end_action"
+        val PAY_BOND_SUCCESS_ACTION = "pay_bond_success_action"
     }
 }
 

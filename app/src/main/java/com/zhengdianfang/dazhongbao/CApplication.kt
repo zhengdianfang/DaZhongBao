@@ -82,7 +82,6 @@ class CApplication : Application(){
             ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate)
         }
         SmartRefreshLayout.setDefaultRefreshFooterCreater { context, layout ->
-            //指定为经典Footer，默认是 BallPulseFooter
             ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate)
         }
     }
@@ -102,7 +101,6 @@ class CApplication : Application(){
         loginUser = null
         EMClient.getInstance().logout(true)
         startActivity(Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 }

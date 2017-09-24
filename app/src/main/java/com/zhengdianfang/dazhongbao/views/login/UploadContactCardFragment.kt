@@ -123,11 +123,6 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard{
         }
     }
 
-    override fun onBackPressed(): Boolean {
-        toolbarBackButtonClick()
-        return true
-    }
-
     override fun toolbarConfirmButtonClick() {
         val token = CApplication.INSTANCE.loginUser?.token
         if (token != null) {

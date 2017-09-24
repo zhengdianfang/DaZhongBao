@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/bid_history_title"
-        app:enable_back="true"
-        app:toolbar_theme="dark" />
+        app:enable_back="true" />
 
     <LinearLayout
         android:id="@+id/cancelBidViewGroup"
@@ -35,11 +34,12 @@
 
         <TextView
             android:text="@string/now_top_price_label"
-            android:textSize="12sp"/>
+            android:textColor="@color/c_787878"
+            android:textSize="15sp"/>
         <TextView
             android:id="@+id/nowTopPriceView"
             android:layout_marginLeft="8dp"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimary"
             android:layout_column="1"
             android:layout_columnSpan="2"
@@ -48,14 +48,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:paddingVertical="16dp"
+            android:paddingVertical="8dp"
             android:layout_columnSpan="3"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_columnWeight="1"
             android:background="@drawable/fragment_setting_item_background">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:textColor="@color/c_3c3c3c"
+                android:textSize="15sp"
                 android:text="@string/product_status_bid"/>
 
             <EditText
@@ -67,17 +69,21 @@
                 android:layout_marginHorizontal="8dp"
                 android:gravity="right"
                 android:inputType="numberSigned"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent">
+                <requestFocus/>
+            </EditText>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="@color/c_a0a0a0"
                 android:layout_gravity="right"
                 android:text="元"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:paddingVertical="16dp"
+            android:paddingVertical="8dp"
             android:layout_columnSpan="3"
             android:layout_columnWeight="1"
             android:background="@drawable/fragment_setting_item_background">
@@ -86,6 +92,8 @@
                 android:text="@string/pay_count_label"
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical"
+                android:textColor="@color/c_3c3c3c"
+                android:textSize="15sp"
                 android:layout_height="match_parent"/>
 
             <EditText
@@ -104,6 +112,8 @@
                 android:layout_gravity="right"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
+                android:textSize="15sp"
+                android:textColor="@color/c_a0a0a0"
                 android:text="股"/>
         </LinearLayout>
 
@@ -111,12 +121,14 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_columnSpan="3"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_columnWeight="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/c_3c3c3c"
+                android:textSize="15sp"
                 android:text="合计: "
                 android:layout_gravity="center_vertical"/>
 
@@ -136,6 +148,8 @@
                 android:layout_column="1"
                 android:layout_columnSpan="2"
                 android:layout_marginLeft="8dp"
+                android:textSize="15sp"
+                android:textColor="@color/c_a0a0a0"
                 android:text="@string/bid_tip"/>
         </LinearLayout>
     </GridLayout>
