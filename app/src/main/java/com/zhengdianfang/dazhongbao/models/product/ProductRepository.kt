@@ -26,7 +26,7 @@ class ProductRepository(private val MOCK :Boolean = Constants.MOCK) {
     }
 
     fun pushProduct(token: String, sharesCodes: String, companyName: String,  basicUnitPrice: Double,
-                    soldCount: Int, limitTime: Long, notes: String): Observable<Product>{
+                    soldCount: Long, limitTime: Long, notes: String): Observable<Product>{
 
         return API.appClient.create(ProductApi::class.java).pushProduct(token, sharesCodes, companyName, basicUnitPrice, soldCount, limitTime, notes)
                 .map {response -> API.parseResponse(response) }

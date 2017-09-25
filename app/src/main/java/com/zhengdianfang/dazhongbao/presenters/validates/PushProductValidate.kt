@@ -10,7 +10,7 @@ class PushProductValidate(mIView: IView?) : BaseValidate(mIView) {
 
 
     fun validateFields(sharesCodes: String, companyName: String,  basicUnitPrice: Double,
-                    soldCount: Int): Boolean {
+                    soldCount: Long): Boolean {
        var res = true
         if (sharesCodes.isNullOrEmpty()){
             res = false
@@ -21,7 +21,7 @@ class PushProductValidate(mIView: IView?) : BaseValidate(mIView) {
         }else if (basicUnitPrice == 0.0){
             res = false
             mIView?.validateErrorUI(R.string.please_input_basic_unit_price)
-        }else if (soldCount == 0){
+        }else if (soldCount == 0L){
             res = false
             mIView?.validateErrorUI(R.string.please_input_sold_count)
         }

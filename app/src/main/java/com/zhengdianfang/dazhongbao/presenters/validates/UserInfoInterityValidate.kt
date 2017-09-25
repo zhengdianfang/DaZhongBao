@@ -16,7 +16,7 @@ class UserInfoInterityValidate(mIView: IView?) : BaseValidate(mIView) {
         val NO_EXITS_CONTACT_CARD = 3
     }
 
-    fun validate(): Boolean {
+    fun validateWhenCreateProduct(): Boolean {
         var res = true
         if (checkLogin()){
             val loginUser = CApplication.INSTANCE.loginUser!!
@@ -26,14 +26,32 @@ class UserInfoInterityValidate(mIView: IView?) : BaseValidate(mIView) {
                         (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_LINLENCE_CARD)
                         res = false
                     }
+                }
+                User.PERSONAL_TYPE -> {
                     if (loginUser.isExitsBusinessCard().not()){
                         (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_CARD)
                        res = false
                     }
                 }
+            }
+        }
+        return res
+    }
+
+    fun validateWhenreateProduct(): Boolean {
+        var res = true
+        if (checkLogin()){
+            val loginUser = CApplication.INSTANCE.loginUser!!
+            when(loginUser.type) {
+                User.ORGANIZATION_TYPE -> {
+                    if (loginUser.isExitsBusinessLicenceCard().not()) {
+                        (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_LINLENCE_CARD)
+                        res = false
+                    }
+                }
                 User.PERSONAL_TYPE -> {
-                    if (loginUser.isExitsContactCard().not()){
-                        (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_CONTACT_CARD)
+                    if (loginUser.isExitsBusinessCard().not()){
+                        (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_CARD)
                         res = false
                     }
                 }

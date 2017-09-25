@@ -15,17 +15,18 @@ import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.SharesInfo
+import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.PushProductPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct{
+class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct, BasePresenter.ICheckUserIntegrityView{
 
     private val sharesCodeEditView by lazy { view?.findViewById<AutoCompleteTextView>(R.id.sharesCodeEditView)!! }
     private val companyUnitPriceEditView by lazy { view?.findViewById<EditText>(R.id.companyUnitPriceEditView)!! }
@@ -70,12 +71,12 @@ class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct{
         pushButton.setOnClickListener {
             val companyCode = if(this.selectedShareCode.isEmpty())  sharesCodeEditView.text.toString() else this.selectedShareCode
             val companyUnitPrice = if(TextUtils.isEmpty(companyUnitPriceEditView.text.toString())) 0.0 else companyUnitPriceEditView.text.toString().toDouble()
-            val soldCount = if(TextUtils.isEmpty(saleCountEditView.text.toString())) 0 else saleCountEditView.text.toString().toInt()
+            val soldCount = if(TextUtils.isEmpty(saleCountEditView.text.toString())) 0 else saleCountEditView.text.toString().toLong()
             val notes = detailEditView.text.toString()
             val sharesOwnerName = shareOwnerNameEidtView.text.toString()
             val limitTime = if(yesRadio.isChecked) 6L else 0
             val token = CApplication.INSTANCE.loginUser?.token ?: ""
-            if (mPushProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount * Constants.SOLD_COUNT_BASE_UNIT)){
+            if (mPushProductPresenter.pushProductBeforeValidate(companyCode, sharesOwnerName, companyUnitPrice, soldCount)){
                MaterialDialog.Builder(context)
                        .content(getString(R.string.push_confirm_dialog_content, sharesOwnerName, limitTime))
                        .title(R.string.authorization_agreement)
@@ -139,6 +140,9 @@ class PushFragment : BaseFragment(), PushProductPresenter.IPushProduct{
     override fun receiverSharesInfo(sharesInfo: SharesInfo) {
         CApplication.INSTANCE.shareInfosCache.add(sharesInfo)
         showDropDown(sharesInfo)
+    }
+    override fun notIntegrity(type: Int) {
+        SetUserCertificationActivity.startActivity(getParentActivity(), type)
     }
 
 }// Required empty public constructor

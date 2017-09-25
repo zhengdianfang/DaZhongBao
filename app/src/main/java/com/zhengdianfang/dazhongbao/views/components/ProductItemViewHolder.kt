@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
@@ -30,8 +29,7 @@ class ProductItemViewHolder(itemView: View?, private val followProductPresenter:
         Log.d("ProductItemViewHolder", product.toString())
         val context = itemView?.context!!
         stockNameView.text = ViewsUtils.renderSharesNameAndCode(context, product.sharesName, product.sharesCode)
-        val soldCount = product.soldCount / Constants.SOLD_COUNT_BASE_UNIT
-        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, soldCount)
+        soldCountView.text = ViewsUtils.renderSharesSoldCount(context, product.soldCount)
         industryNameView.text = ViewsUtils.renderIndustryView(context, product.industry)
         nowUnitPriceView?.text = ViewsUtils.renderSharesPrice(context, product.basicUnitPrice, R.string.product_item_will_pay_price)
         if (product.attention == 0){

@@ -139,9 +139,7 @@ class UploadContactCardFragment : BaseFragment() , IUploadCard, BasePresenter.IC
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
-        if (mUserPresenter.checkUserInterity()){
-            toolbarBackButtonClick()
-        }
+        toolbarBackButtonClick()
     }
 
     override fun toolbarBackButtonClick() {

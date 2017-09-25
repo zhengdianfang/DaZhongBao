@@ -14,15 +14,15 @@ import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zhengdianfang.dazhongbao.CApplication
-
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserCount
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
+import com.zhengdianfang.dazhongbao.presenters.validates.UserInfoInterityValidate
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
-import com.zhengdianfang.dazhongbao.views.login.UploadContactCardFragment
+import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.*
 import jp.wasabeef.glide.transformations.CropCircleTransformation
@@ -87,14 +87,12 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
             userRealNameTextView.text = if(TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
             userPhoneNumberTextView.text = loginUser.phonenumber?.replaceRange(3, 7,"****")
             levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
-            upgradeVIPView.visibility = if (loginUser.integrity!! == 0) View.GONE else View.VISIBLE
+            upgradeVIPView.visibility = if (loginUser.type == 1 && loginUser.isExitsContactCard().not()) View.VISIBLE else View.GONE
             upgradeVIPView.setOnClickListener {
-                val fragment = UploadContactCardFragment()
-                startFragment(android.R.id.content,fragment , "personal")
+                SetUserCertificationActivity.startActivity(getParentActivity(), UserInfoInterityValidate.NO_EXITS_CONTACT_CARD)
             }
             userPhoneNumberTextView.setOnClickListener {
-                val fragment = UploadContactCardFragment()
-                startFragment(android.R.id.content,fragment , "personal")
+                context.startActivity(Intent(context, PersonalInfoActivity::class.java))
             }
         }
 

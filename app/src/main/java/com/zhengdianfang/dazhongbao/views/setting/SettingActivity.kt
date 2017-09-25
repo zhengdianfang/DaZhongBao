@@ -7,7 +7,9 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.components.Toolbar
@@ -24,6 +26,7 @@ class SettingActivity : BaseActivity() {
                     CApplication.INSTANCE.logout()
                     dialog.cancel()
                     SettingActivity@this.finish()
+                    RxBus.instance.post(Action(Action.LOGOUT_ACTION, ""))
                 }.onNegative { dialog, _ -> dialog.cancel() }
                 .build()
     }

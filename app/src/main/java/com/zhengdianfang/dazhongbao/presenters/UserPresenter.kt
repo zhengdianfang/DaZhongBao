@@ -10,7 +10,6 @@ import com.zhengdianfang.dazhongbao.models.login.UserRepository
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.validates.PasswordValidate
 import com.zhengdianfang.dazhongbao.presenters.validates.PhoneNumberValidate
-import com.zhengdianfang.dazhongbao.presenters.validates.UserInfoInterityValidate
 import com.zhengdianfang.dazhongbao.presenters.validates.VerifySmsCodeValidate
 import com.zhengdianfang.dazhongbao.views.basic.IView
 import com.zhengdianfang.dazhongbao.views.login.IFindPasswordView
@@ -31,7 +30,6 @@ class UserPresenter: BasePresenter() {
     private val mUserRepository by lazy { UserRepository(Constants.MOCK) }
     private val mUserCacheRepository by lazy { UserCacheRepository(CApplication.INSTANCE.memoryCache, CApplication.INSTANCE.diskCahce) }
     private val passwordValidate by lazy { PasswordValidate(mView) }
-    private val userInfoInterityValidate by lazy { UserInfoInterityValidate(mView) }
     private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
     private val verifySmsCodeValidate by lazy { VerifySmsCodeValidate(mView) }
 
@@ -202,10 +200,6 @@ class UserPresenter: BasePresenter() {
             (mView as IUploadCard).uploadSuccess(user)
             mView?.hideLoadingDialog()
         })
-    }
-
-    fun checkUserInterity(): Boolean {
-       return userInfoInterityValidate.validate()
     }
 
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {

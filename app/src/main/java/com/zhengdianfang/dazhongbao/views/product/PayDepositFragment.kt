@@ -17,12 +17,16 @@ import android.widget.TextView
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.*
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.AliPayUtils
+import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.product.AlipayResult
 import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.PayDepositPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
+import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 
 
 /**
@@ -116,7 +120,7 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
         toolbarBackButtonClick()
     }
     override fun notIntegrity(type: Int) {
-        AppUtils.interityUserInfo(getParentActivity(), type)
+        SetUserCertificationActivity.startActivity(getParentActivity(), type)
     }
 
 }// Required empty public constructor

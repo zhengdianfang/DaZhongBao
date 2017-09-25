@@ -13,10 +13,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
@@ -24,7 +22,7 @@ import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 /**
  * A simple [Fragment] subclass.
  */
-class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard, BasePresenter.ICheckUserIntegrityView {
+open class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard{
 
     private val organizationNameEditText by lazy { view?.findViewById<EditText>(R.id.organizationNameEditText)!! }
     private val organizationContactEditText by lazy { view?.findViewById<EditText>(R.id.organizationContactEditText)!! }
@@ -66,13 +64,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard, BasePrese
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
-        if (mUserPresenter.checkUserInterity()){
-            toolbarBackButtonClick()
-        }
-    }
-
-    override fun toolbarBackButtonClick() {
-        getParentActivity().finish()
+        toolbarBackButtonClick()
     }
 
     override fun getPhotoWidth(): Int {
@@ -92,7 +84,7 @@ class SetOrganizationInfoFragment : TakePhotoFragment() , IUploadCard, BasePrese
         Glide.with(this).load(imagePath).into(licenceCardImageView)
         licenceTextView.visibility = View.INVISIBLE
     }
-    override fun notIntegrity(type: Int) {
-        AppUtils.interityUserInfo(getParentActivity(), type)
+    override fun toolbarBackButtonClick() {
+        getParentActivity().finish()
     }
 }

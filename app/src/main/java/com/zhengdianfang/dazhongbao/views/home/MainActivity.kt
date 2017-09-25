@@ -1,6 +1,5 @@
 package com.zhengdianfang.dazhongbao.views.home
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -16,7 +15,6 @@ import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.BaseActivity
 import com.zhengdianfang.dazhongbao.views.components.BottomBar
-import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 
 class MainActivity : BaseActivity(), BasePresenter.ICheckUserIntegrityView {
 
@@ -46,12 +44,6 @@ class MainActivity : BaseActivity(), BasePresenter.ICheckUserIntegrityView {
 
         viewPage.offscreenPageLimit = fragments.size
         viewPage.adapter = MainFragmentAdapter(supportFragmentManager)
-        startCertActivity()
-    }
-
-    private fun startCertActivity() {
-        startActivity(Intent(this, SetUserCertificationActivity::class.java))
-        overridePendingTransition(0, 0)
     }
 
     override fun onDestroy() {

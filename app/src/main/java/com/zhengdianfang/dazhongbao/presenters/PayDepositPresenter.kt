@@ -15,7 +15,7 @@ class PayDepositPresenter: BasePresenter() {
     private val validate  by lazy { UserInfoInterityValidate(mView) }
 
     fun payDeposit(token: String, productId: Long, money: Double){
-        if (validate.validate()) {
+        if (validate.validateWhenCreateProduct()) {
             mView?.showLoadingDialog()
             addSubscription(productRepository.payDeposit(token, productId, money), Consumer {result ->
                 (mView as IPayDepositResultView).payResult(result)

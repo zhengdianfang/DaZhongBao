@@ -13,18 +13,27 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.views.login.LoginActivity
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 
 /**
  * Created by dfgzheng on 25/07/2017.
  */
 @SuppressLint("RestrictedApi")
 abstract class BaseActivity : AppCompatActivity() {
+    private var logoutCom: Disposable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setStatusBarTheme(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR, Color.WHITE)
         }
+        logoutCom = RxBus.instance.register(Action.LOGOUT_ACTION, Consumer {
+            finish()
+        })
     }
     private val mDialogFragment by lazy {
         val dialogFragment = AppDialogFragment()
@@ -64,6 +73,10 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.instance.unregister(logoutCom)
+    }
     open fun validateErrorUI(errorMsgResId: Int) {
         toast(errorMsgResId)
     }

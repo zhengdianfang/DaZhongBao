@@ -4,6 +4,7 @@ import com.zhengdianfang.dazhongbao.models.product.Product
 import com.zhengdianfang.dazhongbao.models.product.ProductRepository
 import com.zhengdianfang.dazhongbao.models.product.SharesInfo
 import com.zhengdianfang.dazhongbao.presenters.validates.PushProductValidate
+import com.zhengdianfang.dazhongbao.presenters.validates.UserInfoInterityValidate
 import com.zhengdianfang.dazhongbao.views.basic.IView
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
@@ -16,14 +17,16 @@ class PushProductPresenter: BasePresenter() {
 
     private val productRepository by lazy { ProductRepository() }
     private val mPushProductValidate by lazy { PushProductValidate(mView) }
+    private val userInfoInterityValidate by lazy { UserInfoInterityValidate(mView) }
     private val deounceObservable = Observable.just(1).debounce(500, TimeUnit.MILLISECONDS)
 
-    fun pushProductBeforeValidate(sharesCodes: String, companyName: String,  basicUnitPrice: Double, soldCount: Int): Boolean {
+    fun pushProductBeforeValidate(sharesCodes: String, companyName: String,  basicUnitPrice: Double, soldCount: Long): Boolean {
         return mPushProductValidate.checkLogin() && mPushProductValidate.validateFields(sharesCodes, companyName, basicUnitPrice, soldCount)
+                 && userInfoInterityValidate.validateWhenCreateProduct()
     }
 
     fun pushProduct(token: String, sharesCodes: String, companyName: String,  basicUnitPrice: Double,
-                    soldCount: Int, limitTime: Long, notes: String) {
+                    soldCount: Long, limitTime: Long, notes: String) {
 
         mView?.showLoadingDialog()
         addSubscription(productRepository.pushProduct(token, sharesCodes, companyName, basicUnitPrice, soldCount, limitTime, notes), Consumer<Product> { product ->

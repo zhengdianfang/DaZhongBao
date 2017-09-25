@@ -32,18 +32,19 @@ class CApplication : Application(){
         var INSTANCE: CApplication by Delegates.notNull()
     }
 
+    private val preference by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
+
     var loginUser: User? = null
         set(value) {
-            val preference = PreferenceManager.getDefaultSharedPreferences(this)
             if (value == null){
-                preference.edit().putString("login_user", "").commit()
+                preference.edit().remove("login_user").commit()
             }else{
                 preference.edit().putString("login_user", API.objectMapper.writeValueAsString(value)).commit()
             }
+            field = value
         }
         get() {
             if (field == null) {
-                val preference = PreferenceManager.getDefaultSharedPreferences(this)
                 val json = preference.getString("login_user", "")
                 if (!TextUtils.isEmpty(json)){
                     field = API.objectMapper.readValue<User>(json, User::class.java)

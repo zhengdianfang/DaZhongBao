@@ -89,8 +89,11 @@ class ThirdAccountBindPhoneFragment: BaseFragment(), IRegisterView , ISendSmsCod
         toast(R.string.toast_register_successful)
         timerSub?.dispose()
         startActivity(Intent(getParentActivity(), MainActivity::class.java))
-        getParentActivity().finish()
+        getParentActivity().startActivities(arrayOf(Intent(context, MainActivity::class.java),
+                Intent(context, SetUserCertificationActivity::class.java).putExtra("register", true)))
+        toolbarBackButtonClick()
     }
     override fun verifySmsCodeResult(success: Boolean) {
     }
+
 }

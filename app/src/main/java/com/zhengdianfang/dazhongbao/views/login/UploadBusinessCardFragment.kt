@@ -12,10 +12,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.login.User
-import com.zhengdianfang.dazhongbao.presenters.BasePresenter
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
 import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 
@@ -23,7 +21,7 @@ import com.zhengdianfang.dazhongbao.views.basic.TakePhotoFragment
 /**
  * A simple [Fragment] subclass.
  */
-class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard, BasePresenter.ICheckUserIntegrityView {
+class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard {
 
     private val businessCardImageView by lazy { view?.findViewById<ImageView>(R.id.businessCardImageView)!! }
     private val maskTextView by lazy { view?.findViewById<TextView>(R.id.maskTextView)!! }
@@ -67,13 +65,7 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard, BasePresent
     override fun uploadSuccess(user: User) {
         CApplication.INSTANCE.loginUser = user
         toast(R.string.upload_business_card_success)
-        if (mUserPresenter.checkUserInterity()){
-            toolbarBackButtonClick()
-        }
-    }
-
-    override fun toolbarBackButtonClick() {
-        getParentActivity().finish()
+        toolbarBackButtonClick()
     }
 
     override fun getPhotoWidth(): Int {
@@ -93,7 +85,8 @@ class UploadBusinessCardFragment : TakePhotoFragment(), IUploadCard, BasePresent
         Glide.with(this).load(imagePath).into(businessCardImageView)
         maskTextView.visibility = View.INVISIBLE
     }
-    override fun notIntegrity(type: Int) {
-        AppUtils.interityUserInfo(getParentActivity(), type)
+
+    override fun toolbarBackButtonClick() {
+        getParentActivity().finish()
     }
 }// Required empty public constructor
