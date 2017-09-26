@@ -12,6 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.bumptech.glide.manager.SupportRequestManagerFragment
+import com.umeng.message.PushAgent
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.RxBus
@@ -34,6 +35,8 @@ abstract class BaseActivity : AppCompatActivity() {
         logoutCom = RxBus.instance.register(Action.LOGOUT_ACTION, Consumer {
             finish()
         })
+        PushAgent.getInstance(this.application.applicationContext).onAppStart()
+
     }
     private val mDialogFragment by lazy {
         val dialogFragment = AppDialogFragment()

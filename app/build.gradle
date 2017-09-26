@@ -76,4 +76,5 @@ dependencies {
     implementation 'com.hyphenate:hyphenate-sdk:3.3.0'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    implementation project(':PushSDK')
 }

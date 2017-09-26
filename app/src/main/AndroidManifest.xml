@@ -135,6 +135,19 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+        <!--umeng-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59ca63b1677baa77d0001305">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="d28f7bcaa21982da41bee04ac0e96306">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="zdf" >
+        </meta-data>
 
     </application>
 
