@@ -15,7 +15,9 @@ import com.orhanobut.logger.Logger
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
+import com.zhengdianfang.dazhongbao.helpers.Action
 import com.zhengdianfang.dazhongbao.helpers.Constants
+import com.zhengdianfang.dazhongbao.helpers.RxBus
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserCount
 import com.zhengdianfang.dazhongbao.presenters.UserPresenter
@@ -25,6 +27,8 @@ import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.*
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 
@@ -48,6 +52,7 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
     private val myDepositViewGroup by lazy { view?.findViewById<ViewGroup>(R.id.myDepositViewGroup)!! }
     private val refreshLayout by lazy { view?.findViewById<SmartRefreshLayout>(R.id.refreshLayout)!! }
     private val userPersenter = UserPresenter()
+    private var mDisposable: Disposable? = null
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -58,19 +63,33 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         userPersenter.attachView(this)
+        bindEvents()
+        registerBroadcast()
+        refreshLayout.autoRefresh()
+
+    }
+
+    private fun bindEvents() {
         settingViewGroup.setOnClickListener {
             startActivity(Intent(getParentActivity(), SettingActivity::class.java))
         }
         partnerViewGroup.setOnClickListener {
-           WebActivity.startActivity(context, getString(R.string.partner_plan_title), String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
+            WebActivity.startActivity(context, getString(R.string.partner_plan_title), String.format(Constants.PARTNER_URL, CApplication.INSTANCE.loginUser?.token))
         }
         refreshLayout.setOnRefreshListener {
             userPersenter.fetchUserInfo(CApplication.INSTANCE.loginUser?.token!!)
         }
-        refreshLayout.autoRefresh()
+    }
 
+    private fun registerBroadcast() {
+        mDisposable = RxBus.instance.register(arrayOf(Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION), Consumer { action ->
+            when (action.type) {
+                Action.FOLLOW_PRODUCT_ACTION, Action.CANCEL_FOLLOW_PRODUCT_ACTION -> {
+                    refreshLayout.autoRefresh()
+                }
+            }
+        })
     }
 
     private fun setupUserInfo(loginUser: User, userCount: UserCount) {
@@ -122,6 +141,7 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
 
     override fun onDestroy() {
         super.onDestroy()
+        RxBus.instance.unregister(mDisposable)
         userPersenter.detachView()
     }
 

@@ -55,7 +55,7 @@ class PushBidPresenter: BasePresenter() {
                 mView?.validateErrorUI(R.string.the_bid_max_count)
                 res = false
             }
-            count * price < Constants.MIN_DEPOSIT_PRICE -> {
+            count * price < Constants.MIN_BID_PRICE -> {
                 mView?.validateErrorUI(R.string.bid_tip)
                 res = false
             }

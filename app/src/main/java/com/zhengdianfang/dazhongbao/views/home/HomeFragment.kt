@@ -33,7 +33,7 @@ import io.reactivex.functions.Consumer
  */
 class HomeFragment : BaseFragment(), AdvertPresenter.IAdvertBannerView, AdvertPresenter.IIndexCountView{
 
-    private val tabs = arrayOf("3,4,5", "0")
+    private val tabs = arrayOf("3", "0")
 
     private val tabViewPagerAdapter by lazy { TabViewPagerAdapter(context, tabs, childFragmentManager) }
     private val mAdvertViewPager by lazy { view?.findViewById<MiracleViewPager>(R.id.advertViewPager)!! }

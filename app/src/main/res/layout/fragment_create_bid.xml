@@ -68,7 +68,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="right"
-                android:inputType="numberSigned"
+                android:inputType="numberDecimal"
                 android:background="@android:color/transparent">
                 <requestFocus/>
             </EditText>

@@ -16,7 +16,7 @@ object Constants {
 
     val MIN_DEPOSIT_PRICE = 10000
 
-    val MIN_BID_PRICE = 3000000
+    val MIN_BID_PRICE = 2000000
 
     val PARTNER_URL = "http://47.92.128.105/partner/index/index?token=%s"
 

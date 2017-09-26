@@ -8,22 +8,20 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.ViewsUtils
 import com.zhengdianfang.dazhongbao.models.product.Product
-import com.zhengdianfang.dazhongbao.presenters.FollowProductPresenter
 import com.zhengdianfang.dazhongbao.views.product.ProductDetailActivity
 
 /**
  * Created by dfgzheng on 05/08/2017.
  */
-class ProductItemViewHolder(itemView: View?, private val followProductPresenter: FollowProductPresenter) : RecyclerView.ViewHolder(itemView) {
+class ProductItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     private val stockNameView = itemView?.findViewById<TextView>(R.id.sharesNameView)!!
     val soldCountView = itemView?.findViewById<TextView>(R.id.soldCountView)!!
     private val industryNameView = itemView?.findViewById<TextView>(R.id.industryNameView)!!
     private val nowUnitPriceView = itemView?.findViewById<TextView>(R.id.nowUnitPriceView)!!
-    private val attentionButton = itemView?.findViewById<Button>(R.id.attentionButton)!!
+    val attentionButton = itemView?.findViewById<Button>(R.id.attentionButton)!!
 
     fun setData(product: Product){
         Log.d("ProductItemViewHolder", product.toString())
@@ -46,15 +44,5 @@ class ProductItemViewHolder(itemView: View?, private val followProductPresenter:
             context.startActivity(Intent(itemView?.context, ProductDetailActivity::class.java).putExtra("productId", product.id))
         }
 
-        attentionButton.setOnClickListener {
-            val token = CApplication.INSTANCE.loginUser?.token
-            if (null != token){
-                if (product.attention == 0){
-                    followProductPresenter.followProduct(token, product.id)
-                }else{
-                    followProductPresenter.unfollowProduct(token, product.id)
-                }
-            }
-        }
     }
 }
