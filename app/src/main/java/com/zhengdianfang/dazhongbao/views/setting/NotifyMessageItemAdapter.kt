@@ -34,7 +34,7 @@ class NotifyMessageItemAdapter(private val messages: MutableList<MessageCount>, 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when(getItemViewType(position)){
             MESSAGE_ITEM -> { (holder as MessageItemViewHolder).setData(messages[position]) }
-            CONVERSATION_ITEM -> { (holder as ChatConversationItemViewHolder).setData(conversations[position]) }
+            CONVERSATION_ITEM -> { (holder as ChatConversationItemViewHolder).setData(conversations[position - messages.count()]) }
         }
     }
 

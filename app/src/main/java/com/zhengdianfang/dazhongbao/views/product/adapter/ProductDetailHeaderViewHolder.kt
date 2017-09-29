@@ -40,7 +40,7 @@ class ProductDetailHeaderViewHolder(itemView: View?, private val intentionOnClic
                 1, 2, 3 ,4 -> {
                     headerStatusTipView.text = context.getString(R.string.no_bid_wait_for_auction_start)
                     bidCountView.text = ""
-                    (headerStatusTipView.parent as View).setBackgroundColor(ContextCompat.getColor(context, R.color.c_787878))
+                    (headerStatusTipView.parent as View).setBackgroundColor(ContextCompat.getColor(context, R.color.c_fafafa))
                 }
                 0, 5, 6 -> {
                     headerStatusTipView.text = context.getString(R.string.new_bid_label, context.getString(R.string.finish_auction_time, DateUtils.formatTime(product.endDateTime)))

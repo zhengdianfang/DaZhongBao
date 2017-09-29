@@ -51,9 +51,9 @@ class NotifyMessagesActivity : BaseListActivity<EMConversation>(), NotifyMessage
     }
 
     override fun receiverList(messageCounts: MutableList<MessageCount>, conversations: MutableList<EMConversation>) {
-        messages.clear()
-        messages.addAll(messageCounts)
-        conversations.clear()
+        this.messages.clear()
+        this.messages.addAll(messageCounts)
+        this.conversations.clear()
         this.conversations.addAll(conversations)
         adapter.notifyDataSetChanged()
         refreshLayout.finishRefresh()

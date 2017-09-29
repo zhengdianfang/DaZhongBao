@@ -54,6 +54,7 @@
     <string name="id_card_front">身份证正面</string>
     <string name="id_card_backend">身份证反面</string>
     <string name="upload_business_card_success">上传成功</string>
+    <string name="upload_card_contact_success">上传成功, 正在审核...</string>
     <string name="activity_setting_title">设置</string>
     <string name="share_title">分享</string>
     <string name="setting_account_and_secutry">账户与安全</string>

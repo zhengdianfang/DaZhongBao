@@ -10,8 +10,6 @@ import com.hyphenate.chat.EMConversation
 import com.hyphenate.chat.EMMessage
 import com.orhanobut.logger.Logger
 import com.zhengdianfang.dazhongbao.BuildConfig
-import com.zhengdianfang.dazhongbao.CApplication
-import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.CException
 import com.zhengdianfang.dazhongbao.models.basic.IMUser
 import com.zhengdianfang.dazhongbao.models.login.User
@@ -19,8 +17,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
-
-
 
 
 /**
@@ -109,19 +105,11 @@ object IMUtils {
 
     fun sendTxtMessage(user: IMUser, msg: String) {
         val message = EMMessage.createTxtSendMessage(msg, user.id)
-        message.setAttribute("toUser", API.objectMapper.writeValueAsString(user))
-        val loginUser = CApplication.INSTANCE.loginUser!!
-        message.setAttribute("fromUser",
-                API.objectMapper.writeValueAsString(IMUser(loginUser.id!!, loginUser.phonenumber!!, loginUser.id!!, loginUser.realname!!, loginUser.avatar!!)) )
         EMClient.getInstance().chatManager().sendMessage(message)
     }
 
     fun sendVoiceMessage(filePath: String, length: Int, user: IMUser){
         val message = EMMessage.createVoiceSendMessage(filePath, length, user.id)
-        message.setAttribute("toUser", API.objectMapper.writeValueAsString(user))
-        val loginUser = CApplication.INSTANCE.loginUser!!
-        message.setAttribute("fromUser",
-                API.objectMapper.writeValueAsString(IMUser(loginUser.id!!, loginUser.phonenumber!!, loginUser.id!!, loginUser.realname!!, loginUser.avatar!!)) )
         EMClient.getInstance().chatManager().sendMessage(message)
     }
 

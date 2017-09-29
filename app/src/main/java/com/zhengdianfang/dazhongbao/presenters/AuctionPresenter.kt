@@ -18,11 +18,11 @@ class AuctionPresenter: BasePresenter() {
     private val productCacheRepository by lazy { ProductCacheRepository(CApplication.INSTANCE.memoryCache, CApplication.INSTANCE.diskCahce) }
 
     fun fetchAuctionList(token:String,number: Int) {
-        var observable = productRepository.getProductList(token, number,  "5", "-startDateTime")
+        var observable = productRepository.getProductList(token, number,  "4,5", "-startDateTime,id")
         if (number < 2){
             observable = Observable.concat(
                     productCacheRepository.loadAuctionProductsCache(),
-                    productRepository.getProductList(token, number,  "5", "-startDateTime").delay(300, TimeUnit.MILLISECONDS)
+                    productRepository.getProductList(token, number,  "4,5", "-startDateTime,id").delay(300, TimeUnit.MILLISECONDS)
                             .doOnNext { result ->
                                 if (!result.isCache && number < 2){
                                     productCacheRepository.saveAuctionProductsCache(result.data)
@@ -30,8 +30,7 @@ class AuctionPresenter: BasePresenter() {
                             })
         }
         addSubscription(observable, Consumer {result->
-            (mView as IAuctionListView).receiveAuctionProductList(
-                    result.data.filter { (it.check_status == 4 || it.check_status == 5) } as MutableList<Product>, result.isCache)
+            (mView as IAuctionListView).receiveAuctionProductList(result.data, result.isCache)
         })
     }
 

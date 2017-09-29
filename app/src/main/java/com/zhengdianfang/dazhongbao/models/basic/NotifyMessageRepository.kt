@@ -1,6 +1,7 @@
 package com.zhengdianfang.dazhongbao.models.basic
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zhengdianfang.dazhongbao.helpers.IMUtils
 import com.zhengdianfang.dazhongbao.models.api.API
 import com.zhengdianfang.dazhongbao.models.api.MessageApi
 import io.reactivex.Observable
@@ -12,11 +13,9 @@ class NotifyMessageRepository {
 
     fun fetchNotifyMessageCount(token: String): Observable<MutableList<MessageCount>> {
         return API.appClient.create(MessageApi::class.java).fetchNotifyMessageCount(token)
-                .map {response -> API.parseResponse(response) }
                 .map {data ->
                     val messages = mutableListOf<MessageCount>()
-                    val jsonNode = API.objectMapper.readTree(data)
-                    jsonNode.forEachIndexed { index, jsonNode  ->
+                    data.get("data").forEachIndexed { index, jsonNode  ->
                         if (jsonNode.isObject) {
                             if (index == 1 || index == 2) {
                                 val message = API.objectMapper.readValue(jsonNode.toString(), MessageCount::class.java)
@@ -25,6 +24,8 @@ class NotifyMessageRepository {
                             }
                         }
                     }
+                    val imUser = API.objectMapper.readValue(data.get("csm_user").toString(), IMUser::class.java)
+                    IMUtils.sendTxtMessage(imUser, "欢迎来到大宗宝")
                     messages
                 }
     }
