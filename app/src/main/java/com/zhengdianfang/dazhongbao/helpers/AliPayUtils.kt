@@ -1,7 +1,9 @@
 package com.zhengdianfang.dazhongbao.helpers
 
 import android.app.Activity
+import android.text.TextUtils
 import com.alipay.sdk.app.PayTask
+import com.zhengdianfang.dazhongbao.models.api.CException
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -17,7 +19,11 @@ class AliPayUtils(private val activity: Activity) {
                 val payTask = PayTask(activity)
                 try {
                     val result = payTask.payV2(payInfo, true)
-                    observer.onNext(result)
+                    if (!TextUtils.isEmpty(result["result"])){
+                        observer.onNext(result)
+                    }else {
+                        observer.onError(CException(result["memo"] ?: "", result["resultStatus"]?.toIntOrNull()!!))
+                    }
                 }catch (e : Exception){
                     observer.onError(e)
                 }

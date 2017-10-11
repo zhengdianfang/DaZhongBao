@@ -37,26 +37,4 @@ class UserInfoInterityValidate(mIView: IView?) : BaseValidate(mIView) {
         }
         return res
     }
-
-    fun validateWhenreateProduct(): Boolean {
-        var res = true
-        if (checkLogin()){
-            val loginUser = CApplication.INSTANCE.loginUser!!
-            when(loginUser.type) {
-                User.ORGANIZATION_TYPE -> {
-                    if (loginUser.isExitsBusinessLicenceCard().not()) {
-                        (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_LINLENCE_CARD)
-                        res = false
-                    }
-                }
-                User.PERSONAL_TYPE -> {
-                    if (loginUser.isExitsBusinessCard().not()){
-                        (mIView as BasePresenter.ICheckUserIntegrityView).notIntegrity(NO_EXITS_BUSINESS_CARD)
-                        res = false
-                    }
-                }
-            }
-        }
-        return res
-    }
 }

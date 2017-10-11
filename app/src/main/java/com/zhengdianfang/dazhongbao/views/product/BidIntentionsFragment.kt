@@ -1,11 +1,13 @@
 package com.zhengdianfang.dazhongbao.views.product
 
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,11 +58,15 @@ class BidIntentionsFragment : BaseFragment() , PushBidPresenter.IPushBidView , B
             basicPriceView.text = ViewsUtils.renderSharesPrice(context, payPrice, R.string.starting_price_label, 20f)
             soldCountView.text = ViewsUtils.renderSharesSoldCount(context, payCount, 20f)
             totalPriceView.text = ViewsUtils.renderSharesPrice(context, payCount * payPrice, R.string.total_price_label, 20f)
-            licenseTextView.text = Html.fromHtml(FileUtils.readRawFile(context, R.raw.bid_license))
 
             submitButton.setOnClickListener {
                 pushBidPresenter.pushBid(CApplication.INSTANCE.loginUser?.token!!, product!!,  payPrice, payCount)
             }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            licenseTextView.text = Html.fromHtml(FileUtils.readRawFile(context, R.raw.bid_license), FROM_HTML_MODE_COMPACT)
+        }else{
+            licenseTextView.text = Html.fromHtml(FileUtils.readRawFile(context, R.raw.bid_license))
         }
     }
 

@@ -121,9 +121,10 @@ class AuctionFirstItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(item
         val startTime = DateUtils.changeTimeLenght(product.startDateTime)
         val endTime = DateUtils.changeTimeLenght(product.endDateTime)
         val nowTime = System.currentTimeMillis()
+        Logger.d("end : $endTime start: $startTime, now : $nowTime")
         Logger.d("now : ${Math.abs(endTime - nowTime)}, total: ${Math.abs(endTime - startTime)}")
         val totalTime = Math.abs(endTime - startTime)
-        val goingTime = totalTime -  Math.abs(endTime - nowTime).toDouble()
+        val goingTime = Math.abs(totalTime -  Math.abs(endTime - nowTime).toDouble())
         Logger.d("cal present: ${(goingTime / totalTime  * 100).toInt()}")
         timeProgressbar.progress =  (goingTime / totalTime  * 100).toInt()
     }

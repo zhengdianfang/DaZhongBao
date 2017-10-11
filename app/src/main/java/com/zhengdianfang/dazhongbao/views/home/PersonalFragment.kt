@@ -25,6 +25,7 @@ import com.zhengdianfang.dazhongbao.presenters.validates.UserInfoInterityValidat
 import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 import com.zhengdianfang.dazhongbao.views.basic.WebActivity
 import com.zhengdianfang.dazhongbao.views.login.SetUserCertificationActivity
+import com.zhengdianfang.dazhongbao.views.login.UploadContactCardFragment
 import com.zhengdianfang.dazhongbao.views.setting.SettingActivity
 import com.zhengdianfang.dazhongbao.views.user.*
 import io.reactivex.disposables.Disposable
@@ -103,7 +104,14 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
                 1-> markImageView.setImageResource(R.drawable.fragment_personal_people_icon)
                 2-> markImageView.setImageResource(R.drawable.fragment_personal_company_icon)
             }
-            userRealNameTextView.text = if(TextUtils.isEmpty(loginUser.realname)) getString(R.string.fragment_personal_anonymous_user) else loginUser.realname
+            if(TextUtils.isEmpty(loginUser.realname)) {
+                userRealNameTextView.text = getString(R.string.fragment_personal_anonymous_user)
+                userRealNameTextView.setOnClickListener {
+                    startFragment(android.R.id.content, instantiate(context, PUploadContactCardFragment::class.java.name), "personal")
+                }
+            } else {
+                userRealNameTextView.text = loginUser.realname
+            }
             userPhoneNumberTextView.text = loginUser.phonenumber?.replaceRange(3, 7,"****")
             levelTextView.text = if (loginUser.integrity == 0) getString(R.string.fragment_personal_certified_member) else getString(R.string.fragment_personal_normal_member)
             upgradeVIPView.visibility = if (loginUser.type == 1 && loginUser.isExitsContactCard().not()) View.VISIBLE else View.GONE
@@ -153,5 +161,11 @@ class PersonalFragment : BaseFragment(), UserPresenter.IUserInfo{
     override fun onBackPressed(): Boolean {
         getParentActivity().finish()
         return true
+    }
+
+    class PUploadContactCardFragment : UploadContactCardFragment(){
+        override fun toolbarBackButtonClick() {
+           getParentActivity().supportFragmentManager.popBackStack()
+        }
     }
 }// Required empty public constructor

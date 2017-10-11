@@ -26,7 +26,6 @@ class LoginPresenterTest {
     companion object {
         @ClassRule @JvmField val schedulers = RxImmediateSchedulerRule()
     }
-
     private val mLoginPresenter by lazy {
         val presenter = LoginPresenter()
         presenter.MOCK = true

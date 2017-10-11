@@ -27,7 +27,7 @@ import com.zhengdianfang.dazhongbao.views.basic.BaseFragment
 /**
  * A simple [Fragment] subclass.
  */
-class UploadContactCardFragment : BaseFragment() , IUploadCard, BasePresenter.ICheckUserIntegrityView{
+open class UploadContactCardFragment : BaseFragment() , IUploadCard, BasePresenter.ICheckUserIntegrityView{
 
     private val mUserPresenter by lazy { UserPresenter() }
     private val idCardFrontEndImageView by lazy { view?.findViewById<ImageView>(R.id.idCardFrontEndImageView)!! }

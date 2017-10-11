@@ -40,9 +40,10 @@ object ViewsUtils {
     fun renderSharesPrice(context: Context, price: Double, labelResId: Int,fontSize: Float): SpannableString {
         val highlightColor = ContextCompat.getColor(context, R.color.c_f43d3d)
         val df = DecimalFormat("#.00")
-        val priceString = context.getString(R.string.price_unit_value, df.format(price))
+        val formatPrice = if(price == 0.0) "0.00" else df.format(price)
+        val priceString = context.getString(R.string.price_unit_value, formatPrice)
         val colorSpannableString = SpannableStringUtils.addColorSpan(context.getString(labelResId, priceString), priceString, highlightColor)
-        return SpannableStringUtils.addSizeSpan(colorSpannableString, df.format(price), PixelUtils.sp2px(context, fontSize).toInt())
+        return SpannableStringUtils.addSizeSpan(colorSpannableString, formatPrice, PixelUtils.sp2px(context, fontSize).toInt())
 
     }
     fun renderSharesPrice(context: Context, price: Double, labelResId: Int): SpannableString {

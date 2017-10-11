@@ -130,6 +130,6 @@ class CApplication : Application(){
         loginUser = null
         EMClient.getInstance().logout(true)
         startActivity(Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

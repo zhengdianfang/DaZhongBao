@@ -89,10 +89,6 @@ class ProductDetailPresenter: BasePresenter() {
         return notes
     }
 
-    fun canStartTimer(type: Int): Boolean {
-       return type == WATTING_AUCTION_START_BUTTON_TYPE || type == PAY_BOND_BUTTON_TYPE || type == SUMBIT_ATTETION_BUTTON_TYPE
-    }
-
     fun getStatusViewType(product: Product): Int {
         var type = FINISH_BUTTON_TYPE
         when(product?.check_status){
@@ -103,24 +99,32 @@ class ProductDetailPresenter: BasePresenter() {
                 type = CHECKING_BUTTON_TYPE //审核中
             }
             3 ->{
-                if (product.attention == 1){
-                    type = MAKE_AUCTION_TIME_BUTTON_TYPE //排期中
-                }else{
-                    type = SUMBIT_ATTETION_BUTTON_TYPE //提交意向
+                type = if(product.isSeller()){
+                    PAY_BOND_BUTTON_TYPE //提交保证金
+                }else {
+                    if (product.attention == 1){
+                        MAKE_AUCTION_TIME_BUTTON_TYPE //排期中
+                    }else{
+                        SUMBIT_ATTETION_BUTTON_TYPE //提交意向
+                    }
                 }
             }
             4 ->{
-                if(product.bond_status != 2){
-                    type = PAY_BOND_BUTTON_TYPE //提交保证金
-                }else {
-                    type = WATTING_AUCTION_START_BUTTON_TYPE //等待开拍
+                if (!product.isSeller()){
+                    type = if(product.bond_status != 2){
+                        PAY_BOND_BUTTON_TYPE //提交保证金
+                    }else {
+                        WATTING_AUCTION_START_BUTTON_TYPE //等待开拍
+                    }
                 }
             }
             5 ->{
-                if(product?.bond_status != 2) {
-                    type = AUCTIONING_BUTTON_NO_BOND_TYPE //竞拍中， 没交保证金
-                }else{
-                    type = AUCTIONING_BUTTON_TYPE //出价
+                if (!product.isSeller()){
+                    type = if(product?.bond_status != 2) {
+                        AUCTIONING_BUTTON_NO_BOND_TYPE //竞拍中， 没交保证金
+                    }else{
+                        AUCTIONING_BUTTON_TYPE //出价
+                    }
                 }
             }
         }

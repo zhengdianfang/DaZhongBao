@@ -112,7 +112,7 @@ class PayDepositFragment : BaseFragment(), PayDepositPresenter.IPayDepositResult
         alipayUtils.pay(alipayResult.alipay_url).subscribe ({ result ->
             Logger.d("alipay success: $result")
             payDepositPresenter.bondPayed(CApplication.INSTANCE.loginUser?.token!!, product?.id!!, alipayResult.paykey, result)
-        }, {e -> toast(R.string.alipay_fail_toast)})
+        }, {e -> })
     }
     override fun notifyBackendResult(result: String) {
         RxBus.instance.post(Action(Action.PAY_BOND_SUCCESS_ACTION, ""))

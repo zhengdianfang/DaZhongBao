@@ -28,12 +28,14 @@ class PayDepositPresenter: BasePresenter() {
         if (validate.checkLogin()) {
             mView?.showLoadingDialog()
             val resultJson = API.objectMapper.readTree(payResult.get("result"))
-            val trade_no = resultJson.get("alipay_trade_app_pay_response").get("trade_no").asText()
-            val out_trade_no = resultJson.get("alipay_trade_app_pay_response").get("out_trade_no").asText()
-            addSubscription(productRepository.bondPayed(token, productId, paykey, trade_no, out_trade_no), Consumer {result ->
-                (mView as IPayDepositResultView).notifyBackendResult(result)
-                mView?.hideLoadingDialog()
-            })
+            if (resultJson.has("alipay_trade_app_pay_response")) {
+                val trade_no = resultJson.get("alipay_trade_app_pay_response").get("trade_no").asText()
+                val out_trade_no = resultJson.get("alipay_trade_app_pay_response").get("out_trade_no").asText()
+                addSubscription(productRepository.bondPayed(token, productId, paykey, trade_no, out_trade_no), Consumer {result ->
+                    (mView as IPayDepositResultView).notifyBackendResult(result)
+                    mView?.hideLoadingDialog()
+                })
+            }
         }
     }
 

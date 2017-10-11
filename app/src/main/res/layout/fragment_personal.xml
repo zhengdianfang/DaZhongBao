@@ -1,19 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragment_background_color"
     android:orientation="vertical"
     tools:context="com.zhengdianfang.dazhongbao.views.home.PersonalFragment">
-
-    <com.zhengdianfang.dazhongbao.views.components.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:enable_back="false"
-        app:toolbar_theme="light" />
-
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
