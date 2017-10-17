@@ -55,7 +55,7 @@ class WechatUtils(private val context: Context) {
             }
 
             override fun onResponse(call: Call<Map<String, String>>?, response: Response<Map<String, String>>?) {
-                success(response?.body()?.get("access_token") ?: "", response?.body()?.get("openid") ?: "")
+                success(response?.body()?.get("access_token") ?: "", response?.body()?.get("unionid") ?: "")
             }
 
         })

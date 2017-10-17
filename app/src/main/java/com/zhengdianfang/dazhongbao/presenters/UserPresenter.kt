@@ -202,6 +202,11 @@ class UserPresenter: BasePresenter() {
         })
     }
 
+    fun updateUMengToken(token: String, umengId: String) {
+        addSubscription(mUserRepository.updateUmengId(token, umengId), Consumer<String> { result ->
+        })
+    }
+
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
         var ok = true
         if(contactName.isNullOrEmpty()){

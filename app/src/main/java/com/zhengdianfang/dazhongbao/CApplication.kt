@@ -17,6 +17,7 @@ import com.umeng.message.IUmengRegisterCallback
 import com.umeng.message.PushAgent
 import com.zhengdianfang.dazhongbao.helpers.FileUtils
 import com.zhengdianfang.dazhongbao.models.api.API
+import com.zhengdianfang.dazhongbao.models.api.UserApi
 import com.zhengdianfang.dazhongbao.models.cache.BaseMemoryCache
 import com.zhengdianfang.dazhongbao.models.cache.BasicDiskCache
 import com.zhengdianfang.dazhongbao.models.login.User
@@ -101,7 +102,8 @@ class CApplication : Application(){
                 }
             })
         }.subscribeOn(Schedulers.newThread()).subscribe {token ->
-           Logger.d("umeng push sdk register success, token is : $token")
+            Logger.d("umeng push sdk register success, token is : $token")
+            API.appClient.create(UserApi::class.java).updateUMengToken(token, token)
         }
     }
 

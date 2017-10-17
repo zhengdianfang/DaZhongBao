@@ -169,4 +169,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue<MutableList<User>>(data, object : TypeReference<MutableList<User>>(){})}
     }
+
+    fun updateUmengId(token: String, umengId: String): Observable<String> {
+        return API.appClient.create(UserApi::class.java).updateUMengToken(token, umengId)
+                .map {response -> API.parseResponse(response) }
+    }
 }

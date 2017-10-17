@@ -110,4 +110,9 @@ interface UserApi {
     @FormUrlEncoded
     @POST("users/getIMUsers")
     fun fetchIMUserInfo(@Field("token")token: String, @Field("userIds")userIds: String): Observable<JsonNode>
+
+
+    @FormUrlEncoded
+    @POST("users/updateUmengId")
+    fun updateUMengToken(@Field("token")token: String, @Field("umengId")umengId: String): Observable<JsonNode>
 }
