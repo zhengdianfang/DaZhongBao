@@ -2,7 +2,6 @@ package com.zhengdianfang.dazhongbao.presenters
 
 import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
-import com.zhengdianfang.dazhongbao.helpers.Constants
 import com.zhengdianfang.dazhongbao.models.login.User
 import com.zhengdianfang.dazhongbao.models.login.UserCacheRepository
 import com.zhengdianfang.dazhongbao.models.login.UserCount
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit
  */
 class UserPresenter: BasePresenter() {
 
-    private val mUserRepository by lazy { UserRepository(Constants.MOCK) }
+    private val mUserRepository by lazy { UserRepository(MOCK) }
     private val mUserCacheRepository by lazy { UserCacheRepository(CApplication.INSTANCE.memoryCache, CApplication.INSTANCE.diskCahce) }
     private val passwordValidate by lazy { PasswordValidate(mView) }
     private val phoneNumberValidate by lazy { PhoneNumberValidate(mView) }
@@ -44,7 +43,7 @@ class UserPresenter: BasePresenter() {
     }
 
     fun findPassword(password: String,  verifyCode: String,  phoneNumber: String) {
-        if (passwordValidate.validate(password)){
+        if (passwordValidate.validate(password) && verifySmsCodeValidate.validate(verifyCode) && phoneNumberValidate.validate(phoneNumber)){
             mView?.showLoadingDialog()
             addSubscription(mUserRepository.findPassword(password, verifyCode, phoneNumber), Consumer<String> { msg ->
                 (mView as IFindPasswordView).findPasswordSuccess(msg)
@@ -203,8 +202,7 @@ class UserPresenter: BasePresenter() {
     }
 
     fun updateUMengToken(token: String, umengId: String) {
-        addSubscription(mUserRepository.updateUmengId(token, umengId), Consumer<String> { result ->
-        })
+        addSubscription(mUserRepository.updateUmengId(token, umengId), Consumer {}, Consumer {})
     }
 
     private fun validateBusinessLincenceCardUploadParams(contactName: String, companyName: String, filePath: String): Boolean {
@@ -212,12 +210,10 @@ class UserPresenter: BasePresenter() {
         if(contactName.isNullOrEmpty()){
             mView?.validateErrorUI(R.string.please_input_contact_name)
             ok = false
-        }
-        if(companyName.isNullOrEmpty()){
+        }else if(companyName.isNullOrEmpty()){
             mView?.validateErrorUI(R.string.please_input_company_name)
             ok = false
-        }
-        if(filePath.isNullOrEmpty()){
+        }else if(filePath.isNullOrEmpty()){
             mView?.validateErrorUI(R.string.please_select_business_card_photo)
             ok = false
         }
@@ -237,11 +233,10 @@ class UserPresenter: BasePresenter() {
 
         var ok = true
         if(filePathFront.isNullOrEmpty()){
-            mView?.validateErrorUI(R.string.please_select_business_card_photo)
+            mView?.validateErrorUI(R.string.please_select_contact_card_front_photo)
             ok = false
-        }
-        if(filePathBack.isNullOrEmpty()){
-            mView?.validateErrorUI(R.string.please_select_business_card_photo)
+        }else if(filePathBack.isNullOrEmpty()){
+            mView?.validateErrorUI(R.string.please_select_contact_card_back_photo)
             ok = false
         }
         return ok

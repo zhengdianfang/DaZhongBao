@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
+import com.zhengdianfang.dazhongbao.CApplication
 import com.zhengdianfang.dazhongbao.R
 import com.zhengdianfang.dazhongbao.helpers.AppUtils
 import com.zhengdianfang.dazhongbao.presenters.BasePresenter
@@ -44,6 +45,7 @@ class MainActivity : BaseActivity(), BasePresenter.ICheckUserIntegrityView {
 
         viewPage.offscreenPageLimit = fragments.size
         viewPage.adapter = MainFragmentAdapter(supportFragmentManager)
+        userPresenter.updateUMengToken(CApplication.INSTANCE.loginUser?.token!!, CApplication.INSTANCE.umengToken)
     }
 
     override fun onDestroy() {

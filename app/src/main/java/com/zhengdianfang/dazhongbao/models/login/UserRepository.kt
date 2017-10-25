@@ -22,6 +22,9 @@ import java.util.concurrent.TimeUnit
  */
 class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     fun modifyPassword(password: String, token: String): Observable<String> {
+        if (MOCK){
+            return Observable.just("success").delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(UserApi::class.java).modifyPassword(password , "", "", token)
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){
@@ -43,6 +46,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     }
 
     fun findPassword(password: String, verifyCode: String,  phoneNumber: String): Observable<String> {
+        if (MOCK){
+            return Observable.just("success").delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(UserApi::class.java).modifyPassword(password , phoneNumber, verifyCode, "")
                 .map {json ->
                     if(json.get("errCode").asInt() == 0){
@@ -64,6 +70,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     }
 
     fun uploadBusinessLicenceCard(token: String, contactName: String, companyName: String, file: File): Observable<User> {
+        if (MOCK){
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
         val requestBody = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(file)), file)
         val body =  MultipartBody.Part.createFormData("fileName", file.name, requestBody)
         return API.appClient.create(UserApi::class.java)
@@ -73,6 +82,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     }
 
     fun uploadBusinessCard(token: String, content: String, file: File): Observable<User> {
+        if (MOCK){
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
         val requestBody = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(file)), file)
         val body =  MultipartBody.Part.createFormData("fileName", file.name, requestBody)
         return API.appClient.create(UserApi::class.java)
@@ -82,6 +94,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     }
 
     fun uploadContactCard(token: String, cardFrontFile: File, cardBackEndFile: File): Observable<User> {
+        if (MOCK){
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
         val requestBody1 = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(cardFrontFile)), cardFrontFile)
         val requestBody2 = RequestBody.create(MediaType.parse(FileUtils.getMIMEType(cardBackEndFile)), cardBackEndFile)
         val body1 =  MultipartBody.Part.createFormData("fileName", cardFrontFile.name, requestBody1)
