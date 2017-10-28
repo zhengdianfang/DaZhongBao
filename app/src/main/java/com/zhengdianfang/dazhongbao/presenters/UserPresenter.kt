@@ -115,16 +115,12 @@ class UserPresenter: BasePresenter() {
     }
 
     fun modifyPhoneNumber(token: String, phoneNumber: String, verifyCode: String){
-        if(phoneNumberValidate.validate(phoneNumber)) {
-            if (verifyCode.isNullOrEmpty()) {
-                (mView as IModifyPhoneNumberView).validateErrorUI(R.string.please_input_sms_code)
-            }else {
-                mView?.showLoadingDialog()
-                addSubscription(mUserRepository.modifyPhoneNumber(token, phoneNumber, verifyCode), Consumer<User> { user->
-                    (mView as IModifyPhoneNumberView).modifySuccess(user)
-                    mView?.hideLoadingDialog()
-                })
-            }
+        if(phoneNumberValidate.validate(phoneNumber) && verifySmsCodeValidate.validate(verifyCode)) {
+            mView?.showLoadingDialog()
+            addSubscription(mUserRepository.modifyPhoneNumber(token, phoneNumber, verifyCode), Consumer<User> { user->
+                (mView as IModifyPhoneNumberView).modifySuccess(user)
+                mView?.hideLoadingDialog()
+            })
         }
 
     }

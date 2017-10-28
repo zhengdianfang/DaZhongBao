@@ -6,6 +6,7 @@ import com.zhengdianfang.dazhongbao.models.mock.mockUser
 import com.zhengdianfang.dazhongbao.views.login.IFindPasswordView
 import com.zhengdianfang.dazhongbao.views.login.ISetPasswordView
 import com.zhengdianfang.dazhongbao.views.login.IUploadCard
+import com.zhengdianfang.dazhongbao.views.user.IModifyPhoneNumberView
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
@@ -34,6 +35,12 @@ class UserPresenterTest {
 
     @Mock
     private val mUploadCard: IUploadCard? = null
+
+    @Mock
+    private val mUserProductListView: UserPresenter.IUserProductListView? = null
+
+    @Mock
+    private val mModifyPhoneNumberView: IModifyPhoneNumberView? = null
 
     private val mUserPresenter by lazy {
         val presenter = UserPresenter()
@@ -153,4 +160,25 @@ class UserPresenterTest {
         verify(mUploadCard)?.uploadSuccess(mockUser)
         verify(mUploadCard)?.hideLoadingDialog()
     }
+
+    @Test
+    fun should_modify_phoneNumber_When_user_need_do_it() {
+        mUserPresenter.attachView(mModifyPhoneNumberView)
+
+        mUserPresenter.modifyPhoneNumber(mockUser.token!!, "", "")
+        verify(mModifyPhoneNumberView)?.validateErrorUI(R.string.please_input_phonenumber)
+
+        mUserPresenter.modifyPhoneNumber(mockUser.token!!, "12312", "")
+        verify(mModifyPhoneNumberView)?.validateErrorUI(R.string.please_input_legal_phonenumber)
+
+        mUserPresenter.modifyPhoneNumber(mockUser.token!!, "13711112222", "")
+        verify(mModifyPhoneNumberView)?.validateErrorUI(R.string.please_input_sms_code)
+
+        mUserPresenter.modifyPhoneNumber(mockUser.token!!, "13711112222", "121333")
+        verify(mModifyPhoneNumberView)?.showLoadingDialog()
+        verify(mModifyPhoneNumberView)?.modifySuccess(mockUser)
+        verify(mModifyPhoneNumberView)?.hideLoadingDialog()
+
+    }
+
 }

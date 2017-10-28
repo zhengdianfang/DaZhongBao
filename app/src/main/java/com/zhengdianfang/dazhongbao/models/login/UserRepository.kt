@@ -108,6 +108,9 @@ class UserRepository(private var MOCK: Boolean = Constants.MOCK) {
     }
 
     fun modifyPhoneNumber(token: String, phoneNumber: String, verifyCode: String): Observable<User> {
+        if (MOCK){
+            return Observable.just(mockUser).delay(2, TimeUnit.SECONDS)
+        }
         return API.appClient.create(UserApi::class.java).modifyPhoneNumber(token, phoneNumber, verifyCode)
                 .map {response -> API.parseResponse(response) }
                 .map {data -> API.objectMapper.readValue(data, User::class.java) }
